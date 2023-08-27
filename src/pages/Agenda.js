@@ -86,10 +86,14 @@ function Agenda() {
   const [eventLocationFilter, setEventLocationFilter] = useState("Tous"); // "Tous" pour afficher tous les types d'événements par défaut
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/event`).then((res) => {
+    axios.get(`http://localhost:3001/event/combined`).then((res) => {
       setEvents(res.data);
     });
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [eventStatusFilter]);
 
 
   const currentDate = new Date();
@@ -302,7 +306,8 @@ function Agenda() {
                     date={formatDate(value.startDateTime)}
                     title={value.nom}
                     //description={value.description}
-                    eventType={value.locationType}
+                    locationType={value.locationType}
+                    eventType={value.eventType}
                     location={
                       value.locationType === "Visio"
                         ? "En ligne"

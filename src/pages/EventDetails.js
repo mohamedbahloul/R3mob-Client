@@ -149,10 +149,21 @@ function EventDetails() {
   //   event,event,event
   // ]
 
-
+  const customEventURL = `http://localhost:3001/detailsEvent/custom/${eventId}`;
+  console.log("Custom Event URL:", customEventURL);
   useEffect(() => {
-    axios.get(`http://localhost:3001/detailsEvent/${eventId}`).then((res) => {
-      setEvent(res.data);
+    axios.get(`http://localhost:3001/detailsEvent/brain/${eventId}`).then((res) => {
+      if (res.data !== null) {
+        setEvent(res.data);
+      } else {
+        axios.get(customEventURL).then((res) => {
+          if (res.data === null) {
+              window.location.replace("/404");
+          } else {
+              setEvent(res.data);
+          }
+      });
+      }
     });
   }, [eventId]);
 

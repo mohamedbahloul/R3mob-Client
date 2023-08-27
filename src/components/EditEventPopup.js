@@ -55,6 +55,7 @@ const EditEventPopup = ({ event, onSave, onClose }) => {
     const updatedEvent = {
       ...event,
       nom,
+      endDateTime: formattedDateTime,
       startDateTime: formattedDateTime,
       location,
       description,

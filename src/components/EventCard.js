@@ -7,7 +7,7 @@ import Colors from '../styles/Colors';
 
 
     
-const EventCard = ({ id, date, title, description, eventType, location, registrationLink,imageUrl,fallbackImageUrl }) => {
+const EventCard = ({ id, date, title, description,locationType, eventType, location, registrationLink,imageUrl,fallbackImageUrl }) => {
   const [playAnimation, setPlayAnimation] = useState(false);
 
   useEffect(() => {

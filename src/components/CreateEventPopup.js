@@ -56,6 +56,7 @@ const CreateEventPopup = ({ onSave, onClose }) => {
     const createdEvent = {
       nom,
       startDateTime: formattedDateTime,
+      endDateTime: formattedDateTime,
       location,
       description,
       selectedImage,
