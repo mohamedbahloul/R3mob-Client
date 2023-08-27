@@ -1,0 +1,119 @@
+ @import "Colors.css";
+
+ .dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdownbtn{
+    margin-top: -15px;
+    margin-left: 8px;
+    font-size:xx-large;
+    color: var(--color3);
+    
+}
+.dropdown-content {
+ 
+  right: 0;
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1; 
+  margin-top: 50px;
+  width: auto;
+  
+  
+  
+ } 
+  
+ .dropdown-content a { 
+   color: black; 
+   padding: 12px 16px; 
+   text-decoration: none; 
+   display: block; 
+   /* changer la taille de la police */
+    font-size: 18px;
+    
+ } 
+  
+ .dropdown-content a:hover { 
+   background-color: #f1f1f1; 
+ } 
+  
+ .dropdown:hover .dropdown-content { 
+   display: block; 
+ } 
+  
+ .dropdown:hover .dropbtn { 
+   background-color: #3e8e41; 
+ }  
+ .user-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: auto;
+}
+
+.user-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-top: 10px;
+  margin-left: 28px;
+}
+
+.username {
+  margin-right: 5px;
+}
+
+
+
+
+.user-container:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content-profile {
+  right: 0; 
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 20; 
+  margin-top: 18px;
+  
+}
+
+.dropdownbtn-profile {
+  margin: 0;
+  padding: 0;
+  font-size: xx-large;
+  color: var(--color3);
+  cursor: pointer;
+  margin-left: 15px;
+}
+ .dropdown-content-profile a { 
+  color: black; 
+  padding: 12px 16px; 
+  text-decoration: none; 
+  display: block; 
+  font-size: 18px;
+
+   
+   
+
+   
+} 
+ 
+.dropdown-content-profile a:hover { 
+  background-color: #f1f1f1; 
+} 
+ 
+.dropdown:hover .dropdown-content-profile { 
+  display: block; 
+} 
+ 
+ 

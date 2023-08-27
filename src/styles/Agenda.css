@@ -1,0 +1,31 @@
+@import "Colors.css";
+.mainTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: left;
+  color: var(--color1);
+  margin-top: 2rem;
+}
+.indexPageBtn {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  width: 6rem;
+  height: 3rem;
+  border-radius: 10px;
+  border: none;
+  background-color: var(--color1);
+  color: var(--color3);
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.indexPageBtn:hover {
+  background-color: var(--color2);
+}
+.indexPageBtn.active {
+  background-color: var(--color2);
+  color: white;
+}
