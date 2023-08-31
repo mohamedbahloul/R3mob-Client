@@ -52,6 +52,7 @@ export const CardsContainer = styled.div`
   display : flex;
   gap: 30px;
   margin-top: 10%;
+  margin-bottom: 10%;
   &:hover {
     filter : none;
     

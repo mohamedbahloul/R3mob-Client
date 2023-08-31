@@ -7,10 +7,17 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import CarteActeur from "../components/CarteActeur";
 import { CardsContainer } from "../styles/CarteActeur";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import BordeauxMap from "../components/BordeauxMap";
 const PageLink = styled.a`
   text-decoration: none; 
   color: inherit; 
 `;
+
+
+
+
 function Acteurs() {
   const [counts, setCounts] = useState({
     Chercheurs: 0,
@@ -41,13 +48,16 @@ function Acteurs() {
       </aside>
       <main>
       <h1 className="mainTitle">Acteurs R3MOB: </h1>
+      
         <CardsContainer>
       <PageLink href="/chercheur"><CarteActeur image="Acteurs/Chercheurs.png" name="Chercheurs" nombre={counts.Chercheurs}/></PageLink>
       <PageLink href="/laboratoire"><CarteActeur image="Acteurs/Laboratoire.png" name="Laboratoires scientifiques" nombre={counts.Laboratoires}/></PageLink>
       <PageLink href="/universite"><CarteActeur image="Acteurs/Université.png" name="Universités" nombre={counts.Universités}/></PageLink>
-      <PageLink href="/autre_etablissement"><CarteActeur image="Acteurs/Autre_Etablissement.png" name="Autres établissement" nombre={counts.AutresÉtablissements}/></PageLink>
+      <PageLink href="/autre_etablissement"><CarteActeur image="Acteurs/Autre_Etablissement.png" name="Autres établissements" nombre={counts.AutresÉtablissements}/></PageLink>
       <PageLink href="/partenaire"><CarteActeur image="Acteurs/Partenaire.png" name="Partenaires" nombre={counts.Partenaires}/></PageLink>
       </CardsContainer>
+      <BordeauxMap />
+      
       </main>
       <aside className="right">
         <ScrollButton />

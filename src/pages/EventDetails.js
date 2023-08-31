@@ -206,7 +206,7 @@ function EventDetails() {
         <aside className="left">left</aside>
         <main>
           <TitleContainer>
-            <EventStatus> #Événement publique</EventStatus>
+            <EventStatus> #Événement {event.isPrivate === 't' ? "Privé" : "Publique"}</EventStatus>
             <EventTitle>{event.nom}</EventTitle>
           </TitleContainer>
           <DetailsContainer>

@@ -53,7 +53,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  margin-bottom: auto;
+  /* margin-bottom: auto; */
 }
 
 .user-image {
@@ -115,5 +115,9 @@
 .dropdown:hover .dropdown-content-profile { 
   display: block; 
 } 
+
+.profileSection{
+  margin-bottom: auto;
+}
  
  

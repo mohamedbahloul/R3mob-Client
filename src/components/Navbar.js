@@ -91,7 +91,9 @@ function Navbar() {
                     Acteurs <span className="dropdownbtn">&#8964;</span>
                     <div className="dropdown-content">
                       <NavbarLink to="/chercheur">Chercheurs</NavbarLink>
-                      <NavbarLink href="#">Laboratoires scientifiques</NavbarLink>
+                      <NavbarLink href="#">
+                        Laboratoires scientifiques
+                      </NavbarLink>
                       <NavbarLink href="#">Universités</NavbarLink>
                       <NavbarLink href="#">Ecoles d'ingénieurs</NavbarLink>
                       <NavbarLink href="#">Organismes Nationaux</NavbarLink>
@@ -99,21 +101,23 @@ function Navbar() {
                   </NavbarLinkList>
                 </div>
                 <br />
-              <div className="user-container dropdown">
-
-  <img src={UserImage} alt="User" className="user-image" />
-  <span className="dropdownbtn-profile">&#8964;</span>
-  <div className="dropdown-content-profile">
+                <div className="user-container dropdown">
+                  <img src={UserImage} alt="User" className="user-image" />
+                  <span className="dropdownbtn-profile">&#8964;</span>
                   <div className="dropdown-content-profile">
-                    <NavbarLink to="/updateEvent">Update Events</NavbarLink>
-                    <NavbarLink to="/updateBd">Update Data Base</NavbarLink>
-                    <NavbarLink to="/clearBd">Clear Data Base</NavbarLink>
-                    <NavbarLink to="/profile">{authState.username} </NavbarLink>
-                    <NavbarLink to="/" onClick={logout}>
-                      Logout{" "}
-                    </NavbarLink>
+                    <div className="dropdown-content-profile">
+                      <NavbarLink to="/updateEvent">Update Events</NavbarLink>
+                      <NavbarLink to="/updateBd">Update Data Base</NavbarLink>
+                      <NavbarLink to="/clearBd">Clear Data Base</NavbarLink>
+                      <NavbarLink to="/verifyUrl">Verify Url</NavbarLink>
+                      <NavbarLink to="/profile">
+                        {authState.username}{" "}
+                      </NavbarLink>
+                      <NavbarLink to="/" onClick={logout}>
+                        Logout{" "}
+                      </NavbarLink>
+                    </div>
                   </div>
-                </div>
                 </div>
                 {/* <NavbarLink   to="/" onClick={logout}>Logout </NavbarLink>          
             {authState.username} */}

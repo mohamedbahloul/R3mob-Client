@@ -144,7 +144,7 @@ const UpdateEvent = () => {
     setShowEditPopup(false);
   };
 
-  const handleTogglePrivacy = async (eventId) => {
+  const handleTogglePrivacyBrain = async (eventId) => {
     try {
       const eventToUpdate = events.find(event => event.id === eventId);
       const updatedEvent = {
@@ -153,7 +153,27 @@ const UpdateEvent = () => {
       };
       
       const res = await axios.put(
-        `http://localhost:3001/event/changePrivacy/${eventId}`,
+        `http://localhost:3001/event/changePrivacy/brain/${eventId}`,
+        updatedEvent
+      );
+
+      if (res.status === 200) {
+        fetchEvents(); // Refresh the event list
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleTogglePrivacyCustom = async (eventId) => {
+    try {
+      const eventToUpdate = events.find(event => event.id === eventId);
+      const updatedEvent = {
+        ...eventToUpdate,
+        isPrivate: eventToUpdate.isPrivate === 't' ? 'f' : 't'
+      };
+      
+      const res = await axios.put(
+        `http://localhost:3001/event/changePrivacy/custom/${eventId}`,
         updatedEvent
       );
 
@@ -275,6 +295,12 @@ const UpdateEvent = () => {
                     <ButtonDelete onClick={() => handleDeleteEvent(event.id)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </ButtonDelete>
+                    <StatusButton
+      isPrivate={event.isPrivate}
+      onClick={() => handleTogglePrivacyCustom(event.id)}
+    >
+      {event.isPrivate === 't' ? 'Privé' : 'Public'}
+    </StatusButton>
                   </TdActions>
                 )}
                 {selectedButton === "brain" && (
@@ -284,7 +310,7 @@ const UpdateEvent = () => {
                     </ButtonEdit>
                     <StatusButton
       isPrivate={event.isPrivate}
-      onClick={() => handleTogglePrivacy(event.id)}
+      onClick={() => handleTogglePrivacyBrain(event.id)}
     >
       {event.isPrivate === 't' ? 'Privé' : 'Public'}
     </StatusButton>

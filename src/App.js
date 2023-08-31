@@ -21,6 +21,7 @@ import Chercheur from "./pages/Chercheur";
 import EventDetails from "./pages/EventDetails"; 
 import Footer from "./components/Footer";
 import Acteurs from "./pages/Acteurs";
+import VerifyUrl from "./pages/VerfiyUrl";
 function App() {
   const [authState, setAuthState] = useState({
     username: "",
@@ -81,7 +82,8 @@ function App() {
             <Route path="/chercheur" exact Component={Chercheur}/>
             <Route path="/event/:eventId" element={<EventDetails />} />  
             <Route path="/acteurs" exact Component={Acteurs}/>
-                      <Route path="*" exact Component={Page404} />
+            <Route path="/verifyUrl" exact Component={VerifyUrl}/>
+            <Route path="*" exact Component={Page404} />
           </Routes>
         </Router>
       </AuthContext.Provider>
