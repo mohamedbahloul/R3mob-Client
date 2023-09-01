@@ -1,18 +1,19 @@
+import CartePublication from "../components/CartePublication";
+
 import React, { useState, useEffect } from "react";
 import "../styles/common/layout.css";
 import ScrollButton from "../components/ScrollButton";
 import CarteButton from "../components/CarteButton";
 import "../styles/Agenda.css";
-import EventCard from "../components/EventCard";
 import styled from "styled-components";
 import axios from "axios";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FaSearch, FaFilter } from "react-icons/fa";
-import CartePerso from "../components/CartePerso";
+import { FaSearch } from "react-icons/fa";
+import Thematiques from "../components/Thematiques";
 
 import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
+import YouTube from 'react-youtube';
 
 const EventGrid = styled.div`
   display: flex;
@@ -57,66 +58,69 @@ const HorizontalLine = styled.hr`
   background-color: lightgray;
   border: 0cap;
 
-  width: 100px; /* Adjust the width of the horizontal line as needed */
-  margin-right: 10px; /* Add some right margin to separate the line from the text */
+  width: 100px;
+  margin-right: 10px;
+`;
+const VideoContainer = styled.div`
+align-items: center;
+  width: 100%;
+  height: 800px; /* Modifiez la hauteur en fonction de vos besoins */
 `;
 
-function Chercheur() {
-  const [persos, setPersos] = useState([]);
+function Ressources() {
+  const [publications, setPublications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [chercheurNameFilter, setchercheurNameFilter] = useState("");
-  const [sortType, setSortType] = useState("ascending"); // Par défaut, tri croissant
-  const [etablissementFilter, setEtablissementFilter] = useState("");
-  const [etablissements, setEtablissements] = useState([]);
-  const [personnelTypeFilter, setPersonnelTypeFilter] = useState("Tous");
+  // Ajoutez des états pour les filtres
+  const [publicationTitleFilter, setPublicationTitleFilter] = useState("");
+  const [ResearcherFilter, setResearcherFilter] = useState("");
+  const [thematiqueFilter, setThematiqueFilter] = useState("");
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/etablissement`).then((res) => {
-      setEtablissements(res.data);
-      console.log(res.data);
+    axios.get(`http://localhost:3001/publication`).then((res) => {
+      setPublications(res.data);
     });
   }, []);
 
-  useEffect(() => {
-    axios.get(`http://localhost:3001/perso`).then((res) => {
-      setPersos(res.data);
-      console.log(res.data);
-    });
-  }, []);
+  const filteredPublications = publications
+    .filter((publication) => {
+      const publicationTitleMatches = publication.nom
+        .toLowerCase()
+        .includes(publicationTitleFilter.toLowerCase());
+      return publicationTitleMatches;
+    })
+    .filter((publication) =>
+      publication.chercheurs.some((chercheur) => {
+        const chercheurNames = chercheur.split(" "); // Split the full name into parts
+        const filterValue = ResearcherFilter.toLowerCase();
 
-  const filteredPersos = persos.filter((perso) => {
-    const etablissementNames = perso.Chercheur_etabs.map((chercheurEtab) => {
-      const etablissement = etablissements.find(
-        (etab) => etab.id === chercheurEtab.EtablissementId
+        // Check if any part of the name starts with the filter value
+        return chercheurNames.some((part) =>
+          part.toLowerCase().startsWith(filterValue)
+        );
+      })
+    )
+    .filter((publication) => {
+      if (thematiqueFilter === "") {
+        return true; // No filter, show all publications
+      }
+
+      // Check if the publication's thematiques include the selected thematique
+      return publication.Thematique_publications.some(
+        (thematiquePublication) => {
+          const thematiqueNom =
+            thematiquePublication.SousThematique?.Thematique?.nom || "";
+          return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
+        }
       );
-      return etablissement ? etablissement.nom.toLowerCase() : "";
     });
 
-    return (
-      perso.username.toLowerCase().includes(chercheurNameFilter.toLowerCase()) &&
-      etablissementNames.some((name) =>
-        name.includes(etablissementFilter.toLowerCase())
-      ) &&
-      (personnelTypeFilter === "Tous" || perso.Type_personnels.some(type => type.type === personnelTypeFilter))
-    
-    );
-  });
-
-  const sortedPersos = filteredPersos.sort((a, b) => {
-    if (sortType === "ascending") {
-      return a.username.localeCompare(b.username);
-    } else {
-      return b.username.localeCompare(a.username);
-    }
-  });
-
-  const eventsPerPage = 9;
-  const totalPages = Math.ceil(sortedPersos.length / eventsPerPage);
+  const eventsPerPage = 6;
+  const totalPages = Math.ceil(filteredPublications.length / eventsPerPage);
 
   const indexOfLastEvent = currentPage * eventsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-  const currentPageContent = sortedPersos.slice(
+  const currentEvents = filteredPublications.slice(
     indexOfFirstEvent,
     indexOfLastEvent
   );
@@ -125,25 +129,16 @@ function Chercheur() {
     setCurrentPage(pageNumber);
   };
 
-  const handleSearchInputChange = (event) => {
-    setchercheurNameFilter(event.target.value);
+  // Fonctions pour gérer les changements de filtres
+  const handlePublicationTitleFilterChange = (title) => {
+    setPublicationTitleFilter(title.target.value);
     setCurrentPage(1);
   };
 
-  const handleSortChange = (event) => {
-    setSortType(event.target.value);
+  const handleResearcherNameFilterChange = (chercheur) => {
+    setResearcherFilter(chercheur.target.value);
     setCurrentPage(1);
   };
-
-  const handleEtablissementFilterChange = (event) => {
-    setEtablissementFilter(event.target.value);
-    setCurrentPage(1);
-  };
-  const handlePersonnelTypeFilterChange = (event) => {
-    setPersonnelTypeFilter(event.target.value);
-    setCurrentPage(1);
-  };
-
   const maxPageButtons = 3; // Maximum number of page buttons to display
   const halfMaxButtons = Math.floor(maxPageButtons / 2);
 
@@ -153,7 +148,10 @@ function Chercheur() {
   if (endPage - startPage + 1 < maxPageButtons) {
     startPage = Math.max(endPage - maxPageButtons + 1, 1);
   }
-  
+
+  const videoUrl = 'https://www.youtube.com/watch?v=R-YPZiCC-b0';
+  const videoId = videoUrl.match(/(?:\?v=|\/embed\/|\/vi\/|\/e\/|\/v\/|\/watch\?v=|\/watch\?feature=player_embedded&v=|\/embed\?feature=player_embedded&v=)([^#\&\?]*).*/)[1];
+
   return (
     <div className="body">
       <header>header</header>
@@ -163,11 +161,11 @@ function Chercheur() {
             style={{
               color: "gray",
               fontSize: "16px",
-              marginBottom: "25px",
+              marginTop: "70px",
+              marginBottom: "10px",
               display: "flex",
               alignItems: "left",
               fontWeight: "bold",
-              marginTop: "150px",
             }}
           >
             Filtrer par <HorizontalLine />
@@ -182,21 +180,19 @@ function Chercheur() {
                   transform: "translateY(-50%)",
                   color: "#aaa",
                 }}
-                // Remplacez cela par votre logique de recherche
               />
-
               <Input
                 type="text"
-                value={chercheurNameFilter}
-                onChange={handleSearchInputChange}
-                placeholder="Rechercher par nom"
+                value={publicationTitleFilter}
+                onChange={handlePublicationTitleFilterChange}
+                placeholder="Recherche par titre"
               />
             </div>
           </InputSection>
 
           <InputSection>
             <div style={{ position: "relative" }}>
-              <FaFilter
+              <FaSearch
                 style={{
                   position: "absolute",
                   top: "50%",
@@ -207,61 +203,35 @@ function Chercheur() {
               />
               <Input
                 type="text"
-                value={etablissementFilter}
-                onChange={handleEtablissementFilterChange}
-                placeholder="Filtrer par établissement"
+                value={ResearcherFilter}
+                onChange={handleResearcherNameFilterChange}
+                placeholder="Recherche par chercheur"
               />
             </div>
           </InputSection>
           <StyledSelect
-  value={personnelTypeFilter}
-  onChange={handlePersonnelTypeFilterChange}
->
-  <option value="Tous">Tous</option>
-  <option value="C">Enseignant Chercheur</option>
-  <option value="D">Directions</option>
-  <option value="A">Autres Personnels</option>
-</StyledSelect>
-          <p
-            style={{
-              color: "gray",
-              fontSize: "16px",
-              marginTop: "70px",
-              marginBottom: "10px",
-              display: "flex",
-              alignItems: "left",
-              fontWeight: "bold",
-            }}
+            value={thematiqueFilter}
+            onChange={(e) => setThematiqueFilter(e.target.value)}
           >
-            Trier par <HorizontalLine />
-          </p>
-          <StyledSelect value={sortType} onChange={handleSortChange}>
-            <option value="ascending">Nom croissant</option>
-            <option value="descending">Nom décroissant</option>
+            <option value="">Toutes les thematiques</option>
+            {Thematiques.map((thematique, index) => (
+              <option key={index} value={thematique.nom}>
+                {thematique.nom}
+              </option>
+            ))}
           </StyledSelect>
         </aside>
         <main>
-          <h1 className="mainTitle">Personnels</h1>
+          <h1 className="mainTitle">Publications</h1>
           <EventGrid>
-            {currentPageContent.map((value, key) => {
-              const etablissementNames = value.Chercheur_etabs.map(
-                (chercheurEtab) => {
-                  const etablissement = etablissements.find(
-                    (etab) => etab.id === chercheurEtab.EtablissementId
-                  );
-                  return etablissement ? etablissement.nom : "Pas indiqué";
-                }
-              );
-
+            {currentEvents.map((value, key) => {
               return (
                 <EventCardContainer key={key}>
-                  <CartePerso
+                  <CartePublication
                     id={value.id}
-                    name={value.username}
-                    email={value.email ? value.email : "Pas indiqué"}
-                    phone={value.phone ? value.phone : "Pas indiqué"}
-                    address={etablissementNames.join(", ")} // Join establishment names with commas
-                    imageData={value.imageData}
+                    title={value.nom}
+                    imageUrl="mob.jpg"
+                    fallbackUrl="../default_user.png"
                   />
                 </EventCardContainer>
               );
@@ -308,15 +278,26 @@ function Chercheur() {
               </button>
             )}
           </div>
+          <h1 className="mainTitle">Videos</h1>
+          <VideoContainer>
+          <iframe
+        src={`https://www.youtube.com/embed/${videoId}`}
+        frameBorder="0"
+        allowFullScreen
+        title="YouTube Video"
+      ></iframe>
+      </VideoContainer>
         </main>
         <aside className="right">
           <ScrollButton />
           <CarteButton />
         </aside>
       </div>
-       <footer><Footer/></footer> 
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }
 
-export default Chercheur;
+export default Ressources;

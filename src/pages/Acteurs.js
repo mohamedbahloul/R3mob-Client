@@ -27,7 +27,6 @@ function Acteurs() {
     Partenaires: 0,
   });
   useEffect(() => {
-    // Faites l'appel à l'API pour récupérer les counts
     fetch("http://localhost:3001/etablissement/etabCount")
       .then((response) => response.json())
       .then((data) => setCounts(data))

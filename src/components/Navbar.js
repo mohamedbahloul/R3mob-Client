@@ -72,8 +72,8 @@ function Navbar() {
               <NavbarLinkList to="/ressources">
                 Ressources <span className="dropdownbtn">&#8964;</span>
                 <div className="dropdown-content">
+                <NavbarLink href="#">Publications</NavbarLink>
                   <NavbarLink href="#">Vidéos</NavbarLink>
-                  <NavbarLink href="#">Publications</NavbarLink>
                 </div>
               </NavbarLinkList>
             </div>

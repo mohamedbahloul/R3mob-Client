@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { faEnvelope, faPhone, faMapMarker } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import {
     CardContainer,
@@ -19,6 +20,10 @@ const Name = styled.h1`
     font-weight: bold;
     color: #fff;
 `;
+const PageLink = styled(Link)`
+  text-decoration: none; 
+  color: inherit; 
+`;
 
 const CartePerso = ({ id, name, email, phone, address, imageData }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -28,6 +33,7 @@ const CartePerso = ({ id, name, email, phone, address, imageData }) => {
       : `url(${defaultImage})`;
   
     return (
+        <PageLink to={`/chercheur/${id}`}> 
       <CardContainer
         style={{ backgroundImage }}
         onMouseEnter={() => setIsHovered(true)}
@@ -57,6 +63,7 @@ const CartePerso = ({ id, name, email, phone, address, imageData }) => {
                 </InfoContainer>
             )}
         </CardContainer>
+        </PageLink>
     );
 };
 
