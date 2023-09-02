@@ -13,7 +13,6 @@ import Thematiques from "../components/Thematiques";
 
 import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
-import YouTube from 'react-youtube';
 
 const EventGrid = styled.div`
   display: flex;
@@ -26,34 +25,7 @@ const EventGrid = styled.div`
 const EventCardContainer = styled.div`
   width: 500px;
 `;
-const DatePickerContainer = styled.div`
-  position: relative;
 
-  .react-datepicker-wrapper {
-    width: 100%;
-  }
-
-  .react-datepicker__input-container input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-
-  .react-datepicker__clear-icon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    opacity: 0.7;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-`;
 const HorizontalLine = styled.hr`
   background-color: lightgray;
   border: 0cap;

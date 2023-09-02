@@ -29,11 +29,12 @@ header{
 }
 
 main {
-  /* background-color: bisque; */
   flex: 10 10 100px;
-  overflow: auto; /* Ajoute une barre de défilement lorsque le contenu dépasse la taille de la balise */
-  word-wrap: break-word; /* Permet au texte de se diviser en plusieurs lignes si nécessaire */
+  word-wrap: break-word; 
   color: black;
+  overflow-x: auto;
+  overflow-y: hidden;
+
 }
 
 .right {
