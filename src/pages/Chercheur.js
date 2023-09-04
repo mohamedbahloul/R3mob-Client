@@ -61,6 +61,10 @@ const HorizontalLine = styled.hr`
   margin-right: 10px; /* Add some right margin to separate the line from the text */
 `;
 
+const ReinitialiserButton = styled.button`
+margin-top: 30px;
+`;
+
 function Chercheur() {
   const [persos, setPersos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,12 +98,14 @@ function Chercheur() {
     });
 
     return (
-      perso.username.toLowerCase().includes(chercheurNameFilter.toLowerCase()) &&
+      perso.username
+        .toLowerCase()
+        .includes(chercheurNameFilter.toLowerCase()) &&
       etablissementNames.some((name) =>
         name.includes(etablissementFilter.toLowerCase())
       ) &&
-      (personnelTypeFilter === "Tous" || perso.Type_personnels.some(type => type.type === personnelTypeFilter))
-    
+      (personnelTypeFilter === "Tous" ||
+        perso.Type_personnels.some((type) => type.type === personnelTypeFilter))
     );
   });
 
@@ -144,6 +150,14 @@ function Chercheur() {
     setCurrentPage(1);
   };
 
+  const handleResetFilters = () => {
+    setchercheurNameFilter("");
+    setEtablissementFilter("");
+    setPersonnelTypeFilter("Tous");
+    // setSortType("ascending");
+    setCurrentPage(1);
+  };
+
   const maxPageButtons = 3; // Maximum number of page buttons to display
   const halfMaxButtons = Math.floor(maxPageButtons / 2);
 
@@ -153,7 +167,7 @@ function Chercheur() {
   if (endPage - startPage + 1 < maxPageButtons) {
     startPage = Math.max(endPage - maxPageButtons + 1, 1);
   }
-  
+
   return (
     <div className="body">
       <header>header</header>
@@ -214,14 +228,16 @@ function Chercheur() {
             </div>
           </InputSection>
           <StyledSelect
-  value={personnelTypeFilter}
-  onChange={handlePersonnelTypeFilterChange}
->
-  <option value="Tous">Tous</option>
-  <option value="C">Enseignant Chercheur</option>
-  <option value="D">Directions</option>
-  <option value="A">Autres Personnels</option>
-</StyledSelect>
+            value={personnelTypeFilter}
+            onChange={handlePersonnelTypeFilterChange}
+          >
+            <option value="Tous">Tous</option>
+            <option value="C">Enseignant Chercheur</option>
+            <option value="D">Directions</option>
+            <option value="A">Autres Personnels</option>
+          </StyledSelect>
+          <ReinitialiserButton onClick={handleResetFilters}>Réinitialiser les filtres</ReinitialiserButton>
+
           <p
             style={{
               color: "gray",
@@ -241,7 +257,7 @@ function Chercheur() {
           </StyledSelect>
         </aside>
         <main>
-          <h1 className="mainTitle">Personnels</h1>
+          <h1 className="mainTitle">Acteurs R3MOB</h1>
           <EventGrid>
             {currentPageContent.map((value, key) => {
               const etablissementNames = value.Chercheur_etabs.map(
@@ -314,7 +330,9 @@ function Chercheur() {
           <CarteButton />
         </aside>
       </div>
-       <footer><Footer/></footer> 
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

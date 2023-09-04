@@ -6,6 +6,7 @@ import universityIconUrl from "../assets/Université.png";
 
 const Div = styled.div`
   margin-bottom: 10%;
+  width: 95%;
 `;
 // Create a custom icon
 const universityIcon = L.icon({

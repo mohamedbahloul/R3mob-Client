@@ -20,7 +20,7 @@ import UpdateEvent from "./pages/UpdateEvent";
 import Chercheur from "./pages/Chercheur";
 import EventDetails from "./pages/EventDetails"; 
 import Footer from "./components/Footer";
-import Acteurs from "./pages/Acteurs";
+import Annuaire from "./pages/Annuaire";
 import VerifyUrl from "./pages/VerfiyUrl";
 import ChercheurDetails from "./pages/ChercheurDetails";
 import Ressources from "./pages/Ressources";
@@ -83,7 +83,7 @@ function App() {
             <Route path="/updateEvent" exact Component={UpdateEvent}/>
             <Route path="/chercheur" exact Component={Chercheur}/>
             <Route path="/event/:eventId" element={<EventDetails />} />  
-            <Route path="/acteurs" exact Component={Acteurs}/>
+            <Route path="/annuaires" exact Component={Annuaire}/>
             <Route path="/verifyUrl" exact Component={VerifyUrl}/>
             <Route path="/chercheur/:chercheurId" element={<ChercheurDetails />} />
             <Route path="/ressources" exact Component={Ressources}/>

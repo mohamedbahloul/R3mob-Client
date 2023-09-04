@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import "../styles/Colors.css";
-import { FaUserAlt } from "react-icons/fa";
+import { FaUniversity } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Colors from "../styles/Colors";
 import axios from "axios";
 import ThematiqueIcon from "../components/ThematiqueIcon";
 import Thematiques from "../components/Thematiques";
 
-const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
+const CarteProjet = ({
+  id,
+  title,
+  link,
+  fallbackUrl,
+  imageUrl,
+  etablissements,
+  enjeux,
+}) => {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [publicationSousThematiques, setPublicationSousThematiques] = useState(
     []
   );
-  const [publicationChercheur, setPublicationChercheur] = useState([]);
   const [allThematique, setAllThematique] = useState([]);
   const [extractedThematiques, setExtractedThematiques] = useState([]);
 
@@ -25,25 +32,13 @@ const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/publication/thematiques/${id}`)
-      .then((res) => {
-        if (res.data.error) {
-          console.log(res.data.error);
-        } else {
-          setPublicationSousThematiques(res.data);
-        }
-      });
-
-      axios
-      .get(`http://localhost:3001/publication/chercheur/${id}`)
-      .then((res) => {
-        if (res.data.error) {
-          console.log(res.data.error);
-        } else {
-          setPublicationChercheur(res.data);
-        }
-      });
+    axios.get(`http://localhost:3001/projet/thematiques/${id}`).then((res) => {
+      if (res.data.error) {
+        console.log(res.data.error);
+      } else {
+        setPublicationSousThematiques(res.data);
+      }
+    });
   }, [id]);
 
   useEffect(() => {
@@ -62,72 +57,114 @@ const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
       const thematicData = [];
       for (const publication of publicationSousThematiques) {
         const thematicId = publication.SousThematique.ThematiqueId;
-        const thematic = allThematique.find((thematique) => thematique.id === thematicId);
+        const thematic = allThematique.find(
+          (thematique) => thematique.id === thematicId
+        );
         if (thematic) {
-          const thematiqueIndex = thematicData.findIndex((data) => data.thematique.nom === thematic.nom);
+          const thematiqueIndex = thematicData.findIndex(
+            (data) => data.thematique.nom === thematic.nom
+          );
           if (thematiqueIndex !== -1) {
             // If the thematique already exists, update the sousThematique field
-            thematicData[thematiqueIndex].sousThematique.push(" , ",publication.SousThematique.nom);
+            thematicData[thematiqueIndex].sousThematique.push(
+              " , ",
+              publication.SousThematique.nom
+            );
           } else {
             // If the thematique doesn't exist, add it to the array
-            const them = Thematiques.find((thematique) => thematique.nom === thematic.nom);
-            thematicData.push({ thematique: them, sousThematique: [publication.SousThematique.nom] });
+            const them = Thematiques.find(
+              (thematique) => thematique.nom === thematic.nom
+            );
+            thematicData.push({
+              thematique: them,
+              sousThematique: [publication.SousThematique.nom],
+            });
           }
         }
       }
       setExtractedThematiques(thematicData);
     };
-  
+
     fetchThematiqueData();
   }, [publicationSousThematiques, allThematique]);
-  
-
 
   return (
-    // <PageLink to={link}>
-      <CardContainer playAnimation={playAnimation}>
-        <CardImage src={imageUrl} fallbackUrl={fallbackUrl} />
-        <CardContent>
+    <CardContainer playAnimation={playAnimation}>
+      <CardContent>
+        <CardContentTop>
+          <ThematiquesContainer>
+            {extractedThematiques.map((publicationSousThematiques) => (
+              <ThematiqueIcon
+                key={publicationSousThematiques.thematique.nom}
+                icon={
+                  "../thematiques/" + publicationSousThematiques.thematique.icon
+                }
+                backgroundColor={
+                  publicationSousThematiques.thematique.backgroundColor
+                }
+                subThematiques={publicationSousThematiques.sousThematique}
+              />
+            ))}
+          </ThematiquesContainer>
           <EventTitle>{title}</EventTitle>
-          <EventInfo>
-            <UsernameContainer> {/*<FaUserAlt/>*/}{publicationChercheur.map((publication) => {
-              return (
-                <Username href={`chercheur/${publication.Personnel.id}`}>
-                  
-                  {publication.Personnel.username}
-                </Username>
-              )
-            }) }</UsernameContainer>
-            <ThematiquesContainer>
-              { extractedThematiques.map((publicationSousThematiques) =>
-                    <ThematiqueIcon
-                      key={publicationSousThematiques.thematique.nom}
-                      icon={"../thematiques/" + publicationSousThematiques.thematique.icon}
-                      backgroundColor={publicationSousThematiques.thematique.backgroundColor}
-                      subThematiques={publicationSousThematiques.sousThematique}
-                    />
-                    )
-              }
-            </ThematiquesContainer>
-          </EventInfo>
-        </CardContent>
-      </CardContainer>
-    // </PageLink>
+        </CardContentTop>
+        <CardContentBottom>
+          {etablissements.map((etablissement) => (
+            <Username key={etablissement}>
+              <FaUniversity />
+              <Span>{etablissement}</Span>
+            </Username>
+          ))}
+        </CardContentBottom>
+      </CardContent>
+      <CardContent>
+        <CardImage src={imageUrl} fallbackUrl={fallbackUrl} />
+        {enjeux && enjeux.length > 0 && (
+          <Span>
+            Enjeux :{" "}
+            {enjeux.map((enjeu, index) => (
+              <React.Fragment key={enjeu.id}>
+                {enjeu.Enjeux.nom}
+                {index < enjeux.length - 1 && " / "}
+              </React.Fragment>
+            ))}
+          </Span>
+        )}
+      </CardContent>
+    </CardContainer>
   );
 };
 
+const Span = styled.span`
+  margin-left: 5px;
+  color: var(--color1);
+  font-size: small;
+  font-style: italic;
+`;
+const CardContentTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 70%;
+`;
+
+const CardContentBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
 const Username = styled.a`
+  margin-left: 10px;
   color: var(--color1);
   font-size: medium;
   font-style: italic;
-
-`
+`;
 const ThematiquesContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  margin-right: -5%;
+  justify-content: flex-start;
+  align-items: flex-start;
   margin-bottom: 5%;
 `;
 const PageLink = styled(Link)`
@@ -138,15 +175,22 @@ const PageLink = styled(Link)`
 const CardImage = styled.img`
   background-position: center;
   width: 100%;
-  height: 30%;
+  height: 90%;
+  float: left;
+  float: inline-end;
 `;
 
 const CardContainer = styled.div`
-margin-top: 10%;
-  background-color: whitesmoke;
+  margin-top: 10px; /* Ajoutez un espace en haut */
+  margin-bottom: 20px; /* Ajoutez un espace en bas */
+  background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 600px;
-  width: 400px;
+  height: 300px;
+  width: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
   animation: ${(props) =>
     props.playAnimation ? "rotate 0.5s ease, zoom 0.5s ease" : "none"};
   @keyframes rotate {
@@ -170,6 +214,7 @@ margin-top: 10%;
     box-shadow: 0 4px 8px rgba(10, 10, 10, 0.5);
   }
 `;
+
 const UsernameContainer = styled.div`
   color: var(--color1);
   display: flex;
@@ -180,10 +225,12 @@ const UsernameContainer = styled.div`
 const CardContent = styled.div`
   position: relative; /* Add this to create a new stacking context */
   z-index: 1; /* Position the content above the gradient layer */
+  width: 50%; /* Définit la largeur à 50% pour occuper la moitié droite de la carte */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 70%;
+  height: 100%; /* Ajuste la hauteur pour occuper la hauteur complète de la carte */
+  padding: 10px; /* Ajoute une marge intérieure pour espacer le contenu du bord de l'image */
 `;
 
 const EventTitle = styled.h2`
@@ -223,4 +270,4 @@ const EventLocation = styled.span`
   font-size: large;
 `;
 
-export default CartePublication;
+export default CarteProjet;

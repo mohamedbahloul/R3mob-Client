@@ -18,7 +18,7 @@ const PageLink = styled.a`
 
 
 
-function Acteurs() {
+function Annuaire() {
   const [counts, setCounts] = useState({
     Chercheurs: 0,
     Laboratoires: 0,
@@ -49,7 +49,7 @@ function Acteurs() {
       <h1 className="mainTitle">Acteurs R3MOB: </h1>
       
         <CardsContainer>
-      <PageLink href="/chercheur"><CarteActeur image="Acteurs/Chercheurs.png" name="Chercheurs" nombre={counts.Chercheurs}/></PageLink>
+      <PageLink href="/chercheur"><CarteActeur image="Acteurs/Chercheurs.png" name="Acteurs R3MOB" nombre={counts.Chercheurs}/></PageLink>
       <PageLink href="/laboratoire"><CarteActeur image="Acteurs/Laboratoire.png" name="Laboratoires scientifiques" nombre={counts.Laboratoires}/></PageLink>
       <PageLink href="/universite"><CarteActeur image="Acteurs/Université.png" name="Universités" nombre={counts.Universités}/></PageLink>
       <PageLink href="/autre_etablissement"><CarteActeur image="Acteurs/Autre_Etablissement.png" name="Autres établissements" nombre={counts.AutresÉtablissements}/></PageLink>
@@ -68,4 +68,4 @@ function Acteurs() {
   );
 }
 
-export default Acteurs;
+export default Annuaire;

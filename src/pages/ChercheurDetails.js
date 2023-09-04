@@ -207,7 +207,7 @@ function ChercheurDetails() {
   return (
     <div className="body">
       <header>header</header>
-      <div className="main">
+      <div className="main" style={{marginTop:"100px"}}>
         <aside className="left">left</aside>
         <main>
           <HeaderContainer>

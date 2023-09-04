@@ -24,6 +24,7 @@ export const StatusButton = styled.button`
 export const ChooseButtonsContainer = styled.div`
   margin-bottom: 20px;
   align-items: center;
+  margin-top: 120px;
 `;
 export const ChooseButton = styled.button`
   background-color: ${(props) => (props.active ? Colors.color2 : Colors.color5)};

@@ -87,7 +87,7 @@ function VerifyUrl() {
 
 
   return (
-    <div>
+    <div style={{marginTop: "100px"}}>
       <Button onClick={handleVerifyLinks}>Lancer une Vérification</Button>
       <Table>
           <thead>

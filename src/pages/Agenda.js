@@ -19,6 +19,7 @@ const EventGrid = styled.div`
   gap: 20px;
   justify-content: center;
   padding-top: 15px;
+  
 `;
 
 const EventCardContainer = styled.div`
@@ -58,6 +59,10 @@ const HorizontalLine = styled.hr`
 
   width: 100px; /* Adjust the width of the horizontal line as needed */
   margin-right: 10px; /* Add some right margin to separate the line from the text */
+`;
+
+const ReinitialiserButton = styled.button`
+margin-top: 30px;
 `;
 
 function Agenda() {
@@ -173,6 +178,13 @@ function Agenda() {
     setEventLocationFilter(event.target.value);
     setCurrentPage(1);
   };
+  const handleResetFilters = () => {
+    setEventNameFilter("");
+    setDateFilter("");
+    setEventLocationFilter("Tous");
+    setEventStatusFilter("Tous");
+    setCurrentPage(1);
+  };
   const maxPageButtons = 3; // Maximum number of page buttons to display
   const halfMaxButtons = Math.floor(maxPageButtons / 2);
 
@@ -273,6 +285,7 @@ function Agenda() {
               <option value="En cours">Événements en cours</option>
             </StyledSelect>
           </div>
+          <ReinitialiserButton onClick={handleResetFilters}>Réinitialiser les filtres</ReinitialiserButton>
           <p
             style={{
               color: "gray",
@@ -295,32 +308,33 @@ function Agenda() {
           </StyledSelect>
         </aside>
         <main>
-          <h1 className="mainTitle">Évènements</h1>
-          <EventGrid>
-            {currentEvents.map((value, key) => {
-              console.log(value.id);
-              return (
-                <EventCardContainer key={key}>
-                  <EventCard
-                    id={value.id}
-                    date={formatDate(value.startDateTime)}
-                    title={value.nom}
-                    //description={value.description}
-                    locationType={value.locationType}
-                    eventType={value.eventType}
-                    location={
-                      value.locationType === "Visio"
-                        ? "En ligne"
-                        : value.location
-                    }
-                    registrationLink={value.lienInscription}
-                    imageUrl = {`events_imgs/${value.id}.jpg`}
-                    fallbackImageUrl = {"events_imgs/event_default.jpg"}
-                  />
-                </EventCardContainer>
-              );
-            })}
-          </EventGrid>
+        <h1 className="mainTitle">Évènements</h1>
+  {currentEvents.length === 0 ? (
+    <p>Aucun événement à afficher pour les filtres sélectionnés.</p>
+  ) : (
+    <EventGrid>
+      {currentEvents.map((value, key) => {
+        return (
+          <EventCardContainer key={key}>
+            <EventCard
+              id={value.id}
+              date={formatDate(value.startDateTime)}
+              title={value.nom}
+              //description={value.description}
+              locationType={value.locationType}
+              eventType={value.eventType}
+              location={
+                value.locationType === "Visio" ? "En ligne" : value.location
+              }
+              registrationLink={value.lienInscription}
+              imageUrl={`events_imgs/${value.id}.jpg`}
+              fallbackImageUrl={"events_imgs/event_default.jpg"}
+            />
+          </EventCardContainer>
+        );
+      })}
+    </EventGrid>
+  )}
 
           <div>
           {/* Display first page */}

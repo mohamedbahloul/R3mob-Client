@@ -6,72 +6,342 @@ import "../styles/Agenda.css";
 import EventCard from "../components/EventCard";
 import styled from "styled-components";
 import axios from "axios";
+import CarteProjet from "../components/CarteProjet";
+import Thematiques from "../components/Thematiques";
+import { FaSearch } from "react-icons/fa";
+import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
+import Footer from "../components/Footer";
+import { set } from "date-fns";
+
 const EventGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   gap: 20px;
   justify-content: center;
   padding-top: 15px;
 `;
+const HorizontalLine = styled.hr`
+  background-color: lightgray;
+  border: 0cap;
+
+  width: 100px;
+  margin-right: 10px;
+`;
 
 const EventCardContainer = styled.div`
-  width: 500px;
+  width: 40%;
+`;
+const ReinitialiserButton = styled.button`
+  margin-top: 30px;
 `;
 function Projet() {
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    // Ajoute un zéro devant le jour et le mois si nécessaire
-    const formattedDay = day < 10 ? `0${day}` : day;
-    const formattedMonth = month < 10 ? `0${month}` : month;
-
-    return `${formattedDay}/${formattedMonth}/${year}`;
-  };
-
-  const [events, setEvents] = useState([]);
+  /* Déclaration Projets */
+  const [etatFilter, setEtatFilter] = useState("");
+  const [projets, setProjets] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [projetTitleFilter, setProjetTitleFilter] = useState("");
+  const [etablissementFilter, setEtablissementFilter] = useState("");
+  const [thematiqueFilter, setThematiqueFilter] = useState("");
+  const [sousThematiqueFilter, setSousThematiqueFilter] = useState("");
+  // pour la liste des Thematiques dans la liste déroulante
+  const [allSousThematiques, setAllSousThematiques] = useState([]);
+  // pour la liste des sous Thematiques dans la liste déroulante
+  const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
+    useState([]);
+
+  const [allEnjeux, setAllEnjeux] = useState([]);
+  const [enjeuxFilter, setEnjeuxFilter] = useState("");
+  /*Déclaration AAP */
+  const [aap, setAap] = useState([]);
+
+  const currentHash = window.location.hash;
+  useEffect(() => {
+    if (currentHash === "#projets") {
+      // Si l'ancre est "#videos", faites défiler jusqu'à la section "videos"
+      const projetsSection = document.getElementById("projets");
+      if (projetsSection) {
+        projetsSection.scrollIntoView({ behavior: "smooth" });
+      }
+    } else if (currentHash === "#aap") {
+      // Si l'ancre est "#publications", faites défiler jusqu'à la section "publications"
+      const aapSection = document.getElementById("aap");
+      if (aapSection) {
+        aapSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [currentHash]);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/projet`).then((res) => {
-      setEvents(res.data);
-      console.log(res.data)
+      setProjets(res.data);
     });
+    axios.get(`http://localhost:3001/sousThematique`).then((res) => {
+      setAllSousThematiques(res.data);
+    });
+    axios.get(`http://localhost:3001/enjeux`).then((res) => {
+      setAllEnjeux(res.data);
+    }
+    );
   }, []);
+  const filteredProjets = projets
+    .filter((projet) => {
+      const projetTitleMatches = projet.nom
+        .toLowerCase()
+        .includes(projetTitleFilter.toLowerCase());
+      return projetTitleMatches;
+    })
+    .filter((projet) =>
+      projet.etablissements.some((etablissement) => {
+        const etablissementNames = etablissement.split(" "); // Split the full name into parts
+        const filterValue = etablissementFilter.toLowerCase();
 
-  const eventsPerPage = 6;
-  const totalPages = Math.ceil(events.length / eventsPerPage);
+        // Check if any part of the name starts with the filter value
+        return etablissementNames.some((part) =>
+          part.toLowerCase().startsWith(filterValue)
+        );
+      })
+    )
+    .filter((projet) => {
+      if (thematiqueFilter === "") {
+        return true; // No filter, show all publications
+      }
 
-  // Obtenir les événements à afficher sur la page actuelle
-  const indexOfLastEvent = currentPage * eventsPerPage;
-  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-  const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
+      // Check if the publication's thematiques include the selected thematique
+      return projet.Thematique_projets.some((thematiqueProjet) => {
+        const thematiqueNom =
+          thematiqueProjet.SousThematique?.Thematique?.nom || "";
+        return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
+      });
+    })
+    .filter((projet) => {
+      if (sousThematiqueFilter === "") {
+        return true; // Pas de filtre, afficher tous les projets
+      }
+
+      // Filtrage par sous-thématique
+      return projet.Thematique_projets.some((thematiqueProjet) => {
+        const sousThematiqueNom = thematiqueProjet.SousThematique?.nom || "";
+        return (
+          sousThematiqueNom.toLowerCase() === sousThematiqueFilter.toLowerCase()
+        );
+      });
+    }).filter((projet) => {
+      if (etatFilter === "") {
+        return true; // Pas de filtre, afficher tous les projets
+      }
+
+      // Filtrage par état
+      return projet.etat === etatFilter;
+    }).filter((projet) => {
+      if (enjeuxFilter === "") {
+        return true; // Pas de filtre, afficher tous les projets
+      }
+
+      // Filtrage par enjeux
+      return projet.Enjeux_projets.some((enjeuxProjet) => {
+        const enjeuxNom = enjeuxProjet.Enjeux?.nom || "";
+        return enjeuxNom.toLowerCase() === enjeuxFilter.toLowerCase();
+      });
+    });
+
+
+  const projetsPerPage = 6;
+  const totalPages = Math.ceil(filteredProjets.length / projetsPerPage);
+
+  const indexOfLastProjet = currentPage * projetsPerPage;
+  const indexOfFirstProjet = indexOfLastProjet - projetsPerPage;
+  const currentProjets = filteredProjets.slice(
+    indexOfFirstProjet,
+    indexOfLastProjet
+  );
 
   const handlePageClick = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  // Fonctions pour gérer les changements de filtres
+  const handleProjetTitleFilterChange = (title) => {
+    setProjetTitleFilter(title.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleEtablissementNameFilterChange = (chercheur) => {
+    setEtablissementFilter(chercheur.target.value);
+    setCurrentPage(1);
+  };
+  const handleThematiqueFilterChange = (selectedThematique) => {
+    setThematiqueFilter(selectedThematique);
+    // Filtrer les sous-thématiques en fonction de la thématique sélectionnée
+    const sousThematiquesFiltrees = allSousThematiques.filter(
+      (sousThematique) => {
+        return sousThematique.Thematique.nom === selectedThematique;
+      }
+    );
+
+    setSousThematiquesSelectFilter(sousThematiquesFiltrees);
+    setCurrentPage(1);
+  };
+
+  const handleEtatFilterChange = (selectedEtat) => {
+    setEtatFilter(selectedEtat);
+    setCurrentPage(1);
+  };
+
+  const handleSousThematiqueFilterChange = (selectedSousThematique) => {
+    setSousThematiqueFilter(selectedSousThematique);
+
+    setCurrentPage(1);
+  };
+  const handleEnjeuxFilterChange = (selectedEnjeux) => {
+    setEnjeuxFilter(selectedEnjeux);
+    setCurrentPage(1);
+  };
+
+  const handleResetFilters = () => {
+    setProjetTitleFilter("");
+    setEtablissementFilter("");
+    setThematiqueFilter("");
+    setEtatFilter("");
+    setSousThematiqueFilter("");
+    setSousThematiquesSelectFilter([]);
+    setEnjeuxFilter("");
+    setCurrentPage(1);
+  };
+  const maxPageButtons = 3; // Maximum number of page buttons to display
+  const halfMaxButtons = Math.floor(maxPageButtons / 2);
+
+  let startPage = Math.max(currentPage - halfMaxButtons, 1);
+  let endPage = Math.min(startPage + maxPageButtons - 1, totalPages);
+
+  if (endPage - startPage + 1 < maxPageButtons) {
+    startPage = Math.max(endPage - maxPageButtons + 1, 1);
+  }
+
+  /******************* Partie AAP  */
+  useEffect(() => {
+    axios.get(`http://localhost:3001/aap`).then((res) => {
+      setAap(res.data);
+    });
+  }, []);
 
   return (
     <div className="body">
       <header>header</header>
       <div className="main">
-        <aside className="left">left</aside>
-        <main>
+        <aside className="left">
+          <p
+            style={{
+              color: "gray",
+              fontSize: "16px",
+              marginTop: "70px",
+              marginBottom: "10px",
+              display: "flex",
+              alignItems: "left",
+              fontWeight: "bold",
+            }}
+          >
+            Filtrer par <HorizontalLine />
+          </p>
+          <InputSection>
+            <div style={{ position: "relative" }}>
+              <FaSearch
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#aaa",
+                }}
+              />
+              <Input
+                type="text"
+                value={projetTitleFilter}
+                onChange={handleProjetTitleFilterChange}
+                placeholder="Recherche par titre"
+              />
+            </div>
+          </InputSection>
+
+          <InputSection>
+            <div style={{ position: "relative" }}>
+              <FaSearch
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#aaa",
+                }}
+              />
+              <Input
+                type="text"
+                value={etablissementFilter}
+                onChange={handleEtablissementNameFilterChange}
+                placeholder="Recherche par établissement"
+              />
+            </div>
+          </InputSection>
+          <StyledSelect
+            value={thematiqueFilter}
+            onChange={(e) => handleThematiqueFilterChange(e.target.value)}
+          >
+            <option value="">Toutes les thematiques</option>
+            {Thematiques.map((thematique, index) => (
+              <option key={index} value={thematique.nom}>
+                {thematique.nom}
+              </option>
+            ))}
+          </StyledSelect>
+          <StyledSelect
+            value={sousThematiqueFilter}
+            onChange={(e) => handleSousThematiqueFilterChange(e.target.value)}
+          >
+            <option value="">Toutes les sous-thématiques</option>
+            {sousThematiquesSelectFilter.map((sousThematique) => (
+              <option key={sousThematique.id} value={sousThematique.nom}>
+                {sousThematique.nom}
+              </option>
+            ))}
+          </StyledSelect>
+          <StyledSelect
+            value={enjeuxFilter}
+            onChange={(e) => handleEnjeuxFilterChange(e.target.value)}
+          >
+            <option value="">Tous les Enjeux</option>
+            {allEnjeux.map((enjeux, index) => (
+              <option key={index} value={enjeux.nom}>
+                {enjeux.nom}
+              </option>
+            ))}
+          </StyledSelect>
+          <StyledSelect
+            value={etatFilter}
+            onChange={(e) => handleEtatFilterChange(e.target.value)}
+          >
+            <option value="">Tous les projets</option>
+            <option value="EC">En cours </option>
+            <option value="F">Futur </option>
+            <option value="P">Passé </option>
+            <option value="A">Non renseigné </option>
+          </StyledSelect>
+
+          <ReinitialiserButton onClick={handleResetFilters}>
+            Réinitialiser les filtres
+          </ReinitialiserButton>
+        </aside>
+        <main id="projets">
           <h1 className="mainTitle">Projets</h1>
           <EventGrid>
-            {currentEvents.map((value, key) => {
+            {currentProjets.map((value, key) => {
               return (
                 <EventCardContainer key={key}>
-                  <EventCard
-                    date={formatDate(value.startDateTime)}
+                  <CarteProjet
+                    id={value.id}
                     title={value.nom}
-                    description={value.description}
-                    eventType={value.locationType}
-                 
-                  location={ value.locationType==="Visio" ? "En ligne" : value.location}
-                    registrationLink={value.lienInscription}
+                    imageUrl="projet.png"
+                    fallbackUrl="../default_user.png"
+                    etablissements={value.etablissements}
+                    enjeux={value.Enjeux_projets}
                   />
                 </EventCardContainer>
               );
@@ -79,168 +349,76 @@ function Projet() {
           </EventGrid>
 
           <div>
-            {/* Affichage des numéros de page */}
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button className="indexPageBtn" key={index} onClick={() => handlePageClick(index + 1)}>
-                {index + 1}
+            {/* Display first page */}
+            {startPage > 1 && (
+              <button
+                className="indexPageBtn"
+                onClick={() => handlePageClick(1)}
+              >
+                1
+              </button>
+            )}
+
+            {/* Display ellipsis if needed */}
+            {startPage > 2 && <span className="ellipsis">...</span>}
+
+            {/* Display page buttons within the range */}
+            {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
+              <button
+                className={`indexPageBtn ${
+                  startPage + index === currentPage ? "active" : ""
+                }`}
+                key={startPage + index}
+                onClick={() => handlePageClick(startPage + index)}
+              >
+                {startPage + index}
               </button>
             ))}
+
+            {/* Display ellipsis if needed */}
+            {endPage < totalPages - 1 && <span className="ellipsis">...</span>}
+
+            {/* Display last page */}
+            {endPage < totalPages && (
+              <button
+                className="indexPageBtn"
+                onClick={() => handlePageClick(totalPages)}
+              >
+                {totalPages}
+              </button>
+            )}
           </div>
+
+          {/*Appel à projet*/}
+          <h1 className="mainTitle" id="aap">
+            Appel à projets
+          </h1>
+          <EventGrid>
+            {aap.map((value, key) => {
+              return (
+                <EventCardContainer key={key}>
+                  <CarteProjet
+                    id={value.id}
+                    title={value.nom}
+                    imageUrl="aap.png"
+                    fallbackUrl="../default_user.png"
+                    etablissements={value.etablissements}
+                  />
+                </EventCardContainer>
+              );
+            })}
+          </EventGrid>
         </main>
         <aside className="right">
           <ScrollButton />
           <CarteButton />
         </aside>
       </div>
-      <footer>footer</footer>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }
 
 export default Projet;
-/* <EventCardContainer>
-              <EventCard
-                date="11/12/2024"
-                title="Atelier de développement web"
-                description="Un atelier pratique pour apprendre à développer des sites web."
-                eventType="Présentiel"
-                location="Paris, France"
-                registrationLink="https://example.com/inscription"
-              />
-            </EventCardContainer> */
-
-            // function Projet() {
-            //   const formatDate = (dateString) => {
-            //     const date = new Date(dateString);
-            //     const day = date.getDate();
-            //     const month = date.getMonth() + 1;
-            //     const year = date.getFullYear();
-            
-            //     // Ajoute un zéro devant le jour et le mois si nécessaire
-            //     const formattedDay = day < 10 ? `0${day}` : day;
-            //     const formattedMonth = month < 10 ? `0${month}` : month;
-            
-            //     return `${formattedDay}/${formattedMonth}/${year}`;
-            //   };
-            
-            //   const [events, setEvents] = useState([]);
-            //   const [currentPage, setCurrentPage] = useState(1);
-            
-            //   // Filtres
-            //   const [dateFilter, setDateFilter] = useState("");
-            //   const [descriptionFilter, setDescriptionFilter] = useState("");
-            //   const [statusFilter, setStatusFilter] = useState("");
-            
-            //   useEffect(() => {
-            //     axios.get(`http://localhost:3001/event`).then((res) => {
-            //       setEvents(res.data);
-            //     });
-            //   }, []);
-            
-            //   // Appliquer les filtres et obtenir les événements filtrés
-            //   const filteredEvents = events.filter((event) => {
-            //     // Filtre par date
-            //     if (dateFilter && event.startDateTime < dateFilter) {
-            //       return false;
-            //     }
-            
-            //     // Filtre par description textuelle
-            //     if (descriptionFilter && !event.nom.toLowerCase().includes(descriptionFilter.toLowerCase())) {
-            //       return false;
-            //     }
-            
-            //     // Filtre par statut (passé ou à venir)
-            //     const startDateTime = new Date(event.startDateTime);
-            //     if (statusFilter === "past" && startDateTime >= new Date() ) {
-            //       return false;
-            //     }
-            //     if (statusFilter === "upcoming" && startDateTime < new Date()) {
-            //       return false;
-            //     }
-            
-            //     return true;
-            //   });
-            
-            //   const eventsPerPage = 6;
-            //   const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
-            
-            //   // Obtenir les événements à afficher sur la page actuelle
-            //   const indexOfLastEvent = currentPage * eventsPerPage;
-            //   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
-            //   const currentEvents = filteredEvents.slice(indexOfFirstEvent, indexOfLastEvent);
-            
-            //   const handlePageClick = (pageNumber) => {
-            //     setCurrentPage(pageNumber);
-            //   };
-            
-            //   const handleDateFilterChange = (e) => {
-            //     setDateFilter(e.target.value);
-            //   };
-            
-            //   const handleDescriptionFilterChange = (e) => {
-            //     setDescriptionFilter(e.target.value);
-            //   };
-            
-            //   const handleStatusFilterChange = (e) => {
-            //     setStatusFilter(e.target.value);
-            //     console.log(e.target.value);
-            //   };
-            
-            //   return (
-            //     <div className="body">
-            //       <header>header</header>
-            //       <div className="main">
-            //         <aside className="left">
-            //           {/* Filtres */}
-            //           <label htmlFor="dateFilter">Date :</label>
-            //           <input type="date" id="dateFilter" value={dateFilter} onChange={handleDateFilterChange} />
-            
-            //           <label htmlFor="descriptionFilter">Description :</label>
-            //           <input type="text" id="descriptionFilter" value={descriptionFilter} onChange={handleDescriptionFilterChange} />
-            
-            //           <label htmlFor="statusFilter">Statut :</label>
-            //           <select id="statusFilter" value={statusFilter} onChange={handleStatusFilterChange}>
-            //             <option value="">Tous</option>
-            //             <option value="past">Passé</option>
-            //             <option value="upcoming">À venir</option>
-            //           </select>
-            //         </aside>
-            //         <main>
-            //           <h1 className="mainTitle">Évènements</h1>
-            //           <EventGrid>
-            //             {currentEvents.map((value, key) => {
-            //               return (
-            //                 <EventCardContainer key={key}>
-            //                   <EventCard
-            //                     date={formatDate(value.startDateTime)}
-            //                     title={value.nom}
-            //                     description={value.description}
-            //                     eventType={value.locationType}
-            //                     location={value.locationType === "Visio" ? "En ligne" : value.location}
-            //                     registrationLink={value.lienInscription}
-            //                   />
-            //                 </EventCardContainer>
-            //               );
-            //             })}
-            //           </EventGrid>
-            
-            //           <div>
-            //             {/* Affichage des numéros de page */}
-            //             {Array.from({ length: totalPages }, (_, index) => (
-            //               <button className="indexPageBtn" key={index} onClick={() => handlePageClick(index + 1)}>
-            //                 {index + 1}
-            //               </button>
-            //             ))}
-            //           </div>
-            //         </main>
-            //         <aside className="right">
-            //           <ScrollButton />
-            //           <CarteButton />
-            //         </aside>
-            //       </div>
-            //       <footer>footer</footer>
-            //     </div>
-            //   );
-            // }
-            
-            // export default Projet;

@@ -19,11 +19,12 @@ const EventCard = ({ id, date, title, description,locationType, eventType, locat
       setPlayAnimation(false);
     };
   }, []);
+  const imageUrlWithTimestamp = `${fallbackImageUrl}?t=${new Date().getTime()}`;
   
 
   return (
     <PageLink to={`/event/${id}`}> 
-    <CardContainer imageUrl={imageUrl} fallbackUrl={fallbackImageUrl} playAnimation={playAnimation}>
+    <CardContainer imageUrl={imageUrl} fallbackUrl={imageUrlWithTimestamp} playAnimation={playAnimation}>
       <CardContent>
         <EventTitle>{title}</EventTitle>
         <EventDescription>{description}</EventDescription>

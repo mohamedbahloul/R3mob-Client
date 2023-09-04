@@ -34,9 +34,13 @@ const HorizontalLine = styled.hr`
   margin-right: 10px;
 `;
 const VideoContainer = styled.div`
-align-items: center;
+  align-items: center;
   width: 100%;
   height: 800px; /* Modifiez la hauteur en fonction de vos besoins */
+  margin-bottom: 100px;
+`;
+const ReinitialiserButton = styled.button`
+  margin-top: 30px;
 `;
 
 function Ressources() {
@@ -47,11 +51,40 @@ function Ressources() {
   const [publicationTitleFilter, setPublicationTitleFilter] = useState("");
   const [ResearcherFilter, setResearcherFilter] = useState("");
   const [thematiqueFilter, setThematiqueFilter] = useState("");
+  const [sousThematiqueFilter, setSousThematiqueFilter] = useState("");
+  // pour la liste des Thematiques dans la liste déroulante
+  const [allSousThematiques, setAllSousThematiques] = useState([]);
+  // pour la liste des sous Thematiques dans la liste déroulante
+  const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
+    useState([]);
+  
+  
+  const currentHash = window.location.hash;
+  useEffect(() => {
+    if (currentHash === "#videos") {
+      // Si l'ancre est "#videos", faites défiler jusqu'à la section "videos"
+      const videosSection = document.getElementById("videos");
+      if (videosSection) {
+        videosSection.scrollIntoView({ behavior: "smooth" });
+      }
+    } else if (currentHash === "#publications") {
+      // Si l'ancre est "#publications", faites défiler jusqu'à la section "publications"
+      const publicationsSection = document.getElementById("publications");
+      if (publicationsSection) {
+        publicationsSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [currentHash]);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/publication`).then((res) => {
       setPublications(res.data);
     });
+    axios.get(`http://localhost:3001/sousThematique`).then((res) => {
+      setAllSousThematiques(res.data);
+      console.log(res.data);
+    });
+   
   }, []);
 
   const filteredPublications = publications
@@ -83,8 +116,20 @@ function Ressources() {
           const thematiqueNom =
             thematiquePublication.SousThematique?.Thematique?.nom || "";
           return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
-        }
+      }
       );
+    }).filter((publication) => {
+      if (sousThematiqueFilter === "") {
+        return true; // Pas de filtre, afficher tous les projets
+      }
+
+      // Filtrage par sous-thématique
+      return publication.Thematique_publications.some((thematiqueProjet) => {
+        const sousThematiqueNom = thematiqueProjet.SousThematique?.nom || "";
+        return (
+          sousThematiqueNom.toLowerCase() === sousThematiqueFilter.toLowerCase()
+        );
+      });
     });
 
   const eventsPerPage = 6;
@@ -111,6 +156,34 @@ function Ressources() {
     setResearcherFilter(chercheur.target.value);
     setCurrentPage(1);
   };
+
+  const handleResetFilters = () => {
+    setPublicationTitleFilter("");
+    setResearcherFilter("");
+    setThematiqueFilter("");
+    setSousThematiquesSelectFilter([]);
+    setSousThematiqueFilter("");
+    setCurrentPage(1);
+  };
+  const handleThematiqueFilterChange = (selectedThematique) => {
+    setThematiqueFilter(selectedThematique);
+    // Filtrer les sous-thématiques en fonction de la thématique sélectionnée
+    const sousThematiquesFiltrees = allSousThematiques.filter(
+      (sousThematique) => {
+        return sousThematique.Thematique.nom === selectedThematique;
+      }
+    );
+
+    setSousThematiquesSelectFilter(sousThematiquesFiltrees);
+    setCurrentPage(1);
+  };
+
+  const handleSousThematiqueFilterChange = (selectedSousThematique) => {
+    setSousThematiqueFilter(selectedSousThematique);
+
+    setCurrentPage(1);
+  };
+
   const maxPageButtons = 3; // Maximum number of page buttons to display
   const halfMaxButtons = Math.floor(maxPageButtons / 2);
 
@@ -121,8 +194,10 @@ function Ressources() {
     startPage = Math.max(endPage - maxPageButtons + 1, 1);
   }
 
-  const videoUrl = 'https://www.youtube.com/watch?v=R-YPZiCC-b0';
-  const videoId = videoUrl.match(/(?:\?v=|\/embed\/|\/vi\/|\/e\/|\/v\/|\/watch\?v=|\/watch\?feature=player_embedded&v=|\/embed\?feature=player_embedded&v=)([^#\&\?]*).*/)[1];
+  const videoUrl = "https://www.youtube.com/watch?v=R-YPZiCC-b0";
+  const videoId = videoUrl.match(
+    /(?:\?v=|\/embed\/|\/vi\/|\/e\/|\/v\/|\/watch\?v=|\/watch\?feature=player_embedded&v=|\/embed\?feature=player_embedded&v=)([^#\&\?]*).*/
+  )[1];
 
   return (
     <div className="body">
@@ -183,7 +258,7 @@ function Ressources() {
           </InputSection>
           <StyledSelect
             value={thematiqueFilter}
-            onChange={(e) => setThematiqueFilter(e.target.value)}
+            onChange={(e) => handleThematiqueFilterChange(e.target.value)}
           >
             <option value="">Toutes les thematiques</option>
             {Thematiques.map((thematique, index) => (
@@ -192,24 +267,41 @@ function Ressources() {
               </option>
             ))}
           </StyledSelect>
+          <StyledSelect
+            value={sousThematiqueFilter}
+            onChange={(e) => handleSousThematiqueFilterChange(e.target.value)}
+          >
+            <option value="">Toutes les sous-thématiques</option>
+            {sousThematiquesSelectFilter.map((sousThematique) => (
+              <option key={sousThematique.id} value={sousThematique.nom}>
+                {sousThematique.nom}
+              </option>
+            ))}
+          </StyledSelect>
+          <ReinitialiserButton onClick={handleResetFilters}>
+            Réinitialiser les filtres
+          </ReinitialiserButton>
         </aside>
-        <main>
+        <main id="publications">
           <h1 className="mainTitle">Publications</h1>
-          <EventGrid>
-            {currentEvents.map((value, key) => {
-              return (
-                <EventCardContainer key={key}>
-                  <CartePublication
-                    id={value.id}
-                    title={value.nom}
-                    imageUrl="mob.jpg"
-                    fallbackUrl="../default_user.png"
-                  />
-                </EventCardContainer>
-              );
-            })}
-          </EventGrid>
-
+          {currentEvents.length != 0 ? (
+            <EventGrid>
+              {currentEvents.map((value, key) => {
+                return (
+                  <EventCardContainer key={key}>
+                    <CartePublication
+                      id={value.id}
+                      title={value.nom}
+                      imageUrl="mob.jpg"
+                      fallbackUrl="../default_user.png"
+                    />
+                  </EventCardContainer>
+                );
+              })}
+            </EventGrid>
+          ) : (
+            <p>Aucune publication ne correspond aux filtres sélectionnés.</p>
+          )}
           <div>
             {/* Display first page */}
             {startPage > 1 && (
@@ -250,15 +342,17 @@ function Ressources() {
               </button>
             )}
           </div>
-          <h1 className="mainTitle">Videos</h1>
+          <h1 id="videos" className="mainTitle">
+            Vidéos
+          </h1>
           <VideoContainer>
-          <iframe
-        src={`https://www.youtube.com/embed/${videoId}`}
-        frameBorder="0"
-        allowFullScreen
-        title="YouTube Video"
-      ></iframe>
-      </VideoContainer>
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}`}
+              frameBorder="0"
+              allowFullScreen
+              title="YouTube Video"
+            ></iframe>
+          </VideoContainer>
         </main>
         <aside className="right">
           <ScrollButton />

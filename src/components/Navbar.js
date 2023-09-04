@@ -60,8 +60,12 @@ function Navbar() {
               <NavbarLinkList to="/projet">
                 Projets <span className="dropdownbtn">&#8964;</span>
                 <div className="dropdown-content">
-                  <NavbarLink href="#">Projets R3MOB</NavbarLink>
-                  <NavbarLink href="#">Appels à projets</NavbarLink>
+                  <NavbarLink to="/projet#projets">
+                    Projets R3MOB
+                  </NavbarLink>
+                  <NavbarLink to="/projet#aap">
+                    Appels à projets
+                  </NavbarLink>
                 </div>
               </NavbarLinkList>
             </div>
@@ -72,8 +76,10 @@ function Navbar() {
               <NavbarLinkList to="/ressources">
                 Ressources <span className="dropdownbtn">&#8964;</span>
                 <div className="dropdown-content">
-                <NavbarLink href="#">Publications</NavbarLink>
-                  <NavbarLink href="#">Vidéos</NavbarLink>
+                  <NavbarLink to="/ressources#publications">
+                    Publications
+                  </NavbarLink>
+                  <NavbarLink to="/ressources#videos">Vidéos</NavbarLink>
                 </div>
               </NavbarLinkList>
             </div>
@@ -87,16 +93,16 @@ function Navbar() {
             ) : (
               <>
                 <div className="dropdown">
-                  <NavbarLinkList to="/acteurs">
-                    Acteurs <span className="dropdownbtn">&#8964;</span>
+                  <NavbarLinkList to="/annuaires">
+                  Annuaires <span className="dropdownbtn">&#8964;</span>
                     <div className="dropdown-content">
-                      <NavbarLink to="/chercheur">Chercheurs</NavbarLink>
+                      <NavbarLink to="/chercheur">Acteurs R3MOB</NavbarLink>
                       <NavbarLink href="#">
                         Laboratoires scientifiques
                       </NavbarLink>
                       <NavbarLink href="#">Universités</NavbarLink>
-                      <NavbarLink href="#">Ecoles d'ingénieurs</NavbarLink>
-                      <NavbarLink href="#">Organismes Nationaux</NavbarLink>
+                      <NavbarLink href="#">Autres Etablissement</NavbarLink>
+                      <NavbarLink href="#">Partenaires</NavbarLink>
                     </div>
                   </NavbarLinkList>
                 </div>
@@ -109,7 +115,7 @@ function Navbar() {
                       <NavbarLink to="/updateEvent">Update Events</NavbarLink>
                       <NavbarLink to="/updateBd">Update Data Base</NavbarLink>
                       <NavbarLink to="/clearBd">Clear Data Base</NavbarLink>
-                      <NavbarLink to="/verifyUrl">Verify Url</NavbarLink>
+                      <NavbarLink to="/verifyUrl">Vérifier les Url</NavbarLink>
                       <NavbarLink to="/profile">
                         {authState.username}{" "}
                       </NavbarLink>

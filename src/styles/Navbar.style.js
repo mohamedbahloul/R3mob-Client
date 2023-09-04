@@ -3,12 +3,14 @@ import Colors from "./Colors";
 import { Link } from "react-router-dom";
 
 export const NavbarStyle = styled.nav`
+position: fixed;
   width: 100%;
   height: ${(props) => (props.extendnavbar ? "100vh" : "80px")};
   background-color: ${Colors.color1};
   display: flex;
   flex-direction: column;
   border-radius: 0px 0px 20px 20px; /* Ajoutez cette ligne pour spécifier le border-radius uniquement pour les coins inférieurs */
+  z-index: 1000; /* Pour s'assurer que la barre de navigation est au-dessus de tout le reste */
 
   @media (min-width: 825) {
     height: 80px;
