@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import CartePerso from "../components/CartePerso";
-
+import Thematiques from "../components/Thematiques";
 import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
 
@@ -74,10 +74,21 @@ function Chercheur() {
   const [etablissementFilter, setEtablissementFilter] = useState("");
   const [etablissements, setEtablissements] = useState([]);
   const [personnelTypeFilter, setPersonnelTypeFilter] = useState("Tous");
-
+  //filtres pour les thematiques et sousThematiques
+  const [thematiqueFilter, setThematiqueFilter] = useState("");
+  const [sousThematiqueFilter, setSousThematiqueFilter] = useState("");
+  // pour la liste des Thematiques dans la liste déroulante
+  const [allSousThematiques, setAllSousThematiques] = useState([]);
+  // pour la liste des sous Thematiques dans la liste déroulante
+  const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
+    useState([]);
   useEffect(() => {
     axios.get(`http://localhost:3001/etablissement`).then((res) => {
       setEtablissements(res.data);
+      console.log(res.data);
+    });
+    axios.get(`http://localhost:3001/sousThematique`).then((res) => {
+      setAllSousThematiques(res.data);
       console.log(res.data);
     });
   }, []);
@@ -107,6 +118,35 @@ function Chercheur() {
       (personnelTypeFilter === "Tous" ||
         perso.Type_personnels.some((type) => type.type === personnelTypeFilter))
     );
+  }).filter((chercheur) => {
+    if (thematiqueFilter === "") {
+      return true; // No filter, show all chercheurs
+    }
+
+    // Check if the chercheur has Thematique_chercheurs and then filter by thematique
+    if (chercheur.Thematique_chercheurs) {
+      return chercheur.Thematique_chercheurs.some(
+        (thematiqueChercheur) => {
+          const thematiqueNom =
+            thematiqueChercheur.SousThematique?.Thematique?.nom || "";
+          return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
+      }
+      );
+    }
+
+    return false; // If Thematique_chercheurs is not present, exclude this chercheur
+}).filter((chercheur) => {
+    if (sousThematiqueFilter === "") {
+      return true; // Pas de filtre, afficher tous les projets
+    }
+
+    // Filtrage par sous-thématique
+    return chercheur.Thematique_chercheurs.some((thematiqueChercheur) => {
+      const sousThematiqueNom = thematiqueChercheur.SousThematique?.nom || "";
+      return (
+        sousThematiqueNom.toLowerCase() === sousThematiqueFilter.toLowerCase()
+      );
+    });
   });
 
   const sortedPersos = filteredPersos.sort((a, b) => {
@@ -149,11 +189,32 @@ function Chercheur() {
     setPersonnelTypeFilter(event.target.value);
     setCurrentPage(1);
   };
+  const handleThematiqueFilterChange = (selectedThematique) => {
+    setThematiqueFilter(selectedThematique);
+    // Filtrer les sous-thématiques en fonction de la thématique sélectionnée
+    const sousThematiquesFiltrees = allSousThematiques.filter(
+      (sousThematique) => {
+        return sousThematique.Thematique.nom === selectedThematique;
+      }
+    );
+
+    setSousThematiquesSelectFilter(sousThematiquesFiltrees);
+    setCurrentPage(1);
+  };
+
+  const handleSousThematiqueFilterChange = (selectedSousThematique) => {
+    setSousThematiqueFilter(selectedSousThematique);
+
+    setCurrentPage(1);
+  };
 
   const handleResetFilters = () => {
     setchercheurNameFilter("");
     setEtablissementFilter("");
     setPersonnelTypeFilter("Tous");
+    setThematiqueFilter("");
+    setSousThematiquesSelectFilter([]);
+    setSousThematiqueFilter("");
     // setSortType("ascending");
     setCurrentPage(1);
   };
@@ -235,6 +296,28 @@ function Chercheur() {
             <option value="C">Enseignant Chercheur</option>
             <option value="D">Directions</option>
             <option value="A">Autres Personnels</option>
+          </StyledSelect>
+          <StyledSelect
+            value={thematiqueFilter}
+            onChange={(e) => handleThematiqueFilterChange(e.target.value)}
+          >
+            <option value="">Toutes les thematiques</option>
+            {Thematiques.map((thematique, index) => (
+              <option key={index} value={thematique.nom}>
+                {thematique.nom}
+              </option>
+            ))}
+          </StyledSelect>
+          <StyledSelect
+            value={sousThematiqueFilter}
+            onChange={(e) => handleSousThematiqueFilterChange(e.target.value)}
+          >
+            <option value="">Toutes les sous-thématiques</option>
+            {sousThematiquesSelectFilter.map((sousThematique) => (
+              <option key={sousThematique.id} value={sousThematique.nom}>
+                {sousThematique.nom}
+              </option>
+            ))}
           </StyledSelect>
           <ReinitialiserButton onClick={handleResetFilters}>Réinitialiser les filtres</ReinitialiserButton>
 

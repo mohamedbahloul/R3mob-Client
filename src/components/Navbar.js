@@ -84,7 +84,7 @@ function Navbar() {
               </NavbarLinkList>
             </div>
 
-            <NavbarLink to="/stagesEtEmploi">Stage & emploi</NavbarLink>
+            <NavbarLink to="/stage&emploi">Stage & emploi</NavbarLink>
 
             {!authState.status ? (
               <>

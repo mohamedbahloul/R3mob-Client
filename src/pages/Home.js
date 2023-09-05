@@ -1,9 +1,16 @@
-import React from "react";
+import React,{useEffect} from "react";
 import "../styles/common/layout.css";
 import ScrollButton from "../components/ScrollButton";
 import CarteButton from "../components/CarteButton";
+import Footer from "../components/Footer";
+
+
 
 function Home() {
+  useEffect(() => {
+    console.log("useEffect triggered"); // Ajouter ce log pour suivre le déclenchement de l'effet
+  }
+  , []);
   return (
     <div className="body">
       <header>header</header>
@@ -17,7 +24,7 @@ function Home() {
           <CarteButton />
         </aside>
       </div>
-      <footer>footer</footer>
+      <footer><Footer></Footer></footer>
     </div>
   );
 }

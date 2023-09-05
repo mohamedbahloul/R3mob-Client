@@ -8,6 +8,8 @@ import CarteButton from "../components/CarteButton";
 import { FaMapMarkerAlt, FaCalendarAlt, FaMoneyBill } from "react-icons/fa";
 import Footer from "../components/Footer";
 import CartePerso from "../components/CartePerso";
+import Thematiques from "../components/Thematiques";
+import ThematiqueIcon from "../components/ThematiqueIcon";
 const DetailsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -47,7 +49,7 @@ const Etab= styled.a`
 const NbPubli=styled.h2` 
   margin-left: 5%;
   font-size: 20px;
-  margin-top: 27%;
+  margin-top: 15%;
   font-weight: normal;
 `;
 
@@ -156,19 +158,33 @@ const ChercheurImage = styled.div`
 const SimilarEventsTitle = styled.h3`
   margin-top: 100px;
 `;
+const ThematiquesContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-right: -5%;
+  margin-bottom: 5%;
+  margin-top: 10%;
 
+`;
 function ChercheurDetails() {
   const { chercheurId } = useParams();
   const [chercheur, setChercheur] = useState({});
   const [etablissement, setEtablissement] = useState([]);
   const [nbPubli, setNbPubli] = useState(0);
-
+  const [allThematique, setAllThematique] = useState([]);
+  const [extractedThematiques, setExtractedThematiques] = useState([]);
+  const [chercheurSousThematiques, setChercheurSousThematiques] = useState(
+    []
+  );
   useEffect(() => {
     axios
       .get(`http://localhost:3001/detailsChercheur/${chercheurId}`)
       .then((res) => {
         if (res.data !== null) {
           setChercheur(res.data);
+          setChercheurSousThematiques(res.data.Thematique_chercheurs);
         } else {
           window.location.replace("/404");
         }
@@ -188,6 +204,40 @@ function ChercheurDetails() {
     }
     );
   }, [chercheurId]);
+  useEffect(() => {
+    axios.get(`http://localhost:3001/thematique`).then((res) => {
+      if (res.data.error) {
+        console.log(res.data.error);
+      } else {
+        setAllThematique(res.data);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    // Define an async function to fetch the thematic data
+    const fetchThematiqueData = async () => {
+      const thematicData = [];
+      for (const publication of chercheurSousThematiques) {
+        const thematicId = publication.SousThematique.ThematiqueId;
+        const thematic = allThematique.find((thematique) => thematique.id === thematicId);
+        if (thematic) {
+          const thematiqueIndex = thematicData.findIndex((data) => data.thematique.nom === thematic.nom);
+          if (thematiqueIndex !== -1) {
+            // If the thematique already exists, update the sousThematique field
+            thematicData[thematiqueIndex].sousThematique.push(" , ",publication.SousThematique.nom);
+          } else {
+            // If the thematique doesn't exist, add it to the array
+            const them = Thematiques.find((thematique) => thematique.nom === thematic.nom);
+            thematicData.push({ thematique: them, sousThematique: [publication.SousThematique.nom] });
+          }
+        }
+      }
+      setExtractedThematiques(thematicData);
+    };
+  
+    fetchThematiqueData();
+  }, [chercheurSousThematiques, allThematique]);
 
   const formattedDate = new Date(chercheur.startDateTime).toLocaleDateString(
     "fr-FR",
@@ -231,6 +281,17 @@ function ChercheurDetails() {
               </OtherInfos>
             </Infos>
             <RightSide>
+            <ThematiquesContainer>
+              { extractedThematiques.map((publicationSousThematiques) =>
+                    <ThematiqueIcon
+                      key={publicationSousThematiques.thematique.nom}
+                      icon={"../thematiques/" + publicationSousThematiques.thematique.icon}
+                      backgroundColor={publicationSousThematiques.thematique.backgroundColor}
+                      subThematiques={publicationSousThematiques.sousThematique}
+                    />
+                    )
+              }
+            </ThematiquesContainer>
               <NbPubli>Nombre de publications liées à R3MOB: {nbPubli.length } </NbPubli>
             </RightSide>
             

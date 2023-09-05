@@ -11,10 +11,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FaSearch } from "react-icons/fa";
 import Thematiques from "../components/Thematiques";
 
-import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
+import { InputSection, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
 
-const EventGrid = styled.div`
+const PublicationGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -22,7 +22,7 @@ const EventGrid = styled.div`
   padding-top: 15px;
 `;
 
-const EventCardContainer = styled.div`
+const PublicationCardContainer = styled.div`
   width: 500px;
 `;
 
@@ -82,7 +82,6 @@ function Ressources() {
     });
     axios.get(`http://localhost:3001/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
-      console.log(res.data);
     });
    
   }, []);
@@ -285,20 +284,20 @@ function Ressources() {
         <main id="publications">
           <h1 className="mainTitle">Publications</h1>
           {currentEvents.length != 0 ? (
-            <EventGrid>
+            <PublicationGrid>
               {currentEvents.map((value, key) => {
                 return (
-                  <EventCardContainer key={key}>
+                  <PublicationCardContainer key={key}>
                     <CartePublication
                       id={value.id}
                       title={value.nom}
                       imageUrl="mob.jpg"
                       fallbackUrl="../default_user.png"
                     />
-                  </EventCardContainer>
+                  </PublicationCardContainer>
                 );
               })}
-            </EventGrid>
+            </PublicationGrid>
           ) : (
             <p>Aucune publication ne correspond aux filtres sélectionnés.</p>
           )}

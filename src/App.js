@@ -24,6 +24,7 @@ import Annuaire from "./pages/Annuaire";
 import VerifyUrl from "./pages/VerfiyUrl";
 import ChercheurDetails from "./pages/ChercheurDetails";
 import Ressources from "./pages/Ressources";
+import StageEtEmploi from "./pages/StageEtEmploi";
 function App() {
   const [authState, setAuthState] = useState({
     username: "",
@@ -87,6 +88,7 @@ function App() {
             <Route path="/verifyUrl" exact Component={VerifyUrl}/>
             <Route path="/chercheur/:chercheurId" element={<ChercheurDetails />} />
             <Route path="/ressources" exact Component={Ressources}/>
+            <Route path="/stage&emploi" exact Component={StageEtEmploi}/>
             <Route path="*" exact Component={Page404} />
           </Routes>
         </Router>

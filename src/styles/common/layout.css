@@ -49,3 +49,19 @@ footer{
   background-color: #333;
   padding: 0.5em 0 0.2em 0;
 }
+
+@media (max-width: 768px) {
+  .body{
+    flex-direction: row;
+  }
+  .main {
+      flex-direction: row;
+      align-items: center;
+  }
+
+  .left,
+  main,
+  .right {
+      width: 100%;
+  }
+}

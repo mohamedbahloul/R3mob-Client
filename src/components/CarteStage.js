@@ -6,7 +6,7 @@ import axios from "axios";
 import ThematiqueIcon from "../components/ThematiqueIcon";
 import Thematiques from "../components/Thematiques";
 
-const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
+const CarteStage = ({ id, title, link, fallbackUrl, imageUrl }) => {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [publicationSousThematiques, setPublicationSousThematiques] = useState(
     []
@@ -86,8 +86,8 @@ const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
       <CardContainer playAnimation={playAnimation}>
         <CardImage src={imageUrl} fallbackUrl={fallbackUrl} />
         <CardContent>
-          <PublicationTitle>{title}</PublicationTitle>
-          <PublicationInfos>
+          <StageTitle>{title}</StageTitle>
+          <StageInfos>
             <UsernameContainer> {/*<FaUserAlt/>*/}{publicationChercheur.map((publication) => {
               return (
                 <Username href={`chercheur/${publication.Personnel.id}`}>
@@ -107,7 +107,7 @@ const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
                     )
               }
             </ThematiquesContainer>
-          </PublicationInfos>
+          </StageInfos>
         </CardContent>
       </CardContainer>
     // </PageLink>
@@ -184,8 +184,8 @@ const CardContent = styled.div`
   height: 70%;
 `;
 
-const PublicationTitle = styled.h2`
-  font-size: 20px;
+const StageTitle = styled.h2`
+  font-size: 12px;
   color: var(--color1);
   font-weight: bold;
   margin-left: 3%;
@@ -194,7 +194,7 @@ const PublicationTitle = styled.h2`
   justify-content: center;
 `;
 
-const PublicationInfos = styled.div`
+const StageInfos = styled.div`
   display: flex;
   align-items: center;
   margin-left: 5%;
@@ -203,5 +203,22 @@ const PublicationInfos = styled.div`
   margin-bottom: 5%;
 `;
 
+const EventType = styled.span`
+  margin-right: 8px;
+  padding: 4px 8px;
+  background-color: var(--color3);
+  border-radius: 4px;
+  color: var(--color2);
+  font-weight: bold;
+`;
 
-export default CartePublication;
+const EventLocation = styled.span`
+  color: var(--color3);
+  background-color: rgba(128, 128, 128, 0.7);
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: bolder;
+  font-size: large;
+`;
+
+export default CarteStage;
