@@ -5,14 +5,58 @@ import "../styles/common/layout.css";
 import ScrollButton from "../components/ScrollButton";
 import CarteButton from "../components/CarteButton";
 import "../styles/Agenda.css";
-import styled from "styled-components";
-import axios from "axios";
+import styled, { css } from "styled-components";import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaSearch } from "react-icons/fa";
 import Thematiques from "../components/Thematiques";
 
-import { InputSection, Input, StyledSelect } from "../styles/Agenda";
+// import { InputSection, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
+
+export const InputSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+`;
+
+export const Label = styled.label`
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+export const Input = styled.input`
+  padding: 8px;
+  padding-right: 35px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  @media (max-width: 866px) {
+    font-size: 12px;
+  }
+`;
+
+export const StyledSelect = styled.select`
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 20px;
+  background-color: white;
+  color: gray;
+  @media (max-width: 866px) {
+    font-size: 12px;
+  }
+
+  ${(props) =>
+    props.isMobile &&
+    css`
+      /* Styles spécifiques pour les écrans mobiles */
+      width: 70%; /* Par exemple, ajustez la largeur selon vos besoins */
+      font-size: 10px; /* Taille de police réduite pour les mobiles */
+    `}
+`;
 
 const PublicationGrid = styled.div`
   display: flex;
@@ -28,19 +72,58 @@ const PublicationCardContainer = styled.div`
 
 const HorizontalLine = styled.hr`
   background-color: lightgray;
-  border: 0cap;
-
+  border: 0;
   width: 100px;
   margin-right: 10px;
 `;
+
 const VideoContainer = styled.div`
   align-items: center;
   width: 100%;
-  height: 800px; /* Modifiez la hauteur en fonction de vos besoins */
+  height: 700px; 
   margin-bottom: 100px;
+  @media (max-width: 1700px) {
+    height: 600px;
+  }
+  @media (max-width: 1224px) {
+    height: 400px;
+  }
+  @media (max-width: 950px) {
+    height: 300px;
+  }
+  @media (max-width: 866px) {
+    height: 400px;
+  }
 `;
+const SelectOption = styled.option`
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+
+  @media (max-width: 950px) {
+    font-size: 0.6rem;
+
+  }
+  @media (max-width: 866px) {
+    font-size: 0.6rem;
+  }
+`;
+
 const ReinitialiserButton = styled.button`
   margin-top: 30px;
+`;
+
+const ExtendedFiltres = styled.div`
+  /* Ajoutez des styles CSS pour les filtres étendus ici */
+  display: none; /* Masquez les filtres par défaut */
+  @media (max-width: 866px) {
+    /* Affichez les filtres lorsque la largeur de l'écran est inférieure à 866px */
+    display: flex;
+    flex-direction: column;
+  }
+`;
+const ExtendedInput = styled(Input)`
+  width: 100%;
 `;
 
 function Ressources() {
@@ -57,8 +140,7 @@ function Ressources() {
   // pour la liste des sous Thematiques dans la liste déroulante
   const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
     useState([]);
-  
-  
+
   const currentHash = window.location.hash;
   useEffect(() => {
     if (currentHash === "#videos") {
@@ -83,7 +165,6 @@ function Ressources() {
     axios.get(`http://localhost:3001/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
     });
-   
   }, []);
 
   const filteredPublications = publications
@@ -115,9 +196,10 @@ function Ressources() {
           const thematiqueNom =
             thematiquePublication.SousThematique?.Thematique?.nom || "";
           return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
-      }
+        }
       );
-    }).filter((publication) => {
+    })
+    .filter((publication) => {
       if (sousThematiqueFilter === "") {
         return true; // Pas de filtre, afficher tous les projets
       }
@@ -259,22 +341,22 @@ function Ressources() {
             value={thematiqueFilter}
             onChange={(e) => handleThematiqueFilterChange(e.target.value)}
           >
-            <option value="">Toutes les thematiques</option>
+            <SelectOption value="">Toutes les thematiques</SelectOption>
             {Thematiques.map((thematique, index) => (
-              <option key={index} value={thematique.nom}>
+              <SelectOption key={index} value={thematique.nom}>
                 {thematique.nom}
-              </option>
+              </SelectOption>
             ))}
           </StyledSelect>
           <StyledSelect
             value={sousThematiqueFilter}
             onChange={(e) => handleSousThematiqueFilterChange(e.target.value)}
           >
-            <option value="">Toutes les sous-thématiques</option>
+            <SelectOption value="">Toutes les sous-thématiques</SelectOption>
             {sousThematiquesSelectFilter.map((sousThematique) => (
-              <option key={sousThematique.id} value={sousThematique.nom}>
+              <SelectOption key={sousThematique.id} value={sousThematique.nom}>
                 {sousThematique.nom}
-              </option>
+              </SelectOption>
             ))}
           </StyledSelect>
           <ReinitialiserButton onClick={handleResetFilters}>
@@ -282,6 +364,88 @@ function Ressources() {
           </ReinitialiserButton>
         </aside>
         <main id="publications">
+        {/* <CarteButton /> */}
+          {/* Filtres étendus pour les écrans de téléphone */}
+          <ExtendedFiltres>
+            <p
+              style={{
+                color: "gray",
+                fontSize: "16px",
+                marginTop: "70px",
+                marginBottom: "10px",
+                display: "flex",
+                alignItems: "left",
+                fontWeight: "bold",
+              }}
+            >
+              Filtrer par <HorizontalLine />
+            </p>
+            <InputSection>
+              <div style={{ position: "relative" }}>
+                <FaSearch
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: "10px",
+                    transform: "translateY(-50%)",
+                    color: "#aaa",
+                  }}
+                />
+                <ExtendedInput
+                  type="text"
+                  value={publicationTitleFilter}
+                  onChange={handlePublicationTitleFilterChange}
+                  placeholder="Recherche par titre"
+                />
+              </div>
+            </InputSection>
+            <InputSection>
+              <div style={{ position: "relative" }}>
+                <FaSearch
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: "10px",
+                    transform: "translateY(-50%)",
+                    color: "#aaa",
+                  }}
+                />
+                <ExtendedInput
+                  type="text"
+                  value={ResearcherFilter}
+                  onChange={handleResearcherNameFilterChange}
+                  placeholder="Recherche par chercheur"
+                />
+              </div>
+            </InputSection>
+            <StyledSelect
+              value={thematiqueFilter}
+              onChange={(e) => handleThematiqueFilterChange(e.target.value)}
+              isMobile={true} // Appliquez des styles spécifiques aux écrans mobiles
+            >
+            <SelectOption value="">Toutes les thematiques</SelectOption>
+            {Thematiques.map((thematique, index) => (
+              <SelectOption key={index} value={thematique.nom}>
+                {thematique.nom}
+              </SelectOption>
+            ))}
+          </StyledSelect>
+          <StyledSelect
+              value={sousThematiqueFilter}
+              onChange={(e) => handleSousThematiqueFilterChange(e.target.value)}
+              isMobile={true} // Appliquez des styles spécifiques aux écrans mobiles
+            >
+            <SelectOption value="">Toutes les sous-thématiques</SelectOption>
+            {sousThematiquesSelectFilter.map((sousThematique) => (
+              <SelectOption key={sousThematique.id} value={sousThematique.nom}>
+                {sousThematique.nom}
+              </SelectOption>
+            ))}
+         </StyledSelect>
+            <ReinitialiserButton onClick={handleResetFilters}>
+              Réinitialiser les filtres
+            </ReinitialiserButton>
+          </ExtendedFiltres>
           <h1 className="mainTitle">Publications</h1>
           {currentEvents.length != 0 ? (
             <PublicationGrid>
@@ -352,6 +516,7 @@ function Ressources() {
               title="YouTube Video"
             ></iframe>
           </VideoContainer>
+          {/* <CarteButton /> */}
         </main>
         <aside className="right">
           <ScrollButton />

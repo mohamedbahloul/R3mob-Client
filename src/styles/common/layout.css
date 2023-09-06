@@ -1,13 +1,13 @@
-*{
+* {
   box-sizing: border-box;
 }
 
-.body{
+.body {
   box-sizing: border-box;
   height: 95vh;
   width: 100vw;
   font-family: sans-serif;
-  text-align:  center;
+  text-align: center;
   color: white;
   font-size: 24px;
   display: flex;
@@ -15,14 +15,15 @@
   min-height: 100vh;
 }
 
-header{
+header {
   padding: 2em 2em 0;
 }
-.main{
+
+.main {
   display: flex;
   flex: 3 3 100px;
-
 }
+
 .left {
   /* background-color: aqua; */
   padding: 3em 3em 0;
@@ -31,37 +32,40 @@ header{
 
 main {
   flex: 10 10 100px;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   color: black;
   overflow-x: auto;
   overflow-y: hidden;
-
 }
 
 .right {
   /* background-color: aqua; */
-    padding: 3em 3em 0;
+  padding: 3em 3em 0;
   flex: 1 1 100px; /* Définit le "right" avec un flex-grow de 1, flex-shrink de 1 et une base de 10px */
 }
 
-
-footer{
+footer {
   background-color: #333;
   padding: 0.5em 0 0.2em 0;
 }
 
-@media (max-width: 768px) {
-  .body{
-    flex-direction: row;
-  }
-  .main {
-      flex-direction: row;
-      align-items: center;
+@media (max-width: 866px) {
+  .body {
+    flex-direction: column; /* Change flex-direction to column for smaller screens */
   }
 
-  .left,
-  main,
+  .main {
+    /* Remove the flex properties for main */
+    align-items: center;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .left {
+    display: none; /* Hide the left part for smaller screens */
+  }
+
   .right {
-      width: 100%;
+    display: none;
   }
 }

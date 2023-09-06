@@ -17,6 +17,12 @@ export const ButtonContainer = styled.div`
   align-items: center;
   right: 20px;
   z-index: 999;
+  /* @media (max-width: 866px) {
+    position: relative;
+    top: 0%;
+    right: 0px;
+    
+  } */
 `;
 
 export const CarteBttn = styled.button`
@@ -58,6 +64,11 @@ export const CarteBttn = styled.button`
     border: 2px solid white;
     border-radius: 5%;
   }
+  /* @media (max-width: 866px) {
+    width: 600px;
+    height: 400px;
+    
+  } */
 `;
 
 export const Icon = styled.span`

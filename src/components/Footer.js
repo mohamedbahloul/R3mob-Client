@@ -28,7 +28,7 @@ const SocialIcons = styled.div`
 
 const CopyrightText = styled.p`
   margin: 0;
-  font-size: 20px;
+  font-size: 90%;
   color: #888;
 `;
 

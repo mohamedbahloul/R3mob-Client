@@ -116,10 +116,9 @@ const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
 
 const Username = styled.a`
   color: var(--color1);
-  font-size: medium;
+  font-size: 0.9rem; /* Use relative font size units like rem or em */
   font-style: italic;
-
-`
+`;
 const ThematiquesContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -140,11 +139,12 @@ const CardImage = styled.img`
 `;
 
 const CardContainer = styled.div`
-margin-top: 10%;
+  max-width: 400px;
+  margin-top: 2%; /* Adjust the margin as needed */
   background-color: whitesmoke;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 600px;
-  width: 400px;
+  height: 100%; /* Use 100% to match the container height */
+  width: 100%; /* Use 100% to match the container width */
   animation: ${(props) =>
     props.playAnimation ? "rotate 0.5s ease, zoom 0.5s ease" : "none"};
   @keyframes rotate {
@@ -185,7 +185,7 @@ const CardContent = styled.div`
 `;
 
 const PublicationTitle = styled.h2`
-  font-size: 20px;
+  font-size: 1rem; /* Use relative font size units like rem or em */
   color: var(--color1);
   font-weight: bold;
   margin-left: 3%;
