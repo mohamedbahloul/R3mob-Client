@@ -44,7 +44,7 @@ const EventCardContainer = styled.div`
     gap: 5px;
     width: auto;
   }
-  @media (max-width: 866px) {
+  @media (max-width: 990px) {
     width: auto;
     
   }
@@ -111,7 +111,7 @@ margin-top: 30px;
 const ExtendedFiltres = styled.div`
   /* Ajoutez des styles CSS pour les filtres étendus ici */
   display: none; /* Masquez les filtres par défaut */
-  @media (max-width: 866px) {
+  @media (max-width: 990px) {
     /* Affichez les filtres lorsque la largeur de l'écran est inférieure à 866px */
     display: flex;
     flex-direction: column;

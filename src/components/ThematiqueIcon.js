@@ -16,18 +16,27 @@ export const ScrollButton = styled.button`
   border-radius: 50%;
   height: 45px;
   width: 45px;
+  @media (max-width: 1329px) {
+    height: 25px;
+    width: 25px;
+  }
 `;
 export const Icon = styled.img`
   color: white;
   background-image: ${({ icon }) => `url(${icon})`};
   height:60%;
   width: 60%;
+
   
 `;
 const TooltipContainer = styled.div`
   position: relative;
   display: inline-block;
   cursor: pointer;
+  @media (max-width: 1329px) {
+    height: 30px;
+    width: 30px;
+  }
 `;
 
 const TooltipContent = styled.div`
@@ -42,6 +51,11 @@ const TooltipContent = styled.div`
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   display: ${(props) => (props.visible ? "block" : "none")};
   font-size: 10px;
+  @media (max-width: 1329px) {
+    font-size: 7px;
+    width: 120px;
+    padding: 10px 10px 10px 10px;
+  }
 `;
 function ThematiqueIcon({ icon, backgroundColor, subThematiques }) {
   const [showTooltip, setShowTooltip] = React.useState(false);

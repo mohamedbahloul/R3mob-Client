@@ -31,7 +31,7 @@ export const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  @media (max-width: 866px) {
+  @media (max-width: 990px) {
     font-size: 12px;
   }
 `;
@@ -45,7 +45,7 @@ export const StyledSelect = styled.select`
   margin-top: 20px;
   background-color: white;
   color: gray;
-  @media (max-width: 866px) {
+  @media (max-width: 990px) {
     font-size: 12px;
   }
 
@@ -90,7 +90,7 @@ const VideoContainer = styled.div`
   @media (max-width: 950px) {
     height: 300px;
   }
-  @media (max-width: 866px) {
+  @media (max-width: 990px) {
     height: 400px;
   }
 `;
@@ -103,7 +103,7 @@ const SelectOption = styled.option`
     font-size: 0.6rem;
 
   }
-  @media (max-width: 866px) {
+  @media (max-width: 990px) {
     font-size: 0.6rem;
   }
 `;
@@ -115,7 +115,7 @@ const ReinitialiserButton = styled.button`
 const ExtendedFiltres = styled.div`
   /* Ajoutez des styles CSS pour les filtres étendus ici */
   display: none; /* Masquez les filtres par défaut */
-  @media (max-width: 866px) {
+  @media (max-width: 990px) {
     /* Affichez les filtres lorsque la largeur de l'écran est inférieure à 866px */
     display: flex;
     flex-direction: column;

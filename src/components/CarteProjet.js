@@ -140,12 +140,29 @@ const Span = styled.span`
   color: var(--color1);
   font-size: small;
   font-style: italic;
+  @media (max-width: 1966px) {
+    font-size: x-small;
+  }
+  @media (max-width: 1465px) {
+    font-size: 8px;
+  }
+  @media (max-width: 1210px) {
+    font-size: 6px;
+  }
+
 `;
 const CardContentTop = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 70%;
+  height: 60%;
+  @media (max-width: 1465px) {
+    height: 55%;
+  }
+  @media (max-width: 1210px) {
+    height: 70%;
+  }
+
 `;
 
 const CardContentBottom = styled.div`
@@ -159,6 +176,18 @@ const Username = styled.a`
   color: var(--color1);
   font-size: medium;
   font-style: italic;
+  @media (max-width: 1966px) {
+    font-size: x-small;
+  }
+  @media (max-width: 1465px) {
+    font-size: xx-small;
+  }
+  @media (max-width: 1210px) {
+    font-size: 6px;
+  }
+  @media (max-width: 990px) {
+    font-size: xx-small;
+  }
 `;
 const ThematiquesContainer = styled.div`
   display: flex;
@@ -166,6 +195,10 @@ const ThematiquesContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   margin-bottom: 5%;
+  @media (max-width: 1329px) {
+    margin-bottom: 1px;
+  }
+
 `;
 const PageLink = styled(Link)`
   text-decoration: none;
@@ -213,6 +246,35 @@ const CardContainer = styled.div`
   &:hover {
     box-shadow: 0 4px 8px rgba(10, 10, 10, 0.5);
   }
+  @media (max-width: 1966px) {
+    width: 400px;
+    height: 250px;
+  }
+   @media (max-width: 1465px) {
+    width: 350px;
+    height: 200px;
+  }
+  @media (max-width: 1329px) {
+    width: 300px;
+    height: 170px;
+  }
+  @media (max-width: 1210px) {
+    width: 250px;
+    height: 150px;
+  }
+  @media (max-width: 990px) {
+    width: 300px;
+    height: 170px;
+  }
+  /*
+  @media (max-width: 1075px) {
+    width: 160px;
+    height: 120px;
+  }
+  @media (max-width: 866px) {
+    width: 250px;
+    height: 150px;
+  } */
 `;
 
 const UsernameContainer = styled.div`
@@ -231,43 +293,35 @@ const CardContent = styled.div`
   justify-content: space-between;
   height: 100%; /* Ajuste la hauteur pour occuper la hauteur complète de la carte */
   padding: 10px; /* Ajoute une marge intérieure pour espacer le contenu du bord de l'image */
+  
 `;
 
 const EventTitle = styled.h2`
   font-size: 20px;
   color: var(--color1);
   font-weight: bold;
-  margin-left: 3%;
-  margin-right: 3%;
   line-height: 2.5rem;
   justify-content: center;
+  @media (max-width: 1966px) {
+    line-height: 1.5rem;
+    font-size: 14px;
+  }
+  @media (max-width: 1465px) {
+    line-height: 1rem;
+    font-size: 12px;
+  }
+  @media (max-width: 1329px) {
+    font-size: 11px;
+  }
+  @media (max-width: 1210px) {
+    line-height: 0.8rem;
+    font-size: 9px;
+  }
+  @media (max-width: 990px) {
+    font-size: 11px;
+  }
 `;
 
-const EventInfo = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 5%;
-  justify-content: space-between;
-  margin-right: 5%;
-  margin-bottom: 5%;
-`;
 
-const EventType = styled.span`
-  margin-right: 8px;
-  padding: 4px 8px;
-  background-color: var(--color3);
-  border-radius: 4px;
-  color: var(--color2);
-  font-weight: bold;
-`;
-
-const EventLocation = styled.span`
-  color: var(--color3);
-  background-color: rgba(128, 128, 128, 0.7);
-  border-radius: 4px;
-  padding: 8px 16px;
-  font-weight: bolder;
-  font-size: large;
-`;
 
 export default CarteProjet;

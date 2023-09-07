@@ -8,7 +8,7 @@ import axios from "axios";
 import CarteProjet from "../components/CarteProjet";
 import Thematiques from "../components/Thematiques";
 import { FaSearch } from "react-icons/fa";
-import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
+import { InputSection, FilterTitle, Input, StyledSelect } from "../styles/Projet";
 import Footer from "../components/Footer";
 
 const EventGrid = styled.div`
@@ -32,6 +32,19 @@ const EventCardContainer = styled.div`
 `;
 const ReinitialiserButton = styled.button`
   margin-top: 30px;
+`;
+
+const ExtendedFiltres = styled.div`
+  /* Ajoutez des styles CSS pour les filtres étendus ici */
+  display: none; /* Masquez les filtres par défaut */
+  @media (max-width: 990px) {
+    /* Affichez les filtres lorsque la largeur de l'écran est inférieure à 866px */
+    display: flex;
+    flex-direction: column;
+  }
+`;
+const ExtendedInput = styled(Input)`
+  width: 100%;
 `;
 function Projet() {
   /* Déclaration Projets */
@@ -227,19 +240,10 @@ function Projet() {
       <header>header</header>
       <div className="main">
         <aside className="left">
-          <p
-            style={{
-              color: "gray",
-              fontSize: "16px",
-              marginTop: "70px",
-              marginBottom: "10px",
-              display: "flex",
-              alignItems: "left",
-              fontWeight: "bold",
-            }}
+          <FilterTitle
           >
             Filtrer par <HorizontalLine />
-          </p>
+          </FilterTitle>
           <InputSection>
             <div style={{ position: "relative" }}>
               <FaSearch
@@ -328,6 +332,98 @@ function Projet() {
           </ReinitialiserButton>
         </aside>
         <main id="projets">
+          <ExtendedFiltres>
+          <FilterTitle
+          >
+            Filtrer par <HorizontalLine />
+          </FilterTitle>
+          <InputSection>
+            <div style={{ position: "relative" }}>
+              <FaSearch
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#aaa",
+                }}
+              />
+              <Input
+                type="text"
+                value={projetTitleFilter}
+                onChange={handleProjetTitleFilterChange}
+                placeholder="Recherche par titre"
+              />
+            </div>
+          </InputSection>
+
+          <InputSection>
+            <div style={{ position: "relative" }}>
+              <FaSearch
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#aaa",
+                }}
+              />
+              <Input
+                type="text"
+                value={etablissementFilter}
+                onChange={handleEtablissementNameFilterChange}
+                placeholder="Recherche par établissement"
+              />
+            </div>
+          </InputSection>
+          <StyledSelect
+            value={thematiqueFilter}
+            onChange={(e) => handleThematiqueFilterChange(e.target.value)}
+          >
+            <option value="">Toutes les thematiques</option>
+            {Thematiques.map((thematique, index) => (
+              <option key={index} value={thematique.nom}>
+                {thematique.nom}
+              </option>
+            ))}
+          </StyledSelect>
+          <StyledSelect
+            value={sousThematiqueFilter}
+            onChange={(e) => handleSousThematiqueFilterChange(e.target.value)}
+          >
+            <option value="">Toutes les sous-thématiques</option>
+            {sousThematiquesSelectFilter.map((sousThematique) => (
+              <option key={sousThematique.id} value={sousThematique.nom}>
+                {sousThematique.nom}
+              </option>
+            ))}
+          </StyledSelect>
+          <StyledSelect
+            value={enjeuxFilter}
+            onChange={(e) => handleEnjeuxFilterChange(e.target.value)}
+          >
+            <option value="">Tous les Enjeux</option>
+            {allEnjeux.map((enjeux, index) => (
+              <option key={index} value={enjeux.nom}>
+                {enjeux.nom}
+              </option>
+            ))}
+          </StyledSelect>
+          <StyledSelect
+            value={etatFilter}
+            onChange={(e) => handleEtatFilterChange(e.target.value)}
+          >
+            <option value="">Tous les projets</option>
+            <option value="EC">En cours </option>
+            <option value="F">Futur </option>
+            <option value="P">Passé </option>
+            <option value="A">Non renseigné </option>
+          </StyledSelect>
+
+          <ReinitialiserButton onClick={handleResetFilters}>
+            Réinitialiser les filtres
+          </ReinitialiserButton>
+          </ExtendedFiltres>
           <h1 className="mainTitle">Projets</h1>
           <EventGrid>
             {currentProjets.map((value, key) => {

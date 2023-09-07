@@ -97,7 +97,7 @@ background-image: url(${(props) => props.imageUrl}),
     width: 160px;
     height: 120px;
   }
-  @media (max-width: 866px) {
+  @media (max-width: 990px) {
     width: 250px;
     height: 150px;
   }
