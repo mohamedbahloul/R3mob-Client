@@ -19,17 +19,55 @@ const EventGrid = styled.div`
   gap: 20px;
   justify-content: center;
   padding-top: 15px;
+
+  @media (max-width: 2189px) {
+    gap: 20px 100px ; 
+  }
+  @media (max-width: 1608px) {
+    gap: 25px;
+  }
+  @media (max-width: 1075px ) {
+    gap: 10px;
+  }
+
   
 `;
 
 const EventCardContainer = styled.div`
-  width: 500px;
+  width: 400px;
+
+  @media (max-width: 2189px) {
+    gap: 20px 100px ;
+    width : auto;
+  }
+  @media (max-width: 1608px) {
+    gap: 5px;
+    width: auto;
+  }
+  @media (max-width: 866px) {
+    width: auto;
+    
+  }
+`;
+
+const StyledSearchIcon = styled(FaSearch)`
+
+  font-size: 10px; 
+
 `;
 const DatePickerContainer = styled.div`
   position: relative;
+  @media (max-width: 1075px) {
+    font-size : 10px;
+  }
+
 
   .react-datepicker-wrapper {
     width: 100%;
+    @media (max-width: 1075px) {
+    font-size : 10px;
+  }
+    
   }
 
   .react-datepicker__input-container input {
@@ -38,6 +76,9 @@ const DatePickerContainer = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
+    @media (max-width: 1075px) {
+    font-size : 10px;
+  }
   }
 
   .react-datepicker__clear-icon {
@@ -47,6 +88,9 @@ const DatePickerContainer = styled.div`
     transform: translateY(-50%);
     cursor: pointer;
     opacity: 0.7;
+    @media (max-width: 1075px) {
+    font-size : 10px;
+  }
 
     &:hover {
       opacity: 1;
@@ -63,6 +107,21 @@ const HorizontalLine = styled.hr`
 
 const ReinitialiserButton = styled.button`
 margin-top: 30px;
+`;
+const ExtendedFiltres = styled.div`
+  /* Ajoutez des styles CSS pour les filtres étendus ici */
+  display: none; /* Masquez les filtres par défaut */
+  @media (max-width: 866px) {
+    /* Affichez les filtres lorsque la largeur de l'écran est inférieure à 866px */
+    display: flex;
+    flex-direction: column;
+  }
+`;
+const ExtendedInput = styled(Input)`
+  width: 100%;
+`;
+const pageNumberBtn = styled.button`
+  
 `;
 
 function Agenda() {
@@ -215,7 +274,7 @@ function Agenda() {
           </p>
           <InputSection>
             <div style={{ position: "relative" }}>
-              <FaSearch
+              <StyledSearchIcon
                 style={{
                   position: "absolute",
                   top: "50%",
@@ -308,6 +367,116 @@ function Agenda() {
           </StyledSelect>
         </aside>
         <main>
+        <ExtendedFiltres>
+        <p
+            style={{
+              color: "gray",
+              fontSize: "16px",
+              marginBottom: "25px",
+              display: "flex",
+              alignItems: "left",
+              fontWeight: "bold",
+              marginTop: "150px",
+              
+            }}
+          >
+            Filtrer par <HorizontalLine />
+          </p>
+          <InputSection>
+            <div style={{ position: "relative" }}>
+              <StyledSearchIcon
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  color: "#aaa",
+                }}
+                // Remplacez cela par votre logique de recherche
+              />
+              <ExtendedInput
+                type="text"
+                value={eventNameFilter}
+                onChange={handleEventNameFilterChange}
+                placeholder="Rechercher par mot clé"
+              />
+            </div>
+          </InputSection>
+          <div style={{ position: "relative" }}>
+            <DatePickerContainer>
+              <DatePicker
+                selected={dateFilter !== "" ? new Date(dateFilter) : null}
+                onChange={(date) => handleDateFilterChange(date)}
+                dateFormat="dd/MM/yyyy"
+                startDate={new Date()}
+                placeholderText="Rechercher par date"
+              />
+              {dateFilter === "" && (
+                <FaCalendarAlt
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: "10px",
+                    transform: "translateY(-50%)",
+                    color: "gray",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => console.log("Calendar clicked")}
+                />
+              )}
+              {dateFilter !== "" && (
+                <span
+                  className="react-datepicker__clear-icon"
+                  onClick={() => handleDateFilterChange(null)}
+                >
+                  x
+                </span>
+              )}
+            </DatePickerContainer>
+          </div>
+
+          <div>
+            <StyledSelect
+              value={eventLocationFilter}
+              onChange={handleEventLocationFilterChange}
+            >
+              <option value="Tous">Visio et Présentiel</option>
+              <option value="Visio">Visio</option>
+              <option value="Présentiel">Présentiel</option>
+            </StyledSelect>
+            <StyledSelect
+              value={eventStatusFilter}
+              onChange={(e) => setEventStatusFilter(e.target.value)}
+            >
+              <option value="Tous">Tous les évènements</option>
+              <option value="Passés">Événements passés</option>
+              <option value="Futurs">Événements futurs</option>
+              <option value="En cours">Événements en cours</option>
+            </StyledSelect>
+          </div>
+          <ReinitialiserButton onClick={handleResetFilters}>Réinitialiser les filtres</ReinitialiserButton>
+          <p
+            style={{
+              color: "gray",
+              fontSize: "16px",
+              marginTop: "70px",
+              marginBottom: "10px",
+              display: "flex",
+              alignItems: "left",
+              fontWeight: "bold",
+            }}
+          >
+            Trier par <HorizontalLine />
+          </p>
+          <StyledSelect
+            value={sortType}
+            onChange={(e) => setSortType(e.target.value)}
+          >
+            <option value="ascending">Date croissante</option>
+            <option value="descending">Date décroissante</option>
+          </StyledSelect>
+            
+          </ExtendedFiltres>
         <h1 className="mainTitle">Évènements</h1>
   {currentEvents.length === 0 ? (
     <p>Aucun événement à afficher pour les filtres sélectionnés.</p>

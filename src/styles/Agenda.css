@@ -6,6 +6,11 @@
   text-align: left;
   color: var(--color1);
   margin-top: 8rem;
+
+
+  @media (max-width: 1369px) {
+    font-size: 2.5rem;
+  }
 }
 .indexPageBtn {
   margin-top: 2rem;
@@ -21,6 +26,13 @@
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
+  @media (max-width: 1075px) {
+    font-size: 1rem;
+    width: 4rem;
+    height: 2rem;
+  }
+    
+  
 }
 .indexPageBtn:hover {
   background-color: var(--color2);

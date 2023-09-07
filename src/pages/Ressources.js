@@ -52,9 +52,8 @@ export const StyledSelect = styled.select`
   ${(props) =>
     props.isMobile &&
     css`
-      /* Styles spécifiques pour les écrans mobiles */
-      width: 70%; /* Par exemple, ajustez la largeur selon vos besoins */
-      font-size: 10px; /* Taille de police réduite pour les mobiles */
+      width: 70%; 
+      font-size: 10px; 
     `}
 `;
 

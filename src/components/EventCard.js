@@ -44,12 +44,14 @@ const PageLink = styled(Link)`
 
 const CardContainer = styled.div`
 background-image: url(${(props) => props.imageUrl}),
-                    url(${(props) => props.fallbackUrl});  background-size: cover; /* This will make the image cover the entire container */
-  background-position: center; /* This will center the image */
+                    url(${(props) => props.fallbackUrl});
+  background-size: cover;
+  background-position: center;
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 400px;
-  animation: ${props => props.playAnimation ? 'rotate 0.5s ease, zoom 0.5s ease' : 'none'};  position: relative;
+
+  animation: ${props => props.playAnimation ? 'rotate 0.5s ease, zoom 0.5s ease' : 'none'};
+  position: relative;
   &:before {
     content: "";
     position: absolute;
@@ -83,6 +85,22 @@ background-image: url(${(props) => props.imageUrl}),
     box-shadow: 0 4px 8px rgba(10, 10, 10, 0.5);
     
   }
+  @media (max-width: 2189px) {
+    width: 400px;
+    height: 300px;
+  }
+  @media (max-width: 1608px) {
+    width: 250px;
+    height: 150px;
+  }
+  @media (max-width: 1075px) {
+    width: 160px;
+    height: 120px;
+  }
+  @media (max-width: 866px) {
+    width: 250px;
+    height: 150px;
+  }
 
 `;
 const CardDate = styled.div`
@@ -94,7 +112,19 @@ const CardDate = styled.div`
   font-size: large;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 6px;
+  @media (max-width: 2189px) {
+    font-size: medium;
+    padding: 4px 10px;
+  }
+  @media (max-width: 1608px) {
+    font-size: x-small;
+    padding: 1px 3px;
+  }
+  @media (max-width: 1075px) {
+    font-size: xx-small;
+    padding: 0.1px 0.7px;
+  }
 `;
 
 const CardContent = styled.div`
@@ -109,11 +139,23 @@ const CardContent = styled.div`
 const EventTitle = styled.h2`
 position : absolute;
   margin-top: 40%;
-  font-size: 150%;
+  font-size: 120%;
   color: var(--color3);
   font-weight: bold;
   margin-left: 3%;
   margin-right: 3%;
+  @media (max-width: 2189px) {
+    font-size: 120%;
+    padding: 4px 10px;
+  }
+  @media (max-width: 1608px) {
+    font-size: 80%;
+    padding: 1px 6px;
+    margin-top: 25%;
+  }
+  @media (max-width: 1075px) {
+    font-size: 60%;
+  }
 
 `;
 
@@ -145,6 +187,19 @@ const EventLocation = styled.span`
   padding: 8px 16px; 
   font-weight: bolder;
   font-size: large;
+  @media (max-width: 2189px) {
+    font-size: medium;
+    padding: 4px 10px;
+  }
+  @media (max-width: 1608px) {
+    font-size: small;
+    font-size: x-small;
+    padding: 0.1px 0.7px;
+  }
+  @media (max-width: 1075px) {
+    font-size: xx-small;
+    padding: 0.1px 0.7px;
+  }
 `;
 
 

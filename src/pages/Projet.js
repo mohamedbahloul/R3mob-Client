@@ -3,7 +3,6 @@ import "../styles/common/layout.css";
 import ScrollButton from "../components/ScrollButton";
 import CarteButton from "../components/CarteButton";
 import "../styles/Agenda.css";
-import EventCard from "../components/EventCard";
 import styled from "styled-components";
 import axios from "axios";
 import CarteProjet from "../components/CarteProjet";
@@ -11,7 +10,6 @@ import Thematiques from "../components/Thematiques";
 import { FaSearch } from "react-icons/fa";
 import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
-import { set } from "date-fns";
 
 const EventGrid = styled.div`
   display: flex;
@@ -30,7 +28,7 @@ const HorizontalLine = styled.hr`
 `;
 
 const EventCardContainer = styled.div`
-  width: 40%;
+  width: 45%;
 `;
 const ReinitialiserButton = styled.button`
   margin-top: 30px;

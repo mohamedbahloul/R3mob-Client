@@ -49,6 +49,11 @@ footer {
   padding: 0.5em 0 0.2em 0;
 }
 
+@media (max-width: 1075px) {
+  .left {
+    padding: 1em 1em 0;
+  }
+}
 @media (max-width: 866px) {
   .body {
     flex-direction: column; /* Change flex-direction to column for smaller screens */
