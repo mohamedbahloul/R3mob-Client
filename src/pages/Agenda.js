@@ -36,6 +36,10 @@ const EventGrid = styled.div`
 const EventCardContainer = styled.div`
   width: 400px;
 
+  @media (min-width: 2189px) {
+    height: auto;
+    width: auto;;
+  }
   @media (max-width: 2189px) {
     gap: 20px 100px ;
     width : auto;

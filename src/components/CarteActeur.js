@@ -15,12 +15,18 @@ const Name = styled.h1`
   color: ${Colors.color3};
   margin-left: 5px;
   margin-right: 5px;
+  @media (max-width: 2230px) {
+    font-size: 1.2rem;
+  }
 `;
 const Nombre = styled.h1`
   margin-top: 80;
   font-size: 1.5rem;
   font-weight: bold;
   color: ${Colors.color3};
+  @media (max-width: 2230px) {
+    font-size: 1.2rem;
+  }
 `;
 const Image = styled.img`
   margin-top: 10px;
@@ -29,6 +35,11 @@ const Image = styled.img`
   object-fit: cover;
   top: 0;
   left: 0;
+  
+  @media (max-width: 2230px) {
+    width: 40%;
+    height: 40%;
+  }
 `;
 
 const CarteActeur = ({ name, nombre,image }) => {

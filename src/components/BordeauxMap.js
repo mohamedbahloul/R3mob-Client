@@ -1,6 +1,6 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import universityIconUrl from "../assets/Université.png";
 
@@ -8,6 +8,7 @@ const Div = styled.div`
   margin-bottom: 10%;
   width: 95%;
 `;
+
 // Create a custom icon
 const universityIcon = L.icon({
   iconUrl: universityIconUrl, // Path to your custom icon image
@@ -17,6 +18,8 @@ const universityIcon = L.icon({
 });
 
 function BordeauxMap() {
+  const [mapHeight, setMapHeight] = useState(window.innerHeight * 0.5);
+
   useEffect(() => {
     const mapCenter = [44.7987897, -0.6154092];
     const map = L.map("map", {
@@ -28,8 +31,6 @@ function BordeauxMap() {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
-
-
 
     const markerCoordinates = [
       {
@@ -69,12 +70,19 @@ function BordeauxMap() {
         .openPopup();
     });
 
+    const handleResize = () => {
+      setMapHeight(window.innerHeight * 0.7); // Ajustez ici en fonction de votre mise en page
+    };
+
+    window.addEventListener("resize", handleResize);
+
     return () => {
       map.remove();
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  return <Div id="map" style={{ height: "700px" }}></Div>;
+  return <Div id="map" style={{ height: mapHeight + "px" }}></Div>;
 }
 
 export default BordeauxMap;

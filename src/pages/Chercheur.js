@@ -17,13 +17,13 @@ import Footer from "../components/Footer";
 const EventGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 70px;
   justify-content: center;
   padding-top: 15px;
 `;
 
 const EventCardContainer = styled.div`
-  width: 500px;
+  width: auto;
 `;
 const DatePickerContainer = styled.div`
   position: relative;

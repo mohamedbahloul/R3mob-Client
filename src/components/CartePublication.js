@@ -6,7 +6,7 @@ import axios from "axios";
 import ThematiqueIcon from "../components/ThematiqueIcon";
 import Thematiques from "../components/Thematiques";
 
-const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
+const CartePublication = ({ id, title, link, fallbackUrl,imageUrl }) => {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [publicationSousThematiques, setPublicationSousThematiques] = useState(
     []
@@ -14,6 +14,7 @@ const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
   const [publicationChercheur, setPublicationChercheur] = useState([]);
   const [allThematique, setAllThematique] = useState([]);
   const [extractedThematiques, setExtractedThematiques] = useState([]);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     setPlayAnimation(true);
@@ -41,6 +42,20 @@ const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
         } else {
           setPublicationChercheur(res.data);
         }
+      });
+
+      axios
+      .get(`http://localhost:3001/publication/image/${imageUrl}`)
+      .then((res) => {
+        if (res.data && res.data !== null) { // Vérifiez que res.data n'est pas nul
+          setImage(`data:image/png;base64,${res.data}`);
+          
+        } else {
+          setImage(null);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }, [id]);
 
@@ -78,13 +93,16 @@ const CartePublication = ({ id, title, link, fallbackUrl, imageUrl }) => {
   
     fetchThematiqueData();
   }, [publicationSousThematiques, allThematique]);
-  
+
+  const backgroundImage = image
+  ? `${image}`
+  : `${fallbackUrl}`;
 
 
   return (
     // <PageLink to={link}>
       <CardContainer playAnimation={playAnimation}>
-        <CardImage src={imageUrl} fallbackUrl={fallbackUrl} />
+        <CardImage src={backgroundImage}  />
         <CardContent>
           <PublicationTitle>{title}</PublicationTitle>
           <PublicationInfos>
@@ -139,12 +157,14 @@ const CardImage = styled.img`
 `;
 
 const CardContainer = styled.div`
+  
   max-width: 400px;
   margin-top: 2%; /* Adjust the margin as needed */
   background-color: whitesmoke;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 100%; /* Use 100% to match the container height */
   width: 100%; /* Use 100% to match the container width */
+  height: 500px;
   animation: ${(props) =>
     props.playAnimation ? "rotate 0.5s ease, zoom 0.5s ease" : "none"};
   @keyframes rotate {

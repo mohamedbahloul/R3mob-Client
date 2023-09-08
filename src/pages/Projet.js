@@ -18,6 +18,7 @@ const EventGrid = styled.div`
   gap: 20px;
   justify-content: center;
   padding-top: 15px;
+  
 `;
 const HorizontalLine = styled.hr`
   background-color: lightgray;
@@ -28,6 +29,10 @@ const HorizontalLine = styled.hr`
 `;
 
 const EventCardContainer = styled.div`
+  @media (min-width: 2189px) {
+    height: auto;
+    width: auto;;
+  }
   width: 45%;
 `;
 const ReinitialiserButton = styled.button`

@@ -54,7 +54,6 @@ function VerifyUrl() {
         type: "etablissement", 
         url: etab.url, 
       };
-
       const response = await axios.post(`http://localhost:3001/urls`, newUrl);
       console.log("New URL created:", response.data);
     } catch (error) {

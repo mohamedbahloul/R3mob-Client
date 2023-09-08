@@ -7,63 +7,85 @@ import styled from "styled-components";
 import Footer from "../components/Footer";
 import CarteActeur from "../components/CarteActeur";
 import { CardsContainer } from "../styles/CarteActeur";
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import BordeauxMap from "../components/BordeauxMap";
+import axios from "axios";
 const PageLink = styled.a`
-  text-decoration: none; 
-  color: inherit; 
+  text-decoration: none;
+  color: inherit;
 `;
-
-
-
 
 function Annuaire() {
   const [counts, setCounts] = useState({
-    Chercheurs: 0,
-    Laboratoires: 0,
-    Universités: 0,
-    AutresÉtablissements: 0,
-    Partenaires: 0,
+    ActeurR3MOB: 0,
+    LaboratoireScientifique: 0,
+    Universite: 0,
+    AutreEtab: 0,
+    Partenaire: 0
   });
   useEffect(() => {
-    fetch("http://localhost:3001/etablissement/etabCount")
-      .then((response) => response.json())
-      .then((data) => setCounts(data))
-      .catch((error) => console.error(error));
-
-      fetch("http://localhost:3001/perso/chercheursCount")
-      .then((response) => response.json())
-      .then((data) => setCounts((prevCounts) => ({ ...prevCounts, Chercheurs: data.count })))
-      .catch((error) => console.error(error));
+    axios.get('http://localhost:3001/annuaire/acteurCount').then((response) => {
+      setCounts(response.data);
+    });
   }, []);
   return (
     <div className="body">
-    <header>header</header>
-    <div className="main">
-    <aside className="left">
-        <ScrollButton />
-        <CarteButton />
-      </aside>
-      <main>
-      <h1 className="mainTitle">Acteurs R3MOB: </h1>
-      
-        <CardsContainer>
-      <PageLink href="/chercheur"><CarteActeur image="Acteurs/Chercheurs.png" name="Acteurs R3MOB" nombre={counts.Chercheurs}/></PageLink>
-      <PageLink href="/laboratoire"><CarteActeur image="Acteurs/Laboratoire.png" name="Laboratoires scientifiques" nombre={counts.Laboratoires}/></PageLink>
-      <PageLink href="/universite"><CarteActeur image="Acteurs/Université.png" name="Universités" nombre={counts.Universités}/></PageLink>
-      <PageLink href="/autre_etablissement"><CarteActeur image="Acteurs/Autre_Etablissement.png" name="Autres établissements" nombre={counts.AutresÉtablissements}/></PageLink>
-      <PageLink href="/partenaire"><CarteActeur image="Acteurs/Partenaire.png" name="Partenaires" nombre={counts.Partenaires}/></PageLink>
-      </CardsContainer>
-      <BordeauxMap />
-      
-      </main>
-      <aside className="right">
-        <ScrollButton />
-        <CarteButton />
-      </aside>
-    </div>
-       <footer><Footer/></footer> 
+      <header>header</header>
+      <div className="main">
+        <aside className="left">
+          <ScrollButton />
+          <CarteButton />
+        </aside>
+        <main>
+          <h1 className="mainTitle">Annuaires : </h1>
+
+          <CardsContainer>
+            <PageLink href="/chercheur">
+              <CarteActeur
+                image="Acteurs/Chercheurs.png"
+                name="Acteurs R3MOB"
+                nombre={counts.ActeurR3MOB}
+              />
+            </PageLink>
+            <PageLink href="/laboratoire">
+              <CarteActeur
+                image="Acteurs/Laboratoire.png"
+                name="Laboratoires scientifiques"
+                nombre={counts.LaboratoireScientifique}
+              />
+            </PageLink>
+            <PageLink href="/universite">
+              <CarteActeur
+                image="Acteurs/Université.png"
+                name="Universités"
+                nombre={counts.Universite}
+              />
+            </PageLink>
+            <PageLink href="/autre_etablissement">
+              <CarteActeur
+                image="Acteurs/Autre_Etablissement.png"
+                name="Autres établissements"
+                nombre={counts.AutreEtab}
+              />
+            </PageLink>
+            <PageLink href="/partenaire">
+              <CarteActeur
+                image="Acteurs/Partenaire.png"
+                name="Partenaires"
+                nombre={counts.Partenaire}
+              />
+            </PageLink>
+          </CardsContainer>
+          <BordeauxMap />
+        </main>
+        <aside className="right">
+          <ScrollButton />
+          <CarteButton />
+        </aside>
+      </div>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

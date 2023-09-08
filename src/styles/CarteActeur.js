@@ -18,7 +18,11 @@ export const CardContainer = styled.div`
     
   }
   animation: rotate 0.5s ease, zoom 0.5s ease;  
-  
+  @media (max-width: 2230px) {
+    width: 200px;
+    height: 200px;
+
+  }
   @keyframes rotate {
     from {
       transform: rotateY(30deg);
@@ -37,27 +41,27 @@ export const CardContainer = styled.div`
   }
 
 `;
+
+
 export const CardsContainer = styled.div`
 
-  width: 300px;
-  height: 300px;
-  background-image: ${({ backgroundImage }) => `url(${backgroundImage})`};
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+ 
   position: relative;
   transition: filter 0.3s;
   border-radius: 8px;
-  display : flex;
-  gap: 30px;
+  display: flex;
   margin-top: 10%;
   margin-bottom: 10%;
+  align-items: center;
+  justify-content: flex-start; 
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
   &:hover {
-    filter : none;
-    
+    filter: none;
   }
-  animation: rotate 0.5s ease, zoom 0.5s ease;  /* Ajout de l'animation de rotation */
-  
+  animation: rotate 0.5s ease, zoom 0.5s ease; /* Ajout de l'animation de rotation */
+
   @keyframes rotate {
     from {
       transform: rotateY(30deg);
@@ -74,8 +78,8 @@ export const CardsContainer = styled.div`
       transform: scale(1);
     }
   }
-
 `;
+
 
 export const InfoContainer = styled.div`
   position: absolute;

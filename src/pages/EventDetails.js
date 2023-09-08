@@ -10,18 +10,32 @@ import Footer from "../components/Footer";
 import EventCard from "../components/EventCard";
 const DetailsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
+
 const RightSide = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 50%;
+  align-items: center;
+  width: 100%;
+  @media (min-width: 990px) {
+    width: 90%;
+    align-items: flex-start;
+  }
 `;
+
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
+  @media (min-width: 990px) {
+    align-items: flex-start;
+    text-align: left;
+  }
 `;
 
 const EventStatus = styled.h2`
@@ -31,7 +45,7 @@ const EventStatus = styled.h2`
 `;
 
 const EventTitle = styled.h2`
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
   color: black;
   margin-top: 3px;
@@ -40,10 +54,11 @@ const EventTitle = styled.h2`
 const EventFieldContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 40px;
-  margin-left: 20px;
+  margin-top: 20px;
+  margin-left: 0;
   gap: 20px;
 `;
+
 const DateText = styled.div`
   text-transform: capitalize;
 `;
@@ -65,8 +80,8 @@ const ContactSection = styled.div`
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  margin-top: 80px;
-  margin-left: 20px;
+  margin-top: 40px;
+  margin-left: 0;
   gap: 10px;
 `;
 
@@ -78,25 +93,27 @@ const ContactTitle = styled.h3`
 const ContactInfo = styled.div`
   font-style: italic;
 `;
+
 const ContactName = styled.div`
   font-weight: 600;
 `;
 
 const EventImage = styled.img`
-  max-width: 100%;
-  height: 500px;
+  max-width: 90%;
+  height: auto;
   margin-top: 20px;
-  width: 80%;
-  border-radius: 10% 0% ;
+  border-radius: 10%;
   align-self: center;
+  width: 600px;
 `;
 
 const EventDescription = styled.p`
   margin-top: 20px;
-  font-size: 20px;
-  text-align: left; /* Alignement à gauche */
-  overflow-wrap: break-word; /* Gestion du débordement de contenu */
+  font-size: 16px;
+  text-align: left;
+  overflow-wrap: break-word;
 `;
+
 const EventLink = styled.a`
   color: var(--color3);
   background-color: var(--color2);
@@ -106,7 +123,6 @@ const EventLink = styled.a`
   text-decoration: none;
   text-align: center;
   font-weight: bold;
-
   cursor: pointer;
   transition: background-color 0.3s ease;
 
@@ -114,20 +130,31 @@ const EventLink = styled.a`
     background-color: var(--color1);
   }
 `;
+
 const EventGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 60px;
   justify-content: center;
   padding-top: 15px;
+  gap: 50px;
 `;
 
 const EventCardContainer = styled.div`
-  width: 500px;
-  margin-bottom: 40px;
+  width: auto;
+  margin-bottom: 20px;
+
+  @media (max-width: 990px) {
+    width: auto;
+  }
 `;
+
 const SimilarEventsTitle = styled.h3`
-  margin-top: 100px;
+  margin-top: 40px;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    text-align: center;
+  }
 `;
 
 function EventDetails() {

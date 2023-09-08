@@ -85,6 +85,10 @@ background-image: url(${(props) => props.imageUrl}),
     box-shadow: 0 4px 8px rgba(10, 10, 10, 0.5);
     
   }
+  @media (min-width: 2189px) {
+    width: 500px;
+    height: 400px;
+  }
   @media (max-width: 2189px) {
     width: 400px;
     height: 300px;
@@ -113,6 +117,7 @@ const CardDate = styled.div`
   display: flex;
   flex-direction: row;
   gap: 6px;
+
   @media (max-width: 2189px) {
     font-size: medium;
     padding: 4px 10px;

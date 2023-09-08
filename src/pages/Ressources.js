@@ -9,9 +9,12 @@ import styled, { css } from "styled-components";import axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaSearch } from "react-icons/fa";
 import Thematiques from "../components/Thematiques";
+import Colors from "../styles/Colors";
+import CreatePubPopup from "../components/CreatePubPopup";
 
 // import { InputSection, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
+import { ButtonContainer } from "../styles/ScrollButton.style";
 
 export const InputSection = styled.div`
   display: flex;
@@ -125,6 +128,26 @@ const ExtendedInput = styled(Input)`
   width: 100%;
 `;
 
+export const Button = styled.button`
+  background-color: ${Colors.color2};
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-end;
+  &:hover {
+    background-color: ${Colors.color1};
+  }
+`;
+
+const CreateButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  margin-top: 20px;
+`;
+
 function Ressources() {
   const [publications, setPublications] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -139,6 +162,8 @@ function Ressources() {
   // pour la liste des sous Thematiques dans la liste déroulante
   const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
     useState([]);
+  const [showCreatePopup, setShowCreatePopup] = useState(false);
+
 
   const currentHash = window.location.hash;
   useEffect(() => {
@@ -160,6 +185,7 @@ function Ressources() {
   useEffect(() => {
     axios.get(`http://localhost:3001/publication`).then((res) => {
       setPublications(res.data);
+      console.log(res.data);
     });
     axios.get(`http://localhost:3001/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
@@ -263,6 +289,48 @@ function Ressources() {
 
     setCurrentPage(1);
   };
+  const handleCloseCreatePopup = () => {
+    setShowCreatePopup(false);
+  };
+  const handleCreateCustomEvent = async (createdEvent) => {
+    // axios
+    //   .post(`http://localhost:3001/event/custom`, createdEvent)
+    //   .then(async (res) => {
+    //     let id = null;
+    //     axios
+    //       .get(`http://localhost:3001/event/lastCustom`)
+
+    //       .then(async (res) => {
+    //         id = res.data;
+    //         console.log(id);
+    //         if (id != null) id = id + 1;
+    //         else id = 1;
+    //         if (createdEvent.selectedImage != null) {
+    //           const formData = new FormData();
+    //           formData.append("imageName", `${id}.jpg`); // Add the image_name to the FormData
+    //           formData.append("image", createdEvent.selectedImage);
+    //           const response = await axios.post(
+    //             "http://localhost:3001/uploadImage",
+    //             formData
+    //           );
+    //           if (response.status === 200) {
+    //             // Image uploaded successfully
+    //             const imageUrl = response.data.imageUrl;
+    //             //setImageUrl(imageUrl);
+    //           } else {
+    //             // Handle error if necessary
+    //           }
+    //         }
+    //       });
+
+    //     //console.log(res.data);
+    //     fetchEvents();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    setShowCreatePopup(false);
+  };
 
   const maxPageButtons = 3; // Maximum number of page buttons to display
   const halfMaxButtons = Math.floor(maxPageButtons / 2);
@@ -363,6 +431,13 @@ function Ressources() {
           </ReinitialiserButton>
         </aside>
         <main id="publications">
+          <CreateButtonContainer>
+          <Button onClick={() =>{
+            setShowCreatePopup(true)
+          }}>
+            Ajouter une publication
+          </Button>
+          </CreateButtonContainer>
         {/* <CarteButton /> */}
           {/* Filtres étendus pour les écrans de téléphone */}
           <ExtendedFiltres>
@@ -454,8 +529,9 @@ function Ressources() {
                     <CartePublication
                       id={value.id}
                       title={value.nom}
-                      imageUrl="mob.jpg"
-                      fallbackUrl="../default_user.png"
+                      imageUrl={value.imageName}
+                      fallbackUrl="mob.jpg"
+
                     />
                   </PublicationCardContainer>
                 );
@@ -525,6 +601,14 @@ function Ressources() {
       <footer>
         <Footer />
       </footer>
+      {showCreatePopup && (
+          <CreatePubPopup
+          style={{zIndex: 1000}}
+
+            onSave={handleCreateCustomEvent}
+            onClose={handleCloseCreatePopup}
+          />
+        )}
     </div>
   );
 }

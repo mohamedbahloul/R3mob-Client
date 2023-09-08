@@ -115,6 +115,7 @@ function Navbar() {
                       <NavbarLink to="/updateEvent">Update Events</NavbarLink>
                       <NavbarLink to="/updateBd">Update Data Base</NavbarLink>
                       <NavbarLink to="/clearBd">Clear Data Base</NavbarLink>
+                      <NavbarLink to="/admin">Admin</NavbarLink>
                       <NavbarLink to="/verifyUrl">Vérifier les Url</NavbarLink>
                       <NavbarLink to="/profile">
                         {authState.username}{" "}

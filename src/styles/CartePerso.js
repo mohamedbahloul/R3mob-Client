@@ -10,13 +10,11 @@ export const CardContainer = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  /* filter : grayscale(); */
   position: relative;
   transition: filter 0.3s;
   border-radius: 8px;
   display : flex;
   gap: 30px;
-  margin-top: 10%;
   &:hover {
     filter : none;
     
@@ -38,6 +36,10 @@ export const CardContainer = styled.div`
     to {
       transform: scale(1);
     }
+  }
+  @media (max-width: 1625px) {
+    width: 200px;
+  height: 200px;
   }
 
 `;
@@ -63,9 +65,15 @@ export const InfoContainer = styled.div`
 export const Infos = styled.p`
   margin-left: 2px;
   font-size: small;
+  @media (max-width: 1625px) {
+    font-size: x-small;
+  }
 `;
 
 export const Icon = styled.i`
+  @media (max-width: 1625px) {
+    font-size: x-small;
+  }
 `;
 
 export const InfoRow = styled.div`
