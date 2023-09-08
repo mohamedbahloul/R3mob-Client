@@ -1,7 +1,11 @@
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import L from "leaflet";
+import "leaflet.markercluster";
+
 import universityIconUrl from "../assets/Université.png";
 
 const Div = styled.div`
@@ -9,12 +13,11 @@ const Div = styled.div`
   width: 95%;
 `;
 
-// Create a custom icon
 const universityIcon = L.icon({
-  iconUrl: universityIconUrl, // Path to your custom icon image
-  iconSize: [32, 32], // Icon size [width, height]
-  iconAnchor: [16, 32], // Anchor point of the icon [x, y]
-  popupAnchor: [0, -32], // Anchor point for the popup relative to the icon [x, y]
+  iconUrl: universityIconUrl,
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
 });
 
 function BordeauxMap() {
@@ -42,42 +45,47 @@ function BordeauxMap() {
         label: "Université de La Rochelle",
       },
       {
-        coord : [45.82507391081293, 1.259882441672819],
+        coord: [45.82507391081293, 1.259882441672819],
         label: "Université de Limoges",
       },
       {
-        coord : [46.58631380675584, 0.34210733021681394],
+        coord: [46.58631380675584, 0.34210733021681394],
         label: "Université de Poitiers",
       },
       {
-      coord : [44.795702814912474, -0.6164211819528165],
+        coord: [44.795702814912474, -0.6164211819528165],
         label: "Université de Bordeaux Montaigne",
-      }, {
-        coord : [44.82516036465213, -0.6060986192125665],
+      },
+      {
+        coord: [44.82516036465213, -0.6060986192125665],
         label: "Université de Bordeaux",
       },
       {
-        coord : [43.313532512523004, -0.36507176023496246],
+        coord: [43.313532512523004, -0.36507176023496246],
         label: "Université de Pau et des Pays de l'Adour",
-      }
-
+      },
     ];
 
+    // Créez un groupe de marqueurs pour utiliser le plugin markercluster
+    const markerClusterGroup = L.markerClusterGroup();
+
     markerCoordinates.forEach((coords) => {
-      L.marker(coords.coord, { icon: universityIcon })
-        .addTo(map)
-        .bindPopup(coords.label)
-        .openPopup();
+      const marker = L.marker(coords.coord, { icon: universityIcon });
+      marker.bindPopup(coords.label).openPopup();
+      markerClusterGroup.addLayer(marker);
     });
 
+    map.addLayer(markerClusterGroup);
+
     const handleResize = () => {
-      setMapHeight(window.innerHeight * 0.7); // Ajustez ici en fonction de votre mise en page
+      setMapHeight(window.innerHeight * 0.7);
     };
 
     window.addEventListener("resize", handleResize);
 
     return () => {
       map.remove();
+      markerClusterGroup.clearLayers();
       window.removeEventListener("resize", handleResize);
     };
   }, []);
