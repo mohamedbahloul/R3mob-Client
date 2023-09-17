@@ -44,14 +44,14 @@ function Annuaire() {
               <CarteActeur
                 image="Acteurs/Chercheurs.png"
                 name="Acteurs R3MOB"
-                nombre={counts.ActeurR3MOB}
+                nombre={counts.Acteur_R3MOB}
               />
             </PageLink>
             <PageLink href="/laboratoire">
               <CarteActeur
                 image="Acteurs/Laboratoire.png"
                 name="Laboratoires scientifiques"
-                nombre={counts.LaboratoireScientifique}
+                nombre={counts.Laboratoire_Scientifique}
               />
             </PageLink>
             <PageLink href="/universite">
@@ -65,7 +65,7 @@ function Annuaire() {
               <CarteActeur
                 image="Acteurs/Autre_Etablissement.png"
                 name="Autres établissements"
-                nombre={counts.AutreEtab}
+                nombre={counts.Autre_Etablissement}
               />
             </PageLink>
             <PageLink href="/partenaire">

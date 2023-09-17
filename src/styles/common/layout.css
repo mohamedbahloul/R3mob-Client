@@ -1,3 +1,10 @@
+/* @font-face {
+  font-family: 'Proxima Nova';
+  src: url('../fonts/proxima-nova-light-webfont.woff');
+} */
+
+
+
 * {
   box-sizing: border-box;
 }
@@ -72,5 +79,18 @@ footer {
 
   .right {
     display: none;
+  }
+}
+.slide-in-from-right {
+  transform: translateX(100%);
+  animation: slideRight 0.5s ease forwards;
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
   }
 }

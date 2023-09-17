@@ -26,6 +26,11 @@ import ChercheurDetails from "./pages/ChercheurDetails";
 import Ressources from "./pages/Ressources";
 import StageEtEmploi from "./pages/StageEtEmploi";
 import Admin from "./pages/Admin";
+import Apropos from "./pages/Apropos";
+import Universite from "./pages/Universite";
+import Laboratoire from "./pages/Laboratoire";
+import AutreEtab from "./pages/AutreEtab";
+import Partenaire from "./pages/Partenaire";
 function App() {
   const [authState, setAuthState] = useState({
     username: "",
@@ -91,6 +96,14 @@ function App() {
             <Route path="/ressources" exact Component={Ressources}/>
             <Route path="/stage&emploi" exact Component={StageEtEmploi}/>
             <Route path="/admin" exact Component={Admin}/>
+            <Route path="/apropos" exact Component={Apropos} />
+            <Route path="/login/:id" element={<Login />} />
+            <Route path="/universite" exact Component={Universite} />
+            <Route path="/laboratoire" exact Component={Laboratoire} />
+            <Route path="/autreEtab" exact Component={AutreEtab} />
+            <Route path="/partenaire" exact Component={Partenaire} />
+
+
             <Route path="*" exact Component={Page404} />
           </Routes>
         </Router>

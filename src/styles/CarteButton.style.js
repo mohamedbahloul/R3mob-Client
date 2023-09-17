@@ -13,7 +13,7 @@ export const CardLegend = styled.h5`
 
 export const ButtonContainer = styled.div`
   position: fixed;
-  top: 50%;
+  top: 70%;
   align-items: center;
   right: 20px;
   z-index: 999;

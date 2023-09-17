@@ -27,6 +27,14 @@ const PageLink = styled(Link)`
   text-decoration: none; 
   color: inherit; 
 `;
+const NameUnderCard= styled.p`
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+    @media (max-width: 1625px) {
+    font-size: 0.8rem;
+    }
+`;
 
 const CartePerso = ({ id, name, email, phone, address, imageData }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -36,6 +44,7 @@ const CartePerso = ({ id, name, email, phone, address, imageData }) => {
       : `url(${defaultImage})`;
   
     return (
+        <>
         <PageLink to={`/chercheur/${id}`}> 
       <CardContainer
         style={{ backgroundImage }}
@@ -67,6 +76,8 @@ const CartePerso = ({ id, name, email, phone, address, imageData }) => {
             )}
         </CardContainer>
         </PageLink>
+        <NameUnderCard>{name}</NameUnderCard>
+        </>
     );
 };
 

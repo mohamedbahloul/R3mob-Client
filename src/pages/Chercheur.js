@@ -215,7 +215,6 @@ function Chercheur() {
     setThematiqueFilter("");
     setSousThematiquesSelectFilter([]);
     setSousThematiqueFilter("");
-    // setSortType("ascending");
     setCurrentPage(1);
   };
 
@@ -343,6 +342,7 @@ function Chercheur() {
           <h1 className="mainTitle">Acteurs R3MOB</h1>
           <EventGrid>
             {currentPageContent.map((value, key) => {
+              console.log(value);
               const etablissementNames = value.Chercheur_etabs.map(
                 (chercheurEtab) => {
                   const etablissement = etablissements.find(

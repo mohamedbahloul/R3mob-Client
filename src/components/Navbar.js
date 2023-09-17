@@ -97,12 +97,12 @@ function Navbar() {
                   Annuaires <span className="dropdownbtn">&#8964;</span>
                     <div className="dropdown-content">
                       <NavbarLink to="/chercheur">Acteurs R3MOB</NavbarLink>
-                      <NavbarLink href="#">
+                      <NavbarLink to="laboratoire">
                         Laboratoires scientifiques
                       </NavbarLink>
-                      <NavbarLink href="#">Universités</NavbarLink>
-                      <NavbarLink href="#">Autres Etablissement</NavbarLink>
-                      <NavbarLink href="#">Partenaires</NavbarLink>
+                      <NavbarLink to="/universite">Universités</NavbarLink>
+                      <NavbarLink to="autreEtab">Autres Etablissement</NavbarLink>
+                      <NavbarLink to="partenaire">Partenaires</NavbarLink>
                     </div>
                   </NavbarLinkList>
                 </div>

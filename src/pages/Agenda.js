@@ -56,11 +56,13 @@ const EventCardContainer = styled.div`
 
 const StyledSearchIcon = styled(FaSearch)`
 
-  font-size: 10px; 
+  font-size: 16px; 
 
 `;
 const DatePickerContainer = styled.div`
   position: relative;
+  font-size: 16px; 
+
   @media (max-width: 1075px) {
     font-size : 10px;
   }
@@ -92,6 +94,7 @@ const DatePickerContainer = styled.div`
     transform: translateY(-50%);
     cursor: pointer;
     opacity: 0.7;
+    
     @media (max-width: 1075px) {
     font-size : 10px;
   }

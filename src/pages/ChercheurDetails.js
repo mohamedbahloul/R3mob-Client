@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import CartePerso from "../components/CartePerso";
 import Thematiques from "../components/Thematiques";
 import ThematiqueIcon from "../components/ThematiqueIcon";
+import CartePublication from "../components/CartePublication";
 const DetailsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -46,7 +47,7 @@ const Etab= styled.a`
   font-size: 20px;
   font-weight: lighter;
 `;
-const NbPubli=styled.h2` 
+const publications=styled.h2` 
   margin-left: 5%;
   font-size: 20px;
   margin-top: 15%;
@@ -168,16 +169,29 @@ const ThematiquesContainer = styled.div`
   margin-top: 10%;
 
 `;
+
+const PublicationGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding-top: 75px;
+`;
+
+const PublicationCardContainer = styled.div`
+  width: 500px;
+`;
 function ChercheurDetails() {
   const { chercheurId } = useParams();
   const [chercheur, setChercheur] = useState({});
   const [etablissement, setEtablissement] = useState([]);
-  const [nbPubli, setNbPubli] = useState(0);
+  const [publications, setPublications] = useState([]);
   const [allThematique, setAllThematique] = useState([]);
   const [extractedThematiques, setExtractedThematiques] = useState([]);
   const [chercheurSousThematiques, setChercheurSousThematiques] = useState(
     []
   );
+  const [shouldReloadPage, setShouldReloadPage] = useState(false);
   useEffect(() => {
     axios
       .get(`http://localhost:3001/detailsChercheur/${chercheurId}`)
@@ -197,13 +211,13 @@ function ChercheurDetails() {
           setEtablissement(res.data);
         }
       });
-    axios.get(`http://localhost:3001/publication/nbPublication/${chercheurId}`).then((res) => {
+    axios.get(`http://localhost:3001/publication/personnel/${chercheurId}`).then((res) => {
       if (res.data !== null) {
-        setNbPubli(res.data);
+        setPublications(res.data);
       }
     }
     );
-  }, [chercheurId]);
+  }, [chercheurId,shouldReloadPage]);
   useEffect(() => {
     axios.get(`http://localhost:3001/thematique`).then((res) => {
       if (res.data.error) {
@@ -248,6 +262,9 @@ function ChercheurDetails() {
       day: "numeric",
     }
   );
+  const reload = () => {
+    setShouldReloadPage(!shouldReloadPage);
+  };
 
   const defaultImage = "../default_user.png";
   const backgroundImage = chercheur.imageData
@@ -292,7 +309,8 @@ function ChercheurDetails() {
                     )
               }
             </ThematiquesContainer>
-              <NbPubli>Nombre de publications liées à R3MOB: {nbPubli.length } </NbPubli>
+              <publications>Nombre de publications liées à R3MOB: {publications.length } </publications>
+
             </RightSide>
             
               
@@ -300,38 +318,11 @@ function ChercheurDetails() {
           </HeaderContainer>
           <DetailsContainer>
             <div>
-              <EventFieldContainer>
-                <EventIcon>
-                  <FaCalendarAlt />
-                </EventIcon>
-
-                <DateText></DateText>
-              </EventFieldContainer>
-              <EventFieldContainer>
-                <EventIcon>
-                  <FaMapMarkerAlt />
-                </EventIcon>
-
-                <div></div>
-              </EventFieldContainer>
 
               <EventFieldContainer>
-                <EventIcon>
-                  <FaMoneyBill />
-                </EventIcon>
-
-                <div></div>
+                <EventLink href={`/login/${chercheurId}`}>Se Connecter</EventLink>
               </EventFieldContainer>
-              <EventFieldContainer>
-                <EventLink>S'inscrire</EventLink>
-              </EventFieldContainer>
-              <ContactSection>
-                <ContactTitle>Contact</ContactTitle>
-                <ContactName>{}</ContactName>
-                <ContactInfo>{}</ContactInfo>
-                <ContactInfo>{}</ContactInfo>
-                <ContactInfo>{}</ContactInfo>
-              </ContactSection>
+             
             </div>
             {/* <RightSide>
               <EventImage alt="Image de l'événement" />
@@ -340,7 +331,35 @@ function ChercheurDetails() {
             </RightSide> */}
           </DetailsContainer>
           <SimilarEventsTitle>
-            Ces événements pourraient vous intéresser
+            {publications.length != 0 ? (
+              <>
+              <p>Les Publications de {chercheur.username}</p>
+
+            <PublicationGrid>
+                                        
+
+              {publications.map((value, key) => {
+                return (
+                  <PublicationCardContainer key={key}>
+                    <CartePublication
+                      id={value.id}
+                      url={value.url}
+                      title={value.nom}
+                      imageUrl={value.imageName}
+                      fallbackUrl="../mob.jpg"
+                      idChercheur={value.chercheurs[0]}
+                      reload={reload}
+                    />
+                  </PublicationCardContainer>
+                );
+              })}
+              
+            </PublicationGrid>
+            </>
+          ) : (
+            <p>Aucune publication pour {chercheur.username}.</p>
+          )}
+          
           </SimilarEventsTitle>
           <EventGrid>
             {/* {similarEvents.map((value, key) => (

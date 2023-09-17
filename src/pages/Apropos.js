@@ -10,8 +10,7 @@ import EventCard from "../components/EventCard";
 import CartePublication from "../components/CartePublication";
 import Colors from "../styles/Colors";
 import ParticlesBg from "particles-bg";
-
-
+import "../styles/Apropos.css";
 
 const SecondaryTitle = styled.h2`
   color: ${Colors.color2};
@@ -83,17 +82,24 @@ const PersoCardContainer = styled.div`
 `;
 
 const CardContainer = styled.div`
-  background-image: url(${(props) => props.imageUrl});
-  background-size: cover;
-  background-position: center;
-  width: 100;
+  position: relative;
+  width: 100%;
   height: 60vh;
   margin-top: 100px;
-  animation: ${(props) =>
-    props.playAnimation ? "rotate 0.5s ease, zoom 0.5s ease" : "none"};
-  position: relative;
+  overflow: hidden;
+`;
+
+const SlideImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: ${(props) => (props.slideOut ? "0" : "100%")};
+  transition: left 0.5s ease-in-out;
+  width: 100%;
+  height: 100%;
+
 
 `;
+
 
 const TextContainer = styled.div`
   position: absolute;
@@ -131,8 +137,11 @@ const StyledSpan = styled.span`
   font-weight: bold;
 `;
 
-function Home() {
-  const [currentImage, setCurrentImage] = useState(1);
+function Apropos() {
+  const [currentImage, setCurrentImage] = useState(0);
+  const [nextImage, setNextImage] = useState(1); // L'image suivante
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [pilotes, setPilotes] = useState([]);
   const [etablissements, setEtablissements] = useState([]);
   const [events, setEvents] = useState([]);
@@ -186,48 +195,61 @@ function Home() {
     });
   }, []);
 
+  const [isReverseTransition, setIsReverseTransition] = useState(false);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImage((prevImage) => (prevImage === 1 ? 2 : 1));
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+      setNextImage((prevImage) => (prevImage === 0 ? 1 : 0)); // Changer vers l'autre image
     }, 5000);
-
+  
     return () => {
       clearInterval(interval);
     };
   }, []);
+  
+  
 
   return (
-    <div className="body">
-            {/* <ParticlesBg  type="cobweb" bg={true} num={150} /> */}
-            <div>
-            <CardContainer
-              imageUrl={images[currentImage - 1].src}
-              alt={`Image ${currentImage}`}
-            >
-              <TextContainer>
-                <Title>{images[currentImage - 1].title}</Title>
-                <Paragraph>
-                  {images[currentImage - 1].span && (
-                    <StyledSpan>{images[currentImage - 1].span}</StyledSpan>
-                  )}
-                  {images[currentImage - 1].text}
-                  {images[currentImage - 1].elem1 &&
-                    images[currentImage - 1].elem2 && (
-                      <ul>
-                        <li>{images[currentImage - 1].elem1}</li>
-                        <li>{images[currentImage - 1].elem2}</li>
-                      </ul>
-                    )}
-                </Paragraph>
-              </TextContainer>
-            </CardContainer>
-          </div>
+    <div className="body body2" id="body">
+      {/* <ParticlesBg  type="cobweb" bg={true} num={150} /> */}
+      <div>
+      <CardContainer>
+  <SlideImage
+    src={images[currentImageIndex].src}
+    alt={`Image ${currentImageIndex + 1}`}
+    className={`slide-out ${isReverseTransition ? "visible" : ""}`}
+  />
+  <SlideImage
+    src={images[nextImage].src}
+    alt={`Image ${nextImage + 1}`}
+    className={`slide-in ${!isReverseTransition ? "visible" : ""}`}
+  />
+  <TextContainer>
+    <Title>{images[currentImage].title}</Title>
+    <Paragraph>
+      {images[currentImage].span && (
+        <StyledSpan>{images[currentImage].span}</StyledSpan>
+      )}
+      {images[currentImage].text}
+      {images[currentImage].elem1 &&
+        images[currentImage].elem2 && (
+          <ul>
+            <li>{images[currentImage].elem1}</li>
+            <li>{images[currentImage].elem2}</li>
+          </ul>
+        )}
+    </Paragraph>
+  </TextContainer>
+</CardContainer>
+
+      </div>
       <header>header</header>
       <div className="main">
         <aside className="left"></aside>
         <main>
-          
-
           <SecondaryTitle>L'équipe du réseau : </SecondaryTitle>
           <PersoGrid>
             {pilotes.map((value, key) => {
@@ -306,4 +328,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Apropos;

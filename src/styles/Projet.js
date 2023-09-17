@@ -14,6 +14,7 @@ export const InputSection = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  font-size : 16px;
   @media (max-width: 1330px) {
     font-size : 8px;
     width: 100%;

@@ -1,9 +1,5 @@
 const Thematiques = [
-    {
-        nom : "Sciences",
-        backgroundColor : "#E8431E",
-        icon : "Sciences.png"
-    },
+    
     {
         nom : "Communications",
         backgroundColor : "#2BCD10",
@@ -43,7 +39,12 @@ const Thematiques = [
         nom : "Usages",
         backgroundColor : "#2BCD10",
         icon : "Usage.png"
-    }
+    },
+    {
+        nom : "Thèmes scientifiques",
+        backgroundColor : "#E8431E",
+        icon : "Sciences.png"
+    },
 ]
 
 export default Thematiques

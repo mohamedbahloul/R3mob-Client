@@ -3,6 +3,7 @@ export const InputSection = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  font-size : 16px;
 
 `;
 

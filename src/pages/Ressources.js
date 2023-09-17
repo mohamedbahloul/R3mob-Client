@@ -15,11 +15,13 @@ import CreatePubPopup from "../components/CreatePubPopup";
 // import { InputSection, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
 import { ButtonContainer } from "../styles/ScrollButton.style";
+import { set } from "date-fns";
 
 export const InputSection = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  font-size: 16px;
 `;
 
 export const Label = styled.label`
@@ -163,6 +165,7 @@ function Ressources() {
   const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
     useState([]);
   const [showCreatePopup, setShowCreatePopup] = useState(false);
+  const [shouldReloadPage, setShouldReloadPage] = useState(false);
 
 
   const currentHash = window.location.hash;
@@ -181,16 +184,18 @@ function Ressources() {
       }
     }
   }, [currentHash]);
-
   useEffect(() => {
-    axios.get(`http://localhost:3001/publication`).then((res) => {
-      setPublications(res.data);
-      console.log(res.data);
-    });
     axios.get(`http://localhost:3001/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
     });
   }, []);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/publication`).then((res) => {
+      setPublications(res.data);
+    });
+
+  }, [shouldReloadPage]);
 
   const filteredPublications = publications
     .filter((publication) => {
@@ -292,44 +297,17 @@ function Ressources() {
   const handleCloseCreatePopup = () => {
     setShowCreatePopup(false);
   };
-  const handleCreateCustomEvent = async (createdEvent) => {
-    // axios
-    //   .post(`http://localhost:3001/event/custom`, createdEvent)
-    //   .then(async (res) => {
-    //     let id = null;
-    //     axios
-    //       .get(`http://localhost:3001/event/lastCustom`)
-
-    //       .then(async (res) => {
-    //         id = res.data;
-    //         console.log(id);
-    //         if (id != null) id = id + 1;
-    //         else id = 1;
-    //         if (createdEvent.selectedImage != null) {
-    //           const formData = new FormData();
-    //           formData.append("imageName", `${id}.jpg`); // Add the image_name to the FormData
-    //           formData.append("image", createdEvent.selectedImage);
-    //           const response = await axios.post(
-    //             "http://localhost:3001/uploadImage",
-    //             formData
-    //           );
-    //           if (response.status === 200) {
-    //             // Image uploaded successfully
-    //             const imageUrl = response.data.imageUrl;
-    //             //setImageUrl(imageUrl);
-    //           } else {
-    //             // Handle error if necessary
-    //           }
-    //         }
-    //       });
-
-    //     //console.log(res.data);
-    //     fetchEvents();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+  const handleCreateCustomPublication = async (createdEvent) => {
     setShowCreatePopup(false);
+    try {
+      setShouldReloadPage(!shouldReloadPage);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const reload = () => {
+    setShouldReloadPage(!shouldReloadPage);
   };
 
   const maxPageButtons = 3; // Maximum number of page buttons to display
@@ -528,11 +506,14 @@ function Ressources() {
                   <PublicationCardContainer key={key}>
                     <CartePublication
                       id={value.id}
+                      url={value.url}
                       title={value.nom}
                       imageUrl={value.imageName}
                       fallbackUrl="mob.jpg"
-
+                      reload={reload}
+                      idChercheur={value.chercheurs[0]}
                     />
+                    {/* {console.log(value)} */}
                   </PublicationCardContainer>
                 );
               })}
@@ -602,13 +583,11 @@ function Ressources() {
         <Footer />
       </footer>
       {showCreatePopup && (
-          <CreatePubPopup
-          style={{zIndex: 1000}}
-
-            onSave={handleCreateCustomEvent}
-            onClose={handleCloseCreatePopup}
-          />
-        )}
+        <CreatePubPopup
+          onSave={handleCreateCustomPublication}
+          onClose={handleCloseCreatePopup}
+        />
+      )}
     </div>
   );
 }

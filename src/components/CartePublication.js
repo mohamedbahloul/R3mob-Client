@@ -1,12 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import styled from "styled-components";
 import "../styles/Colors.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import ThematiqueIcon from "../components/ThematiqueIcon";
 import Thematiques from "../components/Thematiques";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import EditPubPopup from "./EditPubPopup";
+import { AuthContext } from "../helpers/AuthContext";
+import ConfirmationPopup from "./ConfirmationPopup";
 
-const CartePublication = ({ id, title, link, fallbackUrl,imageUrl }) => {
+
+const DeleteConfirmationPopup = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const DeleteConfirmationPopupButton = styled.button`
+  margin-top: 10px;
+`
+
+
+
+const CartePublication = ({ id, url,title, link, fallbackUrl, imageUrl,reload,idChercheur }) => {
+  const { authState, setAuthState } = useContext(AuthContext);
   const [playAnimation, setPlayAnimation] = useState(false);
   const [publicationSousThematiques, setPublicationSousThematiques] = useState(
     []
@@ -15,6 +42,42 @@ const CartePublication = ({ id, title, link, fallbackUrl,imageUrl }) => {
   const [allThematique, setAllThematique] = useState([]);
   const [extractedThematiques, setExtractedThematiques] = useState([]);
   const [image, setImage] = useState(null);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+const [editedPublication, setEditedPublication] = useState(null);
+const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+
+
+
+
+
+
+  const formattedUrl = url && (url.startsWith("http://") || url.startsWith("https://"))
+    ? url
+    : `http://${url}`;
+
+    const handleEditEvent = (publication) => {
+      setIsEditPopupOpen(true);
+      setEditedPublication(publication);
+    };
+    
+    const handleCloseEditPopup = () => {
+      console.log("close");
+      setIsEditPopupOpen(false);
+      setEditedPublication(null);
+      reload();
+    };
+
+  const handleDeleteEvent = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/createPublication/${id}`);
+      reload();
+      // Gérez la réponse ici
+    } catch (error) {
+      console.error(error);
+      // Gérez les erreurs ici
+    }
+  };
 
   useEffect(() => {
     setPlayAnimation(true);
@@ -34,7 +97,7 @@ const CartePublication = ({ id, title, link, fallbackUrl,imageUrl }) => {
         }
       });
 
-      axios
+    axios
       .get(`http://localhost:3001/publication/chercheur/${id}`)
       .then((res) => {
         if (res.data.error) {
@@ -44,12 +107,12 @@ const CartePublication = ({ id, title, link, fallbackUrl,imageUrl }) => {
         }
       });
 
-      axios
+    axios
       .get(`http://localhost:3001/publication/image/${imageUrl}`)
       .then((res) => {
-        if (res.data && res.data !== null) { // Vérifiez que res.data n'est pas nul
+        if (res.data && res.data !== null) {
+          // Vérifiez que res.data n'est pas nul
           setImage(`data:image/png;base64,${res.data}`);
-          
         } else {
           setImage(null);
         }
@@ -57,7 +120,7 @@ const CartePublication = ({ id, title, link, fallbackUrl,imageUrl }) => {
       .catch((error) => {
         console.error(error);
       });
-  }, [id]);
+  }, [id, imageUrl]);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/thematique`).then((res) => {
@@ -75,62 +138,159 @@ const CartePublication = ({ id, title, link, fallbackUrl,imageUrl }) => {
       const thematicData = [];
       for (const publication of publicationSousThematiques) {
         const thematicId = publication.SousThematique.ThematiqueId;
-        const thematic = allThematique.find((thematique) => thematique.id === thematicId);
+        const thematic = allThematique.find(
+          (thematique) => thematique.id === thematicId
+        );
         if (thematic) {
-          const thematiqueIndex = thematicData.findIndex((data) => data.thematique.nom === thematic.nom);
+          const thematiqueIndex = thematicData.findIndex(
+            (data) => data.thematique.nom === thematic.nom
+          );
           if (thematiqueIndex !== -1) {
             // If the thematique already exists, update the sousThematique field
-            thematicData[thematiqueIndex].sousThematique.push(" , ",publication.SousThematique.nom);
+            thematicData[thematiqueIndex].sousThematique.push(
+              " , ",
+              publication.SousThematique.nom
+            );
           } else {
             // If the thematique doesn't exist, add it to the array
-            const them = Thematiques.find((thematique) => thematique.nom === thematic.nom);
-            thematicData.push({ thematique: them, sousThematique: [publication.SousThematique.nom] });
+            const them = Thematiques.find(
+              (thematique) => thematique.nom === thematic.nom
+            );
+            thematicData.push({
+              thematique: them,
+              sousThematique: [publication.SousThematique.nom],
+            });
           }
         }
       }
       setExtractedThematiques(thematicData);
     };
-  
+
     fetchThematiqueData();
   }, [publicationSousThematiques, allThematique]);
+  const handleShowDeleteConfirmation = () => {
+    setShowDeleteConfirmation(true);
+  };
+  const handleConfirmDelete = async () => {
+    try {
+      // Appeler la fonction de suppression réelle ici
+      await axios.delete(`http://localhost:3001/createPublication/${id}`);
+      reload();
+      // Masquer la popup de confirmation
+      setShowDeleteConfirmation(false);
+    } catch (error) {
+      console.error(error);
+      // Gérez les erreurs ici
+      // Masquer la popup de confirmation en cas d'erreur si nécessaire
+      setShowDeleteConfirmation(false);
+    }
+  };
 
-  const backgroundImage = image
-  ? `${image}`
-  : `${fallbackUrl}`;
-
+  const backgroundImage = image ? `${image}` : `${fallbackUrl}`;
 
   return (
-    // <PageLink to={link}>
-      <CardContainer playAnimation={playAnimation}>
-        <CardImage src={backgroundImage}  />
-        <CardContent>
-          <PublicationTitle>{title}</PublicationTitle>
-          <PublicationInfos>
-            <UsernameContainer> {/*<FaUserAlt/>*/}{publicationChercheur.map((publication) => {
+    <>
+    {console.log(authState.username,idChercheur)}
+    {authState.status && authState.username === idChercheur && (
+    <ButtonContainer>
+    
+    <ButtonEdit onClick={() => handleEditEvent(id)}>
+      <FontAwesomeIcon icon={faEdit} />
+    </ButtonEdit>
+    <ButtonDelete onClick={() => handleShowDeleteConfirmation()}>
+      <FontAwesomeIcon icon={faTrash} />
+    </ButtonDelete>
+  </ButtonContainer>
+  )}
+  <a href={url && url !== "" ? formattedUrl : undefined} target="_blank" rel="noopener noreferrer">
+        <CardContainer playAnimation={playAnimation}>
+      
+      <CardImage src={backgroundImage} />
+      <CardContent>
+        <PublicationTitle>{title}</PublicationTitle>
+        <PublicationInfos>
+          <UsernameContainer>
+            {" "}
+            {/*<FaUserAlt/>*/}
+            {publicationChercheur.map((publication) => {
               return (
                 <Username href={`chercheur/${publication.Personnel.id}`}>
-                  
                   {publication.Personnel.username}
                 </Username>
-              )
-            }) }</UsernameContainer>
-            <ThematiquesContainer>
-              { extractedThematiques.map((publicationSousThematiques) =>
-                    <ThematiqueIcon
-                      key={publicationSousThematiques.thematique.nom}
-                      icon={"../thematiques/" + publicationSousThematiques.thematique.icon}
-                      backgroundColor={publicationSousThematiques.thematique.backgroundColor}
-                      subThematiques={publicationSousThematiques.sousThematique}
-                    />
-                    )
-              }
-            </ThematiquesContainer>
-          </PublicationInfos>
-        </CardContent>
-      </CardContainer>
-    // </PageLink>
+              );
+            })}
+          </UsernameContainer>
+          <ThematiquesContainer>
+            {extractedThematiques.map((publicationSousThematiques) => (
+              <ThematiqueIcon
+                key={publicationSousThematiques.thematique.nom}
+                icon={
+                  "../thematiques/" + publicationSousThematiques.thematique.icon
+                }
+                backgroundColor={
+                  publicationSousThematiques.thematique.backgroundColor
+                }
+                subThematiques={publicationSousThematiques.sousThematique}
+              />
+            ))}
+          </ThematiquesContainer>
+        </PublicationInfos>
+      </CardContent>
+    </CardContainer>
+    </a>
+    {isEditPopupOpen && (
+  <EditPubPopup
+  
+    pubId={id}
+    title={title}
+    pubUrl={formattedUrl}
+    publication={editedPublication}
+    onSave={() => {
+      handleCloseEditPopup();
+    }}
+    onClose={handleCloseEditPopup}
+  />
+)}
+{showDeleteConfirmation && (
+    <ConfirmationPopup onClose={() => setShowDeleteConfirmation(false)} onSave={handleConfirmDelete}/>
+)}
+
+    </>
   );
 };
+
+export const ButtonDelete = styled.button`
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: absolute;
+  top: -20px;
+  right: 100px; 
+  width: fit-content;
+`;
+
+export const ButtonEdit = styled.button`
+  background-color: #ffc107;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: absolute;
+  top: -20px;
+  right: 150px; 
+  width: fit-content;
+
+`;
+const ButtonContainer = styled.div`
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+`;
 
 const Username = styled.a`
   color: var(--color1);
@@ -145,7 +305,7 @@ const ThematiquesContainer = styled.div`
   margin-right: -5%;
   margin-bottom: 5%;
 `;
-const PageLink = styled(Link)`
+const PageLink = styled.a`
   text-decoration: none;
   color: inherit;
 `;
@@ -157,9 +317,8 @@ const CardImage = styled.img`
 `;
 
 const CardContainer = styled.div`
-  
   max-width: 400px;
-  margin-top: 2%; /* Adjust the margin as needed */
+  margin-top: 6%; /* Adjust the margin as needed */
   background-color: whitesmoke;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 100%; /* Use 100% to match the container height */
@@ -222,6 +381,5 @@ const PublicationInfos = styled.div`
   margin-right: 5%;
   margin-bottom: 5%;
 `;
-
 
 export default CartePublication;

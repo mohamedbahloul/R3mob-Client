@@ -32,8 +32,9 @@ import {
 import Thematiques from "./Thematiques";
 import SelectedThematique from "./SelectedThematique";
 import { AuthContext } from "../helpers/AuthContext";
+import { set } from "date-fns";
 
-const CreateEventPopup = ({ onSave, onClose }) => {
+const EditPubPopup = ({ pubId,title,pubUrl,onSave, onClose }) => {
   const [isSaveClicked, setIsSaveClicked] = useState(false); // Ajoutez cette ligne
   const { authState, setAuthState } = useContext(AuthContext);
   const [nom, setNom] = useState(null);
@@ -55,6 +56,9 @@ const CreateEventPopup = ({ onSave, onClose }) => {
       setAllSousThematiques(res.data);
       //setSousThematiquesFiltrees(res.data); // Initialisez avec toutes les sous-thématiques
     });
+    setNom(title);
+    setUrl(pubUrl);
+
   }, []);
   const handleImageUpload = async (e) => {
     setSelectedImage(e.target.files[0]);
@@ -70,12 +74,12 @@ const CreateEventPopup = ({ onSave, onClose }) => {
 
   const handleResetChanges = () => {
     // Reset all the fields here
-    setNom(null);
+    setNom(title);
     setStartDateTime(null);
     setLocation(null);
     setDescription(null);
     setSelectedImage(null);
-    setUrl(null);
+    setUrl(pubUrl);
   };
 
   const handleSaveChanges = async () => {
@@ -102,7 +106,7 @@ const CreateEventPopup = ({ onSave, onClose }) => {
     formData.append("userId", authState.id);
 
     try {
-      await axios.post("http://localhost:3001/createPublication", formData, {
+      await axios.put(`http://localhost:3001/createPublication/${pubId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -177,7 +181,7 @@ const CreateEventPopup = ({ onSave, onClose }) => {
   return (
     <PopupContainer>
       <PopupContent>
-        <Title>Créer une publication</Title>
+        <Title>Modifier la publication</Title>
         <CloseButton onClick={onClose}>
           <FontAwesomeIcon icon={faTimes} />
         </CloseButton>
@@ -191,6 +195,7 @@ const CreateEventPopup = ({ onSave, onClose }) => {
           <Textarea
             rows="4"
             placeholder="Titre de la publication"
+            value={nom}
             onChange={(e) => {
               setNom(e.target.value);
               setIsSaveClicked(false); // Réinitialisez le message d'erreur
@@ -200,10 +205,11 @@ const CreateEventPopup = ({ onSave, onClose }) => {
             onChange={(e) => {
               setUrl(e.target.value);
             }}
+            value={url}
             style={{ marginTop: "20px" }}
             type="text"
             placeholder="Url de la publication..."
-          ></Input>
+          />
         </InputSection>
         <StyledSelect
           value={selectedThematique}
@@ -279,4 +285,4 @@ const CreateEventPopup = ({ onSave, onClose }) => {
   );
 };
 
-export default CreateEventPopup;
+export default EditPubPopup;
