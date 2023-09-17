@@ -315,6 +315,9 @@ function Apropos() {
               );
             })}
           </PublicationGrid>
+          <div className="mobile">
+          <CarteButton />
+          </div>
         </main>
         <aside className="right">
           <ScrollButton />

@@ -9,6 +9,14 @@
   box-sizing: border-box;
 }
 
+.mobile {
+
+  display: none;
+  @media (max-width: 990px) {
+    display: block;
+  }
+}
+
 .body {
   box-sizing: border-box;
   height: 95vh;

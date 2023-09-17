@@ -3,11 +3,11 @@ import Carte from '../assets/Carte.PNG';
 import Colors from "./Colors.js"
 
 export const CardLegend = styled.h5`
-  color: black;
+  color: ${Colors.color2};
   text-align: center;
   margin-top: 3px;
   font-size: 1.3rem;
-  font-weight : normal;
+  font-weight : bold;
 
 `;
 
@@ -17,12 +17,12 @@ export const ButtonContainer = styled.div`
   align-items: center;
   right: 20px;
   z-index: 999;
-  /* @media (max-width: 866px) {
+  @media (max-width: 990px) {
     position: relative;
     top: 0%;
     right: 0px;
     
-  } */
+  }
 `;
 
 export const CarteBttn = styled.button`
@@ -63,6 +63,11 @@ export const CarteBttn = styled.button`
     color: black;
     border: 2px solid white;
     border-radius: 5%;
+  }
+  @media (max-width: 990px) {
+    height: 50vh;
+  width: 80vw;
+    
   }
   /* @media (max-width: 866px) {
     width: 600px;

@@ -77,6 +77,10 @@ function Annuaire() {
             </PageLink>
           </CardsContainer>
           <BordeauxMap />
+          <div className="mobile">
+          <CarteButton />
+          </div>
+
         </main>
         <aside className="right">
           <ScrollButton />

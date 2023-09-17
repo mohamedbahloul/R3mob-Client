@@ -65,7 +65,7 @@ export const StyledSelect = styled.select`
 const PublicationGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 40px 20px ;
   justify-content: center;
   padding-top: 15px;
 `;
@@ -572,7 +572,9 @@ function Ressources() {
               title="YouTube Video"
             ></iframe>
           </VideoContainer>
-          {/* <CarteButton /> */}
+          <div className="mobile">
+          <CarteButton />
+          </div>
         </main>
         <aside className="right">
           <ScrollButton />
