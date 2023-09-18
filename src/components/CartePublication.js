@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import "../styles/Colors.css";
 import { Link } from "react-router-dom";
@@ -10,7 +10,6 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import EditPubPopup from "./EditPubPopup";
 import { AuthContext } from "../helpers/AuthContext";
 import ConfirmationPopup from "./ConfirmationPopup";
-
 
 const DeleteConfirmationPopup = styled.div`
   position: fixed;
@@ -24,16 +23,23 @@ const DeleteConfirmationPopup = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 const DeleteConfirmationPopupButton = styled.button`
   margin-top: 10px;
-`
+`;
 
-
-
-const CartePublication = ({ id, url,title, link, fallbackUrl, imageUrl,reload,idChercheur }) => {
-  const { authState, setAuthState } = useContext(AuthContext);
+const CartePublication = ({
+  id,
+  url,
+  title,
+  link,
+  fallbackUrl,
+  imageUrl,
+  reload,
+  idChercheur,
+}) => {
+  const { authState } = useContext(AuthContext);
   const [playAnimation, setPlayAnimation] = useState(false);
   const [publicationSousThematiques, setPublicationSousThematiques] = useState(
     []
@@ -43,30 +49,25 @@ const CartePublication = ({ id, url,title, link, fallbackUrl, imageUrl,reload,id
   const [extractedThematiques, setExtractedThematiques] = useState([]);
   const [image, setImage] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-const [editedPublication, setEditedPublication] = useState(null);
-const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [editedPublication, setEditedPublication] = useState(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+  const formattedUrl =
+    url && (url.startsWith("http://") || url.startsWith("https://"))
+      ? url
+      : `http://${url}`;
 
+  const handleEditEvent = (publication) => {
+    setIsEditPopupOpen(true);
+    setEditedPublication(publication);
+  };
 
-
-
-
-
-  const formattedUrl = url && (url.startsWith("http://") || url.startsWith("https://"))
-    ? url
-    : `http://${url}`;
-
-    const handleEditEvent = (publication) => {
-      setIsEditPopupOpen(true);
-      setEditedPublication(publication);
-    };
-    
-    const handleCloseEditPopup = () => {
-      console.log("close");
-      setIsEditPopupOpen(false);
-      setEditedPublication(null);
-      reload();
-    };
+  const handleCloseEditPopup = () => {
+    console.log("close");
+    setIsEditPopupOpen(false);
+    setEditedPublication(null);
+    reload();
+  };
 
   const handleDeleteEvent = async (id) => {
     try {
@@ -190,71 +191,82 @@ const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   return (
     <>
-    {console.log(authState.username,idChercheur)}
-    {authState.status && authState.username === idChercheur && (
-    <ButtonContainer>
-    
-    <ButtonEdit onClick={() => handleEditEvent(id)}>
-      <FontAwesomeIcon icon={faEdit} />
-    </ButtonEdit>
-    <ButtonDelete onClick={() => handleShowDeleteConfirmation()}>
-      <FontAwesomeIcon icon={faTrash} />
-    </ButtonDelete>
-  </ButtonContainer>
-  )}
-  <a href={url && url !== "" ? formattedUrl : undefined} target="_blank" rel="noopener noreferrer">
+      {console.log(authState.username, idChercheur)}
+      {authState.status && authState.username === idChercheur && (
+        <ButtonContainer>
+          <ButtonEdit onClick={() => handleEditEvent(id)}>
+            <FontAwesomeIcon icon={faEdit} />
+          </ButtonEdit>
+          <ButtonDelete onClick={() => handleShowDeleteConfirmation()}>
+            <FontAwesomeIcon icon={faTrash} />
+          </ButtonDelete>
+        </ButtonContainer>
+      )}
+      <a
+        href={url && url !== "" ? formattedUrl : undefined}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          textDecoration: "none",
+          color: "inherit",
+        }}
+      >
         <CardContainer playAnimation={playAnimation}>
-      
-      <CardImage src={backgroundImage} />
-      <CardContent>
-        <PublicationTitle>{title}</PublicationTitle>
-        <PublicationInfos>
-          <UsernameContainer>
-            {" "}
-            {/*<FaUserAlt/>*/}
-            {publicationChercheur.map((publication) => {
-              return (
-                <Username href={`chercheur/${publication.Personnel.id}`}>
-                  {publication.Personnel.username}
-                </Username>
-              );
-            })}
-          </UsernameContainer>
-          <ThematiquesContainer>
-            {extractedThematiques.map((publicationSousThematiques) => (
-              <ThematiqueIcon
-                key={publicationSousThematiques.thematique.nom}
-                icon={
-                  "../thematiques/" + publicationSousThematiques.thematique.icon
-                }
-                backgroundColor={
-                  publicationSousThematiques.thematique.backgroundColor
-                }
-                subThematiques={publicationSousThematiques.sousThematique}
-              />
-            ))}
-          </ThematiquesContainer>
-        </PublicationInfos>
-      </CardContent>
-    </CardContainer>
-    </a>
-    {isEditPopupOpen && (
-  <EditPubPopup
-  
-    pubId={id}
-    title={title}
-    pubUrl={formattedUrl}
-    publication={editedPublication}
-    onSave={() => {
-      handleCloseEditPopup();
-    }}
-    onClose={handleCloseEditPopup}
-  />
-)}
-{showDeleteConfirmation && (
-    <ConfirmationPopup onClose={() => setShowDeleteConfirmation(false)} onSave={handleConfirmDelete}/>
-)}
-
+          <CardImage src={backgroundImage} />
+          <CardContent>
+            <PublicationTitle>{title}</PublicationTitle>
+            <PublicationInfos>
+              <UsernameContainer>
+                {publicationChercheur.map((publication) => (
+                  <Username
+                    key={publication.Personnel.id}
+                    href={
+                      authState.status
+                        ? `chercheur/${publication.Personnel.id}`
+                        : undefined
+                    }
+                  >
+                    {publication.Personnel.username}
+                  </Username>
+                ))}
+              </UsernameContainer>
+              <ThematiquesContainer>
+                {extractedThematiques.map((publicationSousThematiques) => (
+                  <ThematiqueIcon
+                    key={publicationSousThematiques.thematique.nom}
+                    icon={
+                      "../thematiques/" +
+                      publicationSousThematiques.thematique.icon
+                    }
+                    backgroundColor={
+                      publicationSousThematiques.thematique.backgroundColor
+                    }
+                    subThematiques={publicationSousThematiques.sousThematique}
+                  />
+                ))}
+              </ThematiquesContainer>
+            </PublicationInfos>
+          </CardContent>
+        </CardContainer>
+      </a>
+      {isEditPopupOpen && (
+        <EditPubPopup
+          pubId={id}
+          title={title}
+          pubUrl={formattedUrl}
+          publication={editedPublication}
+          onSave={() => {
+            handleCloseEditPopup();
+          }}
+          onClose={handleCloseEditPopup}
+        />
+      )}
+      {showDeleteConfirmation && (
+        <ConfirmationPopup
+          onClose={() => setShowDeleteConfirmation(false)}
+          onSave={handleConfirmDelete}
+        />
+      )}
     </>
   );
 };
@@ -268,7 +280,7 @@ export const ButtonDelete = styled.button`
   cursor: pointer;
   position: absolute;
   top: -20px;
-  right: 100px; 
+  right: 100px;
   width: fit-content;
 `;
 
@@ -281,9 +293,8 @@ export const ButtonEdit = styled.button`
   cursor: pointer;
   position: absolute;
   top: -20px;
-  right: 150px; 
+  right: 150px;
   width: fit-content;
-
 `;
 const ButtonContainer = styled.div`
   position: relative;

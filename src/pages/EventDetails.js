@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -8,6 +8,8 @@ import CarteButton from "../components/CarteButton";
 import { FaMapMarkerAlt, FaCalendarAlt, FaMoneyBill } from "react-icons/fa";
 import Footer from "../components/Footer";
 import EventCard from "../components/EventCard";
+import { AuthContext } from "../helpers/AuthContext";
+
 const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -158,6 +160,8 @@ const SimilarEventsTitle = styled.h3`
 `;
 
 function EventDetails() {
+  const { authState } = useContext(AuthContext);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -233,7 +237,7 @@ function EventDetails() {
         <aside className="left">left</aside>
         <main>
           <TitleContainer>
-            <EventStatus> #Événement {event.isPrivate === 't' ? "Privé" : "Publique"}</EventStatus>
+            <EventStatus> #Événement {event.isPrivate === 't' ? "Privé" : "Public"}</EventStatus>
             <EventTitle>{event.nom}</EventTitle>
           </TitleContainer>
           <DetailsContainer>
@@ -260,11 +264,13 @@ function EventDetails() {
 
                 <div>{eventDetails.price}</div>
               </EventFieldContainer>
+              {(event.isPrivate === 'f' || authState.status) && (
               <EventFieldContainer>
                 <EventLink href={eventDetails.registrationLink}>
                   S'inscrire
                 </EventLink>
               </EventFieldContainer>
+              )}
               <ContactSection>
                 <ContactTitle>Contact</ContactTitle>
                 <ContactName>{eventDetails.contact.name}</ContactName>

@@ -1,6 +1,6 @@
 import CartePublication from "../components/CartePublication";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import "../styles/common/layout.css";
 import ScrollButton from "../components/ScrollButton";
 import CarteButton from "../components/CarteButton";
@@ -11,11 +11,8 @@ import { FaSearch } from "react-icons/fa";
 import Thematiques from "../components/Thematiques";
 import Colors from "../styles/Colors";
 import CreatePubPopup from "../components/CreatePubPopup";
-
-// import { InputSection, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
-import { ButtonContainer } from "../styles/ScrollButton.style";
-import { set } from "date-fns";
+import { AuthContext } from "../helpers/AuthContext";
 
 export const InputSection = styled.div`
   display: flex;
@@ -166,6 +163,8 @@ function Ressources() {
     useState([]);
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [shouldReloadPage, setShouldReloadPage] = useState(false);
+  const { authState } = useContext(AuthContext);
+
 
 
   const currentHash = window.location.hash;
@@ -409,6 +408,7 @@ function Ressources() {
           </ReinitialiserButton>
         </aside>
         <main id="publications">
+          {authState.status && (
           <CreateButtonContainer>
           <Button onClick={() =>{
             setShowCreatePopup(true)
@@ -416,6 +416,7 @@ function Ressources() {
             Ajouter une publication
           </Button>
           </CreateButtonContainer>
+          )}
         {/* <CarteButton /> */}
           {/* Filtres étendus pour les écrans de téléphone */}
           <ExtendedFiltres>
