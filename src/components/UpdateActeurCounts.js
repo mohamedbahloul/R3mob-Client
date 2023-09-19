@@ -8,6 +8,7 @@ import {
   Th,
   Td,
   TdActions,
+  TableContainer,
 } from "../styles/UpdateEvent";
 
 export const Input = styled.input`
@@ -57,7 +58,7 @@ function UpdateActeurCounts() {
   };
 
   return (
-    <div style={{ marginTop: "100px"}}>
+    <TableContainer>
       <Table style={{ borderCollapse: 'collapse' }}>
         <thead>
           <tr>
@@ -92,12 +93,13 @@ function UpdateActeurCounts() {
           cursor: "pointer",
           fontSize: "16px",
           width: "auto",
+          marginTop: "20px",
         }}
         onClick={handleUpdateAllCounts}
       >
         Modifier tous les nombres
       </button>
-    </div>
+    </TableContainer>
   );
 }
 

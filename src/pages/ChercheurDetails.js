@@ -44,7 +44,7 @@ const ChercheurEtabs = styled.h2`
 `;
 
 const Etab= styled.a`
-  font-size: 20px;
+  font-size: 17px;
   font-weight: lighter;
 `;
 const publications=styled.h2` 
@@ -281,7 +281,11 @@ function ChercheurDetails() {
             <ChercheurImage backgroundImage={backgroundImage} />
             <Infos>
               <ChercheurName>{chercheur.username}</ChercheurName>
+              <Etab style={{
+                marginLeft: "5%",
+              }}>{chercheur.email}</Etab>
               <OtherInfos>
+                
 
               
               <ChercheurEtabs>
@@ -317,13 +321,13 @@ function ChercheurDetails() {
 
           </HeaderContainer>
           <DetailsContainer>
-            <div>
+            {/* <div>
 
               <EventFieldContainer>
                 <EventLink href={`/login/${chercheurId}`}>Se Connecter</EventLink>
               </EventFieldContainer>
              
-            </div>
+            </div> */}
             {/* <RightSide>
               <EventImage alt="Image de l'événement" />
 

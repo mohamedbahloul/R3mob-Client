@@ -37,6 +37,7 @@ header {
 .main {
   display: flex;
   flex: 3 3 100px;
+
 }
 
 .left {
@@ -79,6 +80,7 @@ footer {
     align-items: center;
     margin-left: 5%;
     margin-right: 5%;
+    flex : 0;
   }
 
   .left {

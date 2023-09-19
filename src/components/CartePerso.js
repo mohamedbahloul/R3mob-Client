@@ -60,12 +60,12 @@ const CartePerso = ({ id, name, email, phone, address, imageData }) => {
                         </Icon>
                         <Infos>{email}</Infos>
                     </InfoRow>
-                    <InfoRow>
+                    {/* <InfoRow>
                         <Icon>
                             <FontAwesomeIcon icon={faPhone} />
                         </Icon>
                         <Infos>{phone}</Infos>
-                    </InfoRow>
+                    </InfoRow> */}
                     <InfoRow>
                         <Icon>
                             <FontAwesomeIcon icon={faMapMarker} />

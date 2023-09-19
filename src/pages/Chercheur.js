@@ -358,7 +358,7 @@ function Chercheur() {
                     id={value.id}
                     name={value.username}
                     email={value.email ? value.email : "Pas indiqué"}
-                    phone={value.phone ? value.phone : "Pas indiqué"}
+                    // phone={value.phone ? value.phone : "Pas indiqué"}
                     address={etablissementNames.join(", ")} // Join establishment names with commas
                     imageData={value.imageData}
                   />

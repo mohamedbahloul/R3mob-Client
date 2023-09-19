@@ -196,6 +196,25 @@ export const ResetButton = styled.button`
       props.primary ? "#0056b3" : props.danger ? "#c82333" : "#e0e0e0"};
   }
 `;
+export const LeaveButton = styled.button`
+   width: 150px;
+  height: 45px;
+  margin: 10px;
+  border: none;
+  background-color: red;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: ${(props) =>
+      props.primary ? "#0056b3" : props.danger ? "#c82333" : "#e0e0e0"};
+  }
+`;
+
+
 
 export const PopupContent = styled.div`
   background-color: white;

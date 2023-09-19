@@ -22,9 +22,19 @@ const RightSide = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 100%; /* Ajustez ce pourcentage en fonction de vos besoins */
   @media (min-width: 990px) {
-    width: 90%;
+    align-items: flex-start;
+  }
+`;
+
+const LeftSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%; /* Ajustez ce pourcentage en fonction de vos besoins */
+  @media (min-width: 990px) {
+    width: 90%; /* Ajustez ce pourcentage en fonction de vos besoins */
     align-items: flex-start;
   }
 `;
@@ -101,12 +111,12 @@ const ContactName = styled.div`
 `;
 
 const EventImage = styled.img`
-  max-width: 90%;
+  max-width: 70%;
   height: auto;
   margin-top: 20px;
   border-radius: 10%;
   align-self: center;
-  width: 600px;
+  width: 450px;
 `;
 
 const EventDescription = styled.p`
@@ -209,7 +219,6 @@ function EventDetails() {
     contact: {
       name: "Cédrik Ferrero",
       address: "cedrik.ferrero@bordeaux-inp.fr",
-      phone: "+33 123456789",
       poste: "Animateur R3MOB",
     },
     registrationLink: "https://www.bordeaux-inp.fr/fr/formation/2021/PR/ing%C3%A9nieur-enseirb-matmeca",
@@ -241,7 +250,7 @@ function EventDetails() {
             <EventTitle>{event.nom}</EventTitle>
           </TitleContainer>
           <DetailsContainer>
-            <div>
+            <LeftSide>
               <EventFieldContainer>
                 <EventIcon>
                   <FaCalendarAlt />
@@ -275,10 +284,9 @@ function EventDetails() {
                 <ContactTitle>Contact</ContactTitle>
                 <ContactName>{eventDetails.contact.name}</ContactName>
                 <ContactInfo>{eventDetails.contact.address}</ContactInfo>
-                <ContactInfo>{eventDetails.contact.phone}</ContactInfo>
                 <ContactInfo>{eventDetails.contact.poste}</ContactInfo>
               </ContactSection>
-            </div>
+            </LeftSide>
             <RightSide>
                <EventImage src={fallbackImageUrl} alt="Image de l'événement" /> 
               {formattedDescription.split("<br/>").map((paragraph, index) => (

@@ -2,7 +2,14 @@ import styled from "styled-components";
 import Colors from "./Colors";
 
 
-
+export const TableContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Pour centrer horizontalement */
+  align-items: center; /* Pour centrer verticalement */
+  margin-top: 100px;
+  width: 100%;
+  `;
 export const StatusButton = styled.button`
   width: 150px;
   height: 45px;
@@ -55,7 +62,7 @@ export const Button = styled.button`
 `;
 
 export const Table = styled.table`
-  width: 100%;
+  width: 90%;
   border-collapse: collapse;
 `;
 
@@ -69,6 +76,7 @@ export const Td = styled.td`
   border: 1px solid #ccc;
   padding: 10px;
   word-break: break-all;
+  /* width: 30%; */
 `;
 
 export const ButtonDelete = styled.button`

@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import "../styles/login-style.css";
 import styled from "styled-components";
 import FindMailPopup from "../components/FindMailPopup";
+import SendEmailConfirmationPopup from "../components/SendEmailConfirmationPopup";
 
 const Body = styled.div`
   box-sizing: border-box;
@@ -25,14 +26,13 @@ const Body = styled.div`
   background: linear-gradient(to bottom, #e8431e, #302b63, #24243e);
 `;
 const MainStyle = styled.div`
-  width: 350px;
-  height: 500px;
-  background: red;
-  overflow: hidden;
-  background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38")
-    no-repeat center/ cover;
-  border-radius: 10px;
-  box-shadow: 5px 20px 50px #000;
+  	width: 350px;
+	height: 500px;
+	background: red;
+	overflow: hidden;
+	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
 `;
 
 const Label = styled.label`
@@ -78,18 +78,31 @@ const Button = styled.button`
     background: #6d44b8;
   }
 `;
+const LinksContainer = styled.div`
+display: flex; 
+flex-direction: column;
+margin-top: 10px;
+align-items: center;
+`; 
 
 const RechercheEmailButton = styled.button`
-  color: white;
-  margin-top: 20%;
+  color: gray;
   background: transparent;
   border: none;
   cursor: pointer;
   text-decoration: underline;
   width: fit-content;
 `;
-const InscritEmailButton= styled.a`
-  color: white;
+const RechercheEmailButtonSignup = styled.button`
+color: white;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  width: fit-content;
+`;
+const InscritEmailButton = styled.a`
+  color: gray;
   margin-top: 0%;
   background: transparent;
   border: none;
@@ -98,9 +111,6 @@ const InscritEmailButton= styled.a`
   font-size: 0.8rem;
 `;
 const mainStyles = {
-  // display: "flex",
-  // justifyContent: "center",
-  // alignItems: "center",
   marginTop: "10%",
   marginLeft: "30%",
 };
@@ -110,7 +120,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const { setAuthState } = useContext(AuthContext);
   const { id } = useParams();
-  const [showFindMail, setShowFindMail] = useState(false); 
+  const [showFindMail, setShowFindMail] = useState(false);
+  const [showConfirmationSendPupup, setShowConfirmationSendPupup] = useState( false );
   let Navigate = useNavigate();
 
   useEffect(() => {
@@ -129,6 +140,10 @@ function Login() {
 
   const handleShowMailPopupClose = () => {
     setShowFindMail(false);
+  };
+  const handleSignupClick = () => {
+    //Logique pour envoyer un email qui contient le mot de passe
+    setShowConfirmationSendPupup(true);
   };
 
   const login = () => {
@@ -156,11 +171,35 @@ function Login() {
         <aside className="left"></aside>
         <main style={mainStyles}>
           <MainStyle>
+            <input type="checkbox" id="chk" aria-hidden="true" />
+            <div class="signup">
+              {/* <form> */}
+                <Label for="chk" aria-hidden="true">
+                  Sign up
+                </Label>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required=""
+                />
+                <Button onClick={handleSignupClick}>Sign up</Button>
+                <LinksContainer>
+                <RechercheEmailButtonSignup
+                  onClick={() => {
+                    setShowFindMail(true);
+                  }}
+                >
+                  Trouver votre email.
+                </RechercheEmailButtonSignup>
+            
+                </LinksContainer>
+            </div>
             <div class="login">
               <Label for="chk" aria-hidden="true">
                 Login
               </Label>
-              <div className="loginContainer">
+              <div>
                 <Input
                   type="text"
                   placeholder="Username..."
@@ -177,31 +216,33 @@ function Login() {
                   }}
                 />
                 <Button onClick={login}>Login</Button>
-                <RechercheEmailButton onClick={()=>{
-                  setShowFindMail(true);
-                }}>Trouver votre email.</RechercheEmailButton>
-                <InscritEmailButton href="/registre">Première fois ? Inscrivez-vous...</InscritEmailButton>
-
-                
-                
+                <LinksContainer>
+                <RechercheEmailButton
+                  onClick={() => {
+                    setShowFindMail(true);
+                  }}
+                >
+                  Trouver votre email.
+                </RechercheEmailButton>
+                {/* <InscritEmailButton href="/registre">
+                  Première fois ? Inscrivez-vous...
+                </InscritEmailButton> */}
+                </LinksContainer>
               </div>
             </div>
           </MainStyle>
-          
-
         </main>
-        <aside className="right">
-
-        </aside>
+        <aside className="right"></aside>
       </div>
       <footer>
         <Footer />
       </footer>
-      {showFindMail && (
-            <FindMailPopup onClose={handleShowMailPopupClose}/>
-
-          )}
-
+      {showFindMail && <FindMailPopup onClose={handleShowMailPopupClose} />}
+      {showConfirmationSendPupup && (
+        <SendEmailConfirmationPopup
+          onClose={() => setShowConfirmationSendPupup(false)}
+        />
+      )}
     </Body>
   );
 }

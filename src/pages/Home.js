@@ -286,6 +286,7 @@ function Home() {
                   <CartePublication
                     id={value.id}
                     title={value.nom}
+                    url={value.url}
                     imageUrl={value.imageName}
                     fallbackUrl="mob.jpg"
                   />

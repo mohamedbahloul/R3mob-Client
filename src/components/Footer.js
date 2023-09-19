@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {FaFacebook} from "react-icons/fa";
-import {FaInstagram} from "react-icons/fa";
-import {FaTwitter} from "react-icons/fa";
-import {FaLinkedin} from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
 import Colors from "../styles/Colors";
+import axios from "axios";
 
 const FooterContainer = styled.footer`
   text-align: center;
-
 `;
 
 const SocialIcons = styled.div`
@@ -33,24 +33,40 @@ const CopyrightText = styled.p`
 `;
 
 const Footer = () => {
+  const [links, setLinks] = useState({});
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/infos/reseauxSociaux").then((response) => {
+      setLinks(response.data);
+    });
+  }, []);
   return (
     <FooterContainer>
       <SocialIcons>
-        <a href="lien_facebook" target="_blank" rel="noopener noreferrer">
-          <FaFacebook/>
-        </a>
-        <a href="lien_instagram" target="_blank" rel="noopener noreferrer">
+        {links.Facebook && (
+          <a href={links.Facebook} target="_blank" rel="noopener noreferrer">
+            <FaFacebook />
+          </a>
+        )}
+        {links.Instagram && (
+        <a href={links.Instagram} target="_blank" rel="noopener noreferrer">
           <FaInstagram/>
         </a>
-        <a href="lien_twitter" target="_blank" rel="noopener noreferrer">
-        <FaTwitter/>
-        </a>
-        <a href="lien_linkedin" target="_blank" rel="noopener noreferrer">
-        <FaLinkedin/>
-        </a>
+        )}
+        {links.Twitter && (
+          <a href={links.Twitter} target="_blank" rel="noopener noreferrer">
+            <FaTwitter />
+          </a>
+        )}
+        {links.LinkedIn && (
+          <a href={links.LinkedIn} target="_blank" rel="noopener noreferrer">
+            <FaLinkedin />
+          </a>
+        )}
       </SocialIcons>
       <CopyrightText>
-        &copy; {new Date().getFullYear()} R3MOB - Réseau régional de recherche sur les nouvelles mobilités.
+        &copy; {new Date().getFullYear()} R3MOB - Réseau régional de recherche
+        sur les nouvelles mobilités.
       </CopyrightText>
     </FooterContainer>
   );
