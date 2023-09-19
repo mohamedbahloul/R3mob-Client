@@ -26,13 +26,14 @@ const Body = styled.div`
   background: linear-gradient(to bottom, #e8431e, #302b63, #24243e);
 `;
 const MainStyle = styled.div`
-  	width: 350px;
-	height: 500px;
-	background: red;
-	overflow: hidden;
-	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
-	border-radius: 10px;
-	box-shadow: 5px 20px 50px #000;
+  width: 350px;
+  height: 500px;
+  background: red;
+  overflow: hidden;
+  background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38")
+    no-repeat center/ cover;
+  border-radius: 10px;
+  box-shadow: 5px 20px 50px #000;
 `;
 
 const Label = styled.label`
@@ -79,11 +80,11 @@ const Button = styled.button`
   }
 `;
 const LinksContainer = styled.div`
-display: flex; 
-flex-direction: column;
-margin-top: 10px;
-align-items: center;
-`; 
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  align-items: center;
+`;
 
 const RechercheEmailButton = styled.button`
   color: gray;
@@ -94,7 +95,7 @@ const RechercheEmailButton = styled.button`
   width: fit-content;
 `;
 const RechercheEmailButtonSignup = styled.button`
-color: white;
+  color: white;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -116,12 +117,14 @@ const mainStyles = {
 };
 
 function Login() {
+  const [signupUsername, setSignupUsername] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setAuthState } = useContext(AuthContext);
   const { id } = useParams();
   const [showFindMail, setShowFindMail] = useState(false);
-  const [showConfirmationSendPupup, setShowConfirmationSendPupup] = useState( false );
+  const [showConfirmationSendPupup, setShowConfirmationSendPupup] =
+    useState(false);
   let Navigate = useNavigate();
 
   useEffect(() => {
@@ -142,8 +145,15 @@ function Login() {
     setShowFindMail(false);
   };
   const handleSignupClick = () => {
-    //Logique pour envoyer un email qui contient le mot de passe
-    setShowConfirmationSendPupup(true);
+    axios
+      .post("http://localhost:3001/auth/register", { email: signupUsername })
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          setShowConfirmationSendPupup(true);
+        }
+      });
   };
 
   const login = () => {
@@ -174,17 +184,21 @@ function Login() {
             <input type="checkbox" id="chk" aria-hidden="true" />
             <div class="signup">
               {/* <form> */}
-                <Label for="chk" aria-hidden="true">
-                  Sign up
-                </Label>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  required=""
-                />
-                <Button onClick={handleSignupClick}>Sign up</Button>
-                <LinksContainer>
+              <Label for="chk" aria-hidden="true">
+                Sign up
+              </Label>
+              <Input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required=""
+                value={signupUsername}
+                onChange={(event) => {
+                  setSignupUsername(event.target.value);
+                }}
+              />
+              <Button onClick={handleSignupClick}>Sign up</Button>
+              <LinksContainer>
                 <RechercheEmailButtonSignup
                   onClick={() => {
                     setShowFindMail(true);
@@ -192,8 +206,7 @@ function Login() {
                 >
                   Trouver votre email.
                 </RechercheEmailButtonSignup>
-            
-                </LinksContainer>
+              </LinksContainer>
             </div>
             <div class="login">
               <Label for="chk" aria-hidden="true">
@@ -217,14 +230,14 @@ function Login() {
                 />
                 <Button onClick={login}>Login</Button>
                 <LinksContainer>
-                <RechercheEmailButton
-                  onClick={() => {
-                    setShowFindMail(true);
-                  }}
-                >
-                  Trouver votre email.
-                </RechercheEmailButton>
-                {/* <InscritEmailButton href="/registre">
+                  <RechercheEmailButton
+                    onClick={() => {
+                      setShowFindMail(true);
+                    }}
+                  >
+                    Trouver votre email.
+                  </RechercheEmailButton>
+                  {/* <InscritEmailButton href="/registre">
                   Première fois ? Inscrivez-vous...
                 </InscritEmailButton> */}
                 </LinksContainer>

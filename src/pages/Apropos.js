@@ -6,11 +6,26 @@ import CarteButton from "../components/CarteButton";
 import Footer from "../components/Footer";
 import CartePerso from "../components/CartePerso";
 import axios from "axios";
-import EventCard from "../components/EventCard";
-import CartePublication from "../components/CartePublication";
+
 import Colors from "../styles/Colors";
 import ParticlesBg from "particles-bg";
 import "../styles/Apropos.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+
+export const Label = styled.label`
+  font-size: 1rem;
+  margin-bottom: 5px;
+`;
+
+export const Input = styled.input`
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  height: 50px;
+`;
 
 const SecondaryTitle = styled.h2`
   color: ${Colors.color2};
@@ -96,10 +111,7 @@ const SlideImage = styled.img`
   transition: left 0.5s ease-in-out;
   width: 100%;
   height: 100%;
-
-
 `;
-
 
 const TextContainer = styled.div`
   position: absolute;
@@ -136,47 +148,43 @@ const StyledSpan = styled.span`
   color: red;
   font-weight: bold;
 `;
+const InfosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: left;
+  text-align: left;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+const DescriptionReseau = styled.h1`
+  color: black;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  /* letter-spacing: 0.1rem; */
+  text-align: justify;
+  font-weight: normal;
+`;
+
+const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-top: 20px;
+`;
+
+const StyledErrorMessage = styled(ErrorMessage)`
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 5px;
+`;
+
 
 function Apropos() {
-  const [currentImage, setCurrentImage] = useState(0);
-  const [nextImage, setNextImage] = useState(1); // L'image suivante
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [infos, setInfos] = useState([]);
   const [pilotes, setPilotes] = useState([]);
   const [etablissements, setEtablissements] = useState([]);
-  const [events, setEvents] = useState([]);
-  const [publications, setPublications] = useState([]);
-  const images = [
-    {
-      src: "img_accueil1.jpg",
-      title: "Réseau régional de recherche mobilités",
-      span: "R3MOB",
-      text: " vise à favoriser la collaboration entre porteurs et chercheurs spécialisés dans l'énergie ou des sujets connexes, afin de trouver des solutions pour améliorer les transports et leur système d'alimentation.",
-    },
-    {
-      src: "img_accueil2.jpg",
-      title: "Objectifs du réseau",
-      span: "",
-      text: "Le réseau R3MOB a pour objectif de :",
-      elem1:
-        "Coordonner les forces académiques et les projets sur le thème des nouvelles mobilités",
-      elem2:
-        "Développer des coopérations et des coordinations concrètes sur le long terme entre académiques et entreprises de la filière aménagement, mobilité, transport.",
-    },
-  ];
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    // Ajoute un zéro devant le jour et le mois si nécessaire
-    const formattedDay = day < 10 ? `0${day}` : day;
-    const formattedMonth = month < 10 ? `0${month}` : month;
-
-    return `${formattedDay}/${formattedMonth}/${year}`;
-  };
 
   useEffect(() => {
     axios.get(`http://localhost:3001/perso/pilote`).then((res) => {
@@ -187,70 +195,35 @@ function Apropos() {
       setEtablissements(res.data);
       console.log(res.data);
     });
-    axios.get(`http://localhost:3001/event/3recent`).then((res) => {
-      setEvents(res.data);
-    });
-    axios.get(`http://localhost:3001/publication/3recent`).then((res) => {
-      setPublications(res.data);
-    });
   }, []);
-
-  const [isReverseTransition, setIsReverseTransition] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-      setNextImage((prevImage) => (prevImage === 0 ? 1 : 0)); // Changer vers l'autre image
-    }, 5000);
-  
-    return () => {
-      clearInterval(interval);
-    };
+    axios.get(`http://localhost:3001/infos/apropos`).then((res) => {
+      setInfos(res.data);
+    });
   }, []);
-  
-  
+
+  const contactFormSchema = Yup.object().shape({
+    nom: Yup.string().required("Le nom est requis"),
+    email: Yup.string()
+      .email("L'adresse email n'est pas valide")
+      .required("L'adresse email est requise"),
+    sujet: Yup.string().required("Le sujet est requis"), // Ajout du champ "sujet"
+    message: Yup.string().required("Le message est requis"),
+  });
 
   return (
     <div className="body body2" id="body">
-      {/* <ParticlesBg  type="cobweb" bg={true} num={150} /> */}
-      <div>
-      <CardContainer>
-  <SlideImage
-    src={images[currentImageIndex].src}
-    alt={`Image ${currentImageIndex + 1}`}
-    className={`slide-out ${isReverseTransition ? "visible" : ""}`}
-  />
-  <SlideImage
-    src={images[nextImage].src}
-    alt={`Image ${nextImage + 1}`}
-    className={`slide-in ${!isReverseTransition ? "visible" : ""}`}
-  />
-  <TextContainer>
-    <Title>{images[currentImage].title}</Title>
-    <Paragraph>
-      {images[currentImage].span && (
-        <StyledSpan>{images[currentImage].span}</StyledSpan>
-      )}
-      {images[currentImage].text}
-      {images[currentImage].elem1 &&
-        images[currentImage].elem2 && (
-          <ul>
-            <li>{images[currentImage].elem1}</li>
-            <li>{images[currentImage].elem2}</li>
-          </ul>
-        )}
-    </Paragraph>
-  </TextContainer>
-</CardContainer>
-
-      </div>
       <header>header</header>
       <div className="main">
         <aside className="left"></aside>
         <main>
-          <SecondaryTitle>L'équipe du réseau : </SecondaryTitle>
+          <InfosContainer>
+            <SecondaryTitle>Qui sommes-nous ? </SecondaryTitle>
+            <DescriptionReseau>{infos.descriptionReseau}</DescriptionReseau>
+
+            <SecondaryTitle>L'équipe du réseau : </SecondaryTitle>
+          </InfosContainer>
           <PersoGrid>
             {pilotes.map((value, key) => {
               const etablissementNames = value.Chercheur_etabs.map(
@@ -268,7 +241,6 @@ function Apropos() {
                     id={value.id}
                     name={value.username}
                     email={value.email ? value.email : "Pas indiqué"}
-                    phone={value.phone ? value.phone : "Pas indiqué"}
                     address={etablissementNames.join(", ")} // Join establishment names with commas
                     imageData={value.imageData}
                   />
@@ -276,47 +248,134 @@ function Apropos() {
               );
             })}
           </PersoGrid>
-          <SecondaryTitle>Les événements récents : </SecondaryTitle>
-          <EventGrid>
-            {events.map((value, key) => {
-              return (
-                <EventCardContainer key={key}>
-                  <EventCard
-                    id={value.id}
-                    date={formatDate(value.startDateTime)}
-                    title={value.nom}
-                    locationType={value.locationType}
-                    eventType={value.eventType}
-                    location={
-                      value.locationType === "Visio"
-                        ? "En ligne"
-                        : value.location
-                    }
-                    registrationLink={value.lienInscription}
-                    imageUrl={`events_imgs/${value.id}.jpg`}
-                    fallbackImageUrl={"events_imgs/event_default.jpg"}
-                  />
-                </EventCardContainer>
-              );
-            })}
-          </EventGrid>
-          <SecondaryTitle>Les publications récentes</SecondaryTitle>
-          <PublicationGrid>
-            {publications.map((value, key) => {
-              return (
-                <PublicationCardContainer key={key}>
-                  <CartePublication
-                    id={value.id}
-                    title={value.nom}
-                    imageUrl={value.imageName}
-                    fallbackUrl="mob.jpg"
-                  />
-                </PublicationCardContainer>
-              );
-            })}
-          </PublicationGrid>
+          <InfosContainer>
+            <SecondaryTitle>Nous Contacter </SecondaryTitle>
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                marginLeft: "5%",
+              }}
+            >
+              Pour plus d'information, vous pouvez contacter :
+            </p>
+            <p style={{ fontSize: "1.2rem", marginLeft: "6%" }}>
+              Mohamed Mosbah - Animateur R3MOB : <a href="Mailto:mohamed.mosbah@u-bordeaux.fr">mohamed.mosbah@u-bordeaux.fr</a>
+            </p>
+            <p style={{ fontSize: "1.2rem", marginLeft: "6%" }}>
+              Cedric Ferrero - Animateur R3MOB : <a href="Mailto:cedrik.ferrero@bordeaux-inp.fr">cedrik.ferrero@bordeaux-inp.fr</a>
+            </p>
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                marginLeft: "5%",
+              }}
+            >
+              Sinon, vous pouvez nous écrire : 
+            </p>
+            <Formik
+          initialValues={{ nom: "", email: "", message: "" }}
+          validationSchema={contactFormSchema}
+          onSubmit={(values, { resetForm }) => {
+            // Vous pouvez envoyer les données du formulaire à votre backend ici
+            console.log("Formulaire soumis avec succès !");
+            console.log(values);
+            resetForm(); // Réinitialise le formulaire après la soumission
+          }}
+        >
+          {({ isSubmitting }) => (
+            <StyledForm>
+            <div>
+              <Label htmlFor="nom">
+                Nom <StyledSpan>*</StyledSpan>
+              </Label>
+              <Field
+                type="text"
+                id="nom"
+                name="nom"
+                as={Input}
+                placeholder="Votre nom"
+                style={{ width: '100%' }}
+              />
+              <StyledErrorMessage name="nom" component="div" />
+            </div>
+          
+            <div style={{ marginTop: '30px' }}>
+              <Label htmlFor="email">
+                Adresse Email <StyledSpan>*</StyledSpan>
+              </Label>
+              <Field
+                type="email"
+                id="email"
+                name="email"
+                as={Input}
+                placeholder="Votre adresse email"
+                style={{ width: '100%' }}
+              />
+              <StyledErrorMessage name="email" component="div" />
+            </div>
+          
+            <div style={{ marginTop: '30px' }}>
+              <Label htmlFor="sujet">
+                Sujet <StyledSpan>*</StyledSpan>
+              </Label>
+              <Field
+                type="text"
+                id="sujet"
+                name="sujet"
+                as={Input}
+                placeholder="Le sujet de votre message"
+                style={{ width: '100%' }}
+              />
+              <StyledErrorMessage name="sujet" component="div" />
+            </div>
+          
+            <div style={{ marginTop: '30px' }}>
+              <Label htmlFor="message">
+                Message <StyledSpan>*</StyledSpan>
+              </Label>
+              <Field
+                as="textarea"
+                id="message"
+                name="message"
+                rows="10"
+                placeholder="Votre message"
+                style={{ width: '100%', fontSize: '1.2rem',maxWidth: '100%' }}
+              />
+              <StyledErrorMessage name="message" component="div" />
+            </div>
+          
+            <div style={{
+              display: "flex",
+              justifyContent: "right",
+              marginTop: "20px",
+            }}>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                style={{
+                  padding: "10px 20px",
+                  background: "#007bff",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "1.2rem",
+                }}
+              >
+                Envoyer
+              </button>
+            </div>
+          </StyledForm>
+          )}
+        </Formik>
+            
+
+          </InfosContainer>
+
           <div className="mobile">
-          <CarteButton />
+            <CarteButton />
           </div>
         </main>
         <aside className="right">
