@@ -31,6 +31,7 @@ import Universite from "./pages/Universite";
 import Laboratoire from "./pages/Laboratoire";
 import AutreEtab from "./pages/AutreEtab";
 import Partenaire from "./pages/Partenaire";
+import ResetPassword from "./pages/ResetPassword";
 function App() {
   const [authState, setAuthState] = useState({
     username: "",
@@ -102,6 +103,7 @@ function App() {
             <Route path="/laboratoire" exact Component={Laboratoire} />
             <Route path="/autreEtab" exact Component={AutreEtab} />
             <Route path="/partenaire" exact Component={Partenaire} />
+            <Route path="/reset-password/:token" exact Component={ResetPassword} />
 
 
             <Route path="*" exact Component={Page404} />

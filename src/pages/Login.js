@@ -10,6 +10,7 @@ import "../styles/login-style.css";
 import styled from "styled-components";
 import FindMailPopup from "../components/FindMailPopup";
 import SendEmailConfirmationPopup from "../components/SendEmailConfirmationPopup";
+import ResetPasswordPopup from "../components/ResetPasswordPopup";
 
 const Body = styled.div`
   box-sizing: border-box;
@@ -93,6 +94,7 @@ const RechercheEmailButton = styled.button`
   cursor: pointer;
   text-decoration: underline;
   width: fit-content;
+  height: fit-content;
 `;
 const RechercheEmailButtonSignup = styled.button`
   color: white;
@@ -101,6 +103,19 @@ const RechercheEmailButtonSignup = styled.button`
   cursor: pointer;
   text-decoration: underline;
   width: fit-content;
+  height: fit-content;
+  margin-top: 10px;
+
+`;
+const ResetPasswordButton = styled.button`
+  color: gray;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  width: fit-content;
+  height: fit-content;
+  margin-top: 10px;
 `;
 const InscritEmailButton = styled.a`
   color: gray;
@@ -125,6 +140,7 @@ function Login() {
   const [showFindMail, setShowFindMail] = useState(false);
   const [showConfirmationSendPupup, setShowConfirmationSendPupup] =
     useState(false);
+  const [showResetPasswordPopup, setShowResetPasswordPopup] = useState(false);
   let Navigate = useNavigate();
 
   useEffect(() => {
@@ -206,6 +222,7 @@ function Login() {
                 >
                   Trouver votre email.
                 </RechercheEmailButtonSignup>
+                
               </LinksContainer>
             </div>
             <div class="login">
@@ -237,6 +254,13 @@ function Login() {
                   >
                     Trouver votre email.
                   </RechercheEmailButton>
+                  <ResetPasswordButton
+                  onClick={() => {
+                    setShowResetPasswordPopup(true);
+                  }}
+                >
+                  Mot de passe oublié?
+                </ResetPasswordButton>
                   {/* <InscritEmailButton href="/registre">
                   Première fois ? Inscrivez-vous...
                 </InscritEmailButton> */}
@@ -254,6 +278,12 @@ function Login() {
       {showConfirmationSendPupup && (
         <SendEmailConfirmationPopup
           onClose={() => setShowConfirmationSendPupup(false)}
+        />
+      )}
+      {showResetPasswordPopup && (
+        <ResetPasswordPopup
+          onClose={() => setShowResetPasswordPopup(false)}
+          onSave={() => setShowResetPasswordPopup(false)}
         />
       )}
     </Body>
