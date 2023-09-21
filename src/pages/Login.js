@@ -162,7 +162,7 @@ function Login() {
   };
   const handleSignupClick = () => {
     axios
-      .post("http://localhost:3001/auth/register", { email: signupUsername })
+      .post("http://localhost:3001/auth/register", { email: signupUsername.trim() })
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
@@ -173,7 +173,7 @@ function Login() {
   };
 
   const login = () => {
-    const data = { email: username, password: password };
+    const data = { email: username.trim(), password: password };
     axios.post("http://localhost:3001/auth/login", data).then((response) => {
       if (response.data.error) {
         alert(response.data.error);

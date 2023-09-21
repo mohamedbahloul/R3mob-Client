@@ -92,7 +92,7 @@ function Partenaire() {
       });
   }, []);
   const filteredLaboratoires = partenaire.filter((item) =>
-    item.nom.toLowerCase().includes(searchValue.toLowerCase())
+    item.nom.toLowerCase().includes(searchValue.trim().toLowerCase())
   );
 
   return (

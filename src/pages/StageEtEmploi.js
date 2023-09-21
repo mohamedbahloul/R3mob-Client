@@ -57,11 +57,11 @@ function StageEtEmploi() {
   }, []);
 
   const filteredStages = stages.filter((stage) =>
-  stage.description.toLowerCase().includes(stageFilter.toLowerCase())
+  stage.description.toLowerCase().includes(stageFilter.trim().toLowerCase())
 );
 
 const filteredEmplois = emplois.filter((emploi) =>
-  emploi.description.toLowerCase().includes(emploiFilter.toLowerCase())
+  emploi.description.toLowerCase().includes(emploiFilter.trim().toLowerCase())
 );
 
   const cardPerPage = 2;

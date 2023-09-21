@@ -111,9 +111,9 @@ function Chercheur() {
     return (
       perso.username
         .toLowerCase()
-        .includes(chercheurNameFilter.toLowerCase()) &&
+        .includes(chercheurNameFilter.trim().toLowerCase()) &&
       etablissementNames.some((name) =>
-        name.includes(etablissementFilter.toLowerCase())
+        name.trim().includes(etablissementFilter.trim().toLowerCase())
       ) &&
       (personnelTypeFilter === "Tous" ||
         perso.Type_personnels.some((type) => type.type === personnelTypeFilter))

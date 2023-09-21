@@ -48,7 +48,7 @@ const FindMailPopup = ({  onClose }) => {
       setSuggestions([]); // Aucune suggestion si le champ est vide
     } else {
       const filteredSuggestions = emailsPerso.filter((email) =>
-        email.username.toLowerCase().includes(nom.toLowerCase())
+        email.username.trim().toLowerCase().includes(nom.trim().toLowerCase())
       );
       setSuggestions(filteredSuggestions);
     }

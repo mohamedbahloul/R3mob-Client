@@ -86,7 +86,7 @@ function Laboratoire() {
     });
   }, []);
   const filteredLaboratoires = laboratoire.filter((item) =>
-  item.nom.toLowerCase().includes(searchValue.toLowerCase())
+  item.nom.trim().toLowerCase().includes(searchValue.trim().toLowerCase())
 );
 
 

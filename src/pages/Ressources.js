@@ -198,19 +198,19 @@ function Ressources() {
 
   const filteredPublications = publications
     .filter((publication) => {
-      const publicationTitleMatches = publication.nom
+      const publicationTitleMatches = publication.nom.trim()
         .toLowerCase()
-        .includes(publicationTitleFilter.toLowerCase());
+        .includes(publicationTitleFilter.trim().toLowerCase());
       return publicationTitleMatches;
     })
     .filter((publication) =>
       publication.chercheurs.some((chercheur) => {
         const chercheurNames = chercheur.split(" "); // Split the full name into parts
-        const filterValue = ResearcherFilter.toLowerCase();
+        const filterValue = ResearcherFilter.trim().toLowerCase();
 
         // Check if any part of the name starts with the filter value
         return chercheurNames.some((part) =>
-          part.toLowerCase().startsWith(filterValue)
+          part.trim().toLowerCase().startsWith(filterValue)
         );
       })
     )

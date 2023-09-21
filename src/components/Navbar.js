@@ -117,8 +117,8 @@ function Navbar() {
                       <NavbarLink to="/clearBd">Clear Data Base</NavbarLink>
                       <NavbarLink to="/admin">Admin</NavbarLink>
                       <NavbarLink to="/verifyUrl">Vérifier les Url</NavbarLink>
-                      <NavbarLink to="/profile">
-                        {authState.username}{" "}
+                      <NavbarLink to="/changePassword">
+                        Changer mot de passe
                       </NavbarLink>
                       <NavbarLink to="/" onClick={logout}>
                         Logout{" "}

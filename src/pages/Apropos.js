@@ -275,12 +275,21 @@ function Apropos() {
               Sinon, vous pouvez nous écrire : 
             </p>
             <Formik
-          initialValues={{ nom: "", email: "", message: "" }}
+          initialValues={{ nom: "", email: "", message: "",sujet:"" }}
           validationSchema={contactFormSchema}
           onSubmit={(values, { resetForm }) => {
-            // Vous pouvez envoyer les données du formulaire à votre backend ici
-            console.log("Formulaire soumis avec succès !");
-            console.log(values);
+            axios.post("http://localhost:3001/sendMail/contact", {
+              nom: values.nom.trim(),
+              email: values.email.trim(),
+              sujet: values.sujet.trim(),
+              message: values.message.trim(),
+            }).then((response) => {
+              if (response.data.error) {
+                alert(response.data.error);
+              } else {
+                alert("Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.");
+              }
+            });
             resetForm(); // Réinitialise le formulaire après la soumission
           }}
         >

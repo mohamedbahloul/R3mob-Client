@@ -104,7 +104,7 @@ function Projet() {
     .filter((projet) => {
       const projetTitleMatches = projet.nom
         .toLowerCase()
-        .includes(projetTitleFilter.toLowerCase());
+        .includes(projetTitleFilter.trim().toLowerCase());
       return projetTitleMatches;
     })
     .filter((projet) =>
@@ -114,7 +114,7 @@ function Projet() {
 
         // Check if any part of the name starts with the filter value
         return etablissementNames.some((part) =>
-          part.toLowerCase().startsWith(filterValue)
+          part.toLowerCase().startsWith(filterValue.trim())
         );
       })
     )

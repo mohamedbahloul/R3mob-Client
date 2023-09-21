@@ -174,7 +174,7 @@ function Agenda() {
       // Appliquer les filtres ici
       const eventNameMatches = event.nom
         .toLowerCase()
-        .includes(eventNameFilter.toLowerCase());
+        .includes(eventNameFilter.trim().toLowerCase());
       const dateMatches =
         dateFilter === "" ||
         formatDate(event.startDateTime) === formatDate(dateFilter);

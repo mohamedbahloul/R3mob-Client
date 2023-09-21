@@ -83,7 +83,7 @@ function AutreEtab() {
     });
   }, []);
   const filteredAutreEtab = autreEtab.filter((item) =>
-    item.nom.toLowerCase().includes(searchValue.toLowerCase())
+    item.nom.toLowerCase().includes(searchValue.trim().toLowerCase())
   );
 
   return (
