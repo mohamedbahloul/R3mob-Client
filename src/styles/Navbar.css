@@ -9,6 +9,14 @@
     margin-left: 8px;
     font-size:xx-large;
     color: var(--color3);
+    @media (max-width: 1190px) {
+      font-size: large;
+      margin-top: -5px;
+    }
+    @media (max-width: 1085px) {
+      font-size: medium;
+      margin-top: -5px;
+    }
     
 }
 .dropdown-content {
@@ -22,6 +30,7 @@
   z-index: 1; 
   margin-top: 50px;
   width: auto;
+
   
   
   
@@ -54,6 +63,9 @@
   align-items: center;
   cursor: pointer;
   /* margin-bottom: auto; */
+  @media (max-width: 900px) {
+    display: none;
+  }
 }
 
 .user-image {
@@ -62,6 +74,14 @@
   border-radius: 50%;
   margin-top: 10px;
   margin-left: 28px;
+  @media (max-width: 1190px) {
+    width: 35px;
+  height: 35px;
+  }
+  @media (max-width: 1085px) {
+    width: 30px;
+  height: 30px;
+  }
 }
 
 .username {
@@ -94,6 +114,13 @@
   color: var(--color3);
   cursor: pointer;
   margin-left: 15px;
+  @media (max-width: 1190px) {
+    font-size: large;
+  }
+  @media (max-width: 1085px) {
+    font-size: medium;
+  }
+  
 }
  .dropdown-content-profile a { 
   color: black; 

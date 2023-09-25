@@ -7,6 +7,8 @@ import CarteButton from "../components/CarteButton";
 import Footer from "../components/Footer";
 import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import { FaSearch } from "react-icons/fa";
+import { AuthContext } from "../helpers/AuthContext";
+import { useContext } from "react";
 
 const HorizontalLine = styled.hr`
   background-color: lightgray;
@@ -78,6 +80,15 @@ function Laboratoire() {
   const [laboratoire, setLaboratoire] = useState([]);
   const [tooltipIndex, setTooltipIndex] = useState(null);
   const [searchValue, setSearchValue] = useState("");
+  const [access, setAccess] = useState(false);
+  const { authState } = useContext(AuthContext);
+  // useEffect(() => {
+  //   if (!authState.status) {
+  //     window.location.href = "/login";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
 
 
   useEffect(() => {
@@ -91,6 +102,7 @@ function Laboratoire() {
 
 
   return (
+    // access &&
     <div className="body">
       <header>header</header>
       <div className="main" >

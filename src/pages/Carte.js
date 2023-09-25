@@ -4,9 +4,20 @@ import ScrollButton from "../components/ScrollButton";
 import "../styles/common/layout.css";
 import Footer from "../components/Footer";
 import axios from "axios";
+import { AuthContext } from "../helpers/AuthContext";
+import { useContext } from "react";
 
 function Carte() {
   const [linkCartographie, setLinkCartographie] = useState({});
+  const [access, setAccess] = useState(false);
+  const { authState } = useContext(AuthContext);
+  // useEffect(() => {
+  //   if (!authState.status) {
+  //     window.location.href = "/login";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
   
   useEffect(() => {
     axios.get("http://localhost:3001/infos/cartographie").then((response) => {
@@ -14,6 +25,7 @@ function Carte() {
     });
   }, []);
   return (
+    // access &&
     <div className="body">
       <header>header</header>
       <div className="main">

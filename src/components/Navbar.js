@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import UserImage from "../assets/Mohamed-Mosbah-2.jpg.jpg";
 import {
   Logo,
@@ -19,19 +19,24 @@ import "../styles/Navbar.css";
 import LogoImg from "../assets/logo.jpg";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
+import { set } from "date-fns";
 
 function Navbar() {
   const { authState, setAuthState } = useContext(AuthContext);
   const [openLinks, setOpenLinks] = useState(false);
+  const [access, setAccess] = useState(false);
   // Fonction de gestion d'événement pour les liens étendus
   const handleNavbarLinkClick = () => {
     console.log("handleNavbarLinkClick");
     setOpenLinks(false);
   };
+  useEffect(() => {
+    setAccess(authState.role);
+  }, [authState]);
 
   const logout = () => {
     localStorage.removeItem("accessToken");
-    setAuthState({ username: "", id: 0, status: false });
+    setAuthState({ username: "", id: 0, status: false, role: "" });
   };
   return (
     <NavbarStyle extendnavbar={openLinks}>
@@ -60,12 +65,8 @@ function Navbar() {
               <NavbarLinkList to="/projet">
                 Projets <span className="dropdownbtn">&#8964;</span>
                 <div className="dropdown-content">
-                  <NavbarLink to="/projet#projets">
-                    Projets R3MOB
-                  </NavbarLink>
-                  <NavbarLink to="/projet#aap">
-                    Appels à projets
-                  </NavbarLink>
+                  <NavbarLink to="/projet#projets">Projets R3MOB</NavbarLink>
+                  <NavbarLink to="/projet#aap">Appels à projets</NavbarLink>
                 </div>
               </NavbarLinkList>
             </div>
@@ -94,40 +95,54 @@ function Navbar() {
               <>
                 <div className="dropdown">
                   <NavbarLinkList to="/annuaires">
-                  Annuaires <span className="dropdownbtn">&#8964;</span>
+                    Annuaires <span className="dropdownbtn">&#8964;</span>
                     <div className="dropdown-content">
                       <NavbarLink to="/chercheur">Acteurs R3MOB</NavbarLink>
                       <NavbarLink to="laboratoire">
                         Laboratoires scientifiques
                       </NavbarLink>
                       <NavbarLink to="/universite">Universités</NavbarLink>
-                      <NavbarLink to="autreEtab">Autres Etablissement</NavbarLink>
+                      <NavbarLink to="autreEtab">
+                        Autres Etablissement
+                      </NavbarLink>
                       <NavbarLink to="partenaire">Partenaires</NavbarLink>
                     </div>
                   </NavbarLinkList>
                 </div>
                 <br />
-                <div className="user-container dropdown">
+                <div className="user-container dropdown" >
                   <img src={UserImage} alt="User" className="user-image" />
                   <span className="dropdownbtn-profile">&#8964;</span>
                   <div className="dropdown-content-profile">
                     <div className="dropdown-content-profile">
-                      <NavbarLink to="/updateEvent">Update Events</NavbarLink>
-                      <NavbarLink to="/updateBd">Update Data Base</NavbarLink>
-                      <NavbarLink to="/clearBd">Clear Data Base</NavbarLink>
-                      <NavbarLink to="/admin">Admin</NavbarLink>
-                      <NavbarLink to="/verifyUrl">Vérifier les Url</NavbarLink>
+                      {console.log("------------------", authState)}
+                      {authState.role === true && (
+                        <>
+                          <NavbarLink to="/uploadBase">
+                            Upload new base
+                          </NavbarLink>
+                          <NavbarLink to="/updateEvent">
+                            Update Events
+                          </NavbarLink>
+                          <NavbarLink to="/admin">Admin</NavbarLink>
+                          <NavbarLink to="/verifyUrl">
+                            Vérifier les Url
+                          </NavbarLink>
+                        </>
+                      )}
+                      {/* <NavbarLink to="/updateBd">Update Data Base</NavbarLink>
+                      <NavbarLink to="/clearBd">Clear Data Base</NavbarLink> */}
                       <NavbarLink to="/changePassword">
                         Changer mot de passe
                       </NavbarLink>
+
                       <NavbarLink to="/" onClick={logout}>
                         Logout{" "}
                       </NavbarLink>
                     </div>
                   </div>
                 </div>
-                {/* <NavbarLink   to="/" onClick={logout}>Logout </NavbarLink>          
-            {authState.username} */}
+
               </>
             )}
 
@@ -146,12 +161,47 @@ function Navbar() {
           <NavbarLinkExtended to="/apropos">
             A propos du réseau
           </NavbarLinkExtended>
+          <NavbarLinkExtended to="/projet">
+            Projets
+          </NavbarLinkExtended>
           <NavbarLinkExtended to="/agenda">Agenda</NavbarLinkExtended>
           <NavbarLinkExtended to="/ressources">Ressources</NavbarLinkExtended>
           <NavbarLinkExtended to="/stagesEtEmploi">
             Stage & emploi
           </NavbarLinkExtended>
-          <LoginLinkExtended to="/login">Se connecter</LoginLinkExtended>
+          {!authState.status ? (
+            <>
+              <LoginLinkExtended to="/login">Se connecter</LoginLinkExtended>
+            </>
+          ) : (
+            <>
+            <NavbarLinkExtended to="/annuaires">
+                    Annuaires
+            </NavbarLinkExtended>
+              {authState.role === true && (
+                <>
+              
+              <NavbarLinkExtended to="/uploadBase">
+                Upload new base
+              </NavbarLinkExtended>
+              <NavbarLinkExtended to="/updateEvent">
+                Update Events
+              </NavbarLinkExtended>
+              <NavbarLinkExtended to="/admin">Admin</NavbarLinkExtended>
+              <NavbarLinkExtended to="/verifyUrl">
+                Vérifier les Url
+              </NavbarLinkExtended>
+              </>
+              )}
+              <NavbarLinkExtended to="/changePassword">
+                Changer mot de passe
+              </NavbarLinkExtended>
+
+              <LoginLinkExtended to="/" onClick={logout}>
+                Logout{" "}
+              </LoginLinkExtended>
+            </>
+          )}
         </NavbarExtendedContainer>
       )}
     </NavbarStyle>

@@ -10,6 +10,10 @@ import {
   TdActions,
 } from "../styles/UpdateEvent";
 
+import { AuthContext } from "../helpers/AuthContext";
+import { useContext } from "react";
+
+
 export const Input = styled.input`
   padding: 8px;
   border: 1px solid #ccc;
@@ -21,6 +25,15 @@ function VerifyUrl() {
   const [urls, setUrls] = useState([]);
   const [modifiedLinks, setModifiedLinks] = useState({});
   const [newLinks, setNewLinks] = useState([]);
+  const [access, setAccess] = useState(false);
+  const { authState } = useContext(AuthContext);
+  // useEffect(() => {
+  //   if (!authState.status && !authState.isPilote) {
+  //     window.location.href = "/404";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
 
   const handleLinkChange = (event, url) => {
     const { value } = event.target;
@@ -86,6 +99,7 @@ function VerifyUrl() {
 
 
   return (
+    // access &&
     <div style={{marginTop: "100px"}}>
       <Button onClick={handleVerifyLinks}>Lancer une Vérification</Button>
       <Table>

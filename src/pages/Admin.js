@@ -4,6 +4,9 @@ import Colors from "../styles/Colors";
 import UpdateActeurCounts from "../components/UpdateActeurCounts";
 import PublicationsUrls from '../components/PublicationsUrls'
 import UpdatePublicInfos from "../components/UpdatePublicInfos";
+import { useEffect } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../helpers/AuthContext";
 
 
 const NavBar = styled.div`
@@ -28,6 +31,16 @@ export const ChooseButton = styled.button`
 
 function Admin() {
   const [selectedComponent, setSelectedComponent] = useState("Acteurs");
+  const [access, setAccess] = useState(false);
+  const { authState } = useContext(AuthContext);
+  // useEffect(() => {
+  //   if (!authState.status && !authState.isPilote) {
+  //     window.location.href = "/404";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
+  
 
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
@@ -43,6 +56,7 @@ function Admin() {
   };
 
   return (
+    // access &&
     <div
       style={{
         marginTop: "100px",

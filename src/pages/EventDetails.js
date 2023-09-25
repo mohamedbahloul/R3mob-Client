@@ -189,7 +189,14 @@ function EventDetails() {
   // const similarEvents = [
   //   event,event,event
   // ]
-
+  const [access, setAccess] = useState(false);
+  // useEffect(() => {
+  //   if (!authState.status) {
+  //     window.location.href = "/login";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
   const customEventURL = `http://localhost:3001/detailsEvent/custom/${eventId}`;
   console.log("Custom Event URL:", customEventURL);
   useEffect(() => {
@@ -240,6 +247,7 @@ function EventDetails() {
   const fallbackImageUrl = "../events_imgs/event_default.jpg";
 
   return (
+    // access &&
     <div className="body">
       <header>header</header>
       <div className="main" style={{marginTop:"100px"}}>

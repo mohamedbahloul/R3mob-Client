@@ -6,7 +6,7 @@ import axios from "axios";
 import ThematiqueIcon from "../components/ThematiqueIcon";
 import Thematiques from "../components/Thematiques";
 
-const CarteStage = ({ id, title, link, fallbackUrl, imageUrl }) => {
+const CarteStage = ({ id, title,disponible, link, fallbackUrl, imageUrl }) => {
   const [playAnimation, setPlayAnimation] = useState(false);
   const [publicationSousThematiques, setPublicationSousThematiques] = useState(
     []
@@ -107,6 +107,7 @@ const CarteStage = ({ id, title, link, fallbackUrl, imageUrl }) => {
                     )
               }
             </ThematiquesContainer>
+            <EventLocation isDisponible={disponible===true}>{disponible ? "Disponible " : "Non disponible"}</EventLocation>
           </StageInfos>
         </CardContent>
       </CardContainer>
@@ -185,7 +186,7 @@ const CardContent = styled.div`
 `;
 
 const StageTitle = styled.h2`
-  font-size: 12px;
+  font-size: 1rem;
   color: var(--color1);
   font-weight: bold;
   margin-left: 3%;
@@ -214,7 +215,8 @@ const EventType = styled.span`
 
 const EventLocation = styled.span`
   color: var(--color3);
-  background-color: rgba(128, 128, 128, 0.7);
+  /* background-color: rgba(128, 128, 128, 0.7); */
+  background-color: ${(props) => (props.isDisponible ? "green" : "red")};
   border-radius: 4px;
   padding: 8px 16px;
   font-weight: bolder;

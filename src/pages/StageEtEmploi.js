@@ -207,6 +207,7 @@ const filteredEmplois = emplois.filter((emploi) =>
                     <CarteStage
                       id={value.id}
                       title={value.description}
+                      disponible={value.disponible}
                       imageUrl="stages.png"
                       fallbackUrl="../default_user.png"
                       disponibilite={value.disponible}

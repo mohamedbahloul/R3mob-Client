@@ -315,6 +315,7 @@ const ThematiquesContainer = styled.div`
   align-items: flex-end;
   margin-right: -5%;
   margin-bottom: 5%;
+  gap: 5px;
 `;
 const PageLink = styled.a`
   text-decoration: none;

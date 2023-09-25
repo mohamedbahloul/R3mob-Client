@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import "../styles/common/layout.css";
 import ScrollButton from "../components/ScrollButton";
 import CarteButton from "../components/CarteButton";
@@ -10,6 +10,7 @@ import { CardsContainer } from "../styles/CarteActeur";
 import "leaflet/dist/leaflet.css";
 import BordeauxMap from "../components/BordeauxMap";
 import axios from "axios";
+import { AuthContext } from "../helpers/AuthContext";
 const PageLink = styled.a`
   text-decoration: none;
   color: inherit;
@@ -23,12 +24,22 @@ function Annuaire() {
     AutreEtab: 0,
     Partenaire: 0
   });
+  const [access, setAccess] = useState(false);
+  const { authState } = useContext(AuthContext);
+  // useEffect(() => {
+  //   if (!authState.status) {
+  //     window.location.href = "/login";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
   useEffect(() => {
     axios.get('http://localhost:3001/annuaire/acteurCount').then((response) => {
       setCounts(response.data);
     });
   }, []);
   return (
+    // access &&
     <div className="body">
       <header>header</header>
       <div className="main">

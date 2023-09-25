@@ -7,6 +7,8 @@ import CarteButton from "../components/CarteButton";
 import Footer from "../components/Footer";
 import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import { FaSearch } from "react-icons/fa";
+import { useContext } from "react";
+import { AuthContext } from "../helpers/AuthContext";
 
 const HorizontalLine = styled.hr`
   background-color: lightgray;
@@ -76,6 +78,15 @@ function AutreEtab() {
   const [autreEtab, setAutreEtab] = useState([]);
   const [tooltipIndex, setTooltipIndex] = useState(null);
   const [searchValue, setSearchValue] = useState("");
+  const [access, setAccess] = useState(false);
+  const { authState } = useContext(AuthContext);
+  // useEffect(() => {
+  //   if (!authState.status) {
+  //     window.location.href = "/login";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
 
   useEffect(() => {
     axios.get("http://localhost:3001/etablissement/autre").then((response) => {
@@ -87,6 +98,7 @@ function AutreEtab() {
   );
 
   return (
+    // access && 
     <div className="body">
       <header>header</header>
       <div className="main">

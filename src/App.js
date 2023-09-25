@@ -33,11 +33,13 @@ import AutreEtab from "./pages/AutreEtab";
 import Partenaire from "./pages/Partenaire";
 import ResetPassword from "./pages/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
+import Upload from "./pages/Upload";
 function App() {
   const [authState, setAuthState] = useState({
     username: "",
     id: 0,
     status: false,
+    role: "",
   });
   const [openLinks, setOpenLinks] = useState(false);
   useEffect(() => {
@@ -46,17 +48,20 @@ function App() {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then((res) => {
+        console.log("****************",res.data);
         if (res.data.error) {
           setAuthState({
             username: "",
             id: 0,
             status: false,
+            role  : "",
           });
         } else
           setAuthState({
             username: res.data.username,
             id: res.data.id,
             status: true,
+            role: res.data.pilote,
           });
       });
   }, []);
@@ -79,11 +84,11 @@ function App() {
           <Navbar authState={authState} />
           <Routes>
             <Route path="/" exact Component={Home} />
-            <Route path="/accueil" exact Component={Accueil} />
-            <Route path="/createForum" exact Component={CreateForum} />
-            <Route path="/forum/:id" exact Component={Forum} />
+            {/* <Route path="/accueil" exact Component={Accueil} /> */}
+            {/* <Route path="/createForum" exact Component={CreateForum} />
+            <Route path="/forum/:id" exact Component={Forum} /> */}
             <Route path="/login" exact Component={Login} />
-            <Route path="/register" exact Component={Register} />
+            {/* <Route path="/register" exact Component={Register} /> */}
             <Route path="/carte" exact Component={Carte} />
             <Route path="/agenda" exact Component={Agenda} />
             <Route path="/projet" exact Component={Projet} />
@@ -106,7 +111,10 @@ function App() {
             <Route path="/partenaire" exact Component={Partenaire} />
             <Route path="/reset-password/:token" exact Component={ResetPassword} />
             <Route path="/changePassword" exact Component={ChangePassword} />
-
+            <Route path="/uploadBase" exact Component={Upload} />
+            
+            
+            <Route path="/404" exact Component={Page404} />
 
 
             <Route path="*" exact Component={Page404} />

@@ -206,7 +206,7 @@ function Login() {
               <Input
                 type="email"
                 name="email"
-                placeholder="Email"
+                placeholder="Votre adresse mail..."
                 required=""
                 value={signupUsername}
                 onChange={(event) => {
@@ -232,7 +232,7 @@ function Login() {
               <div>
                 <Input
                   type="text"
-                  placeholder="Username..."
+                  placeholder="Votre adresse mail..."
                   value={username}
                   onChange={(event) => {
                     setUsername(event.target.value);

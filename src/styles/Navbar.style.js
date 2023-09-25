@@ -12,7 +12,7 @@ position: fixed;
   border-radius: 0px 0px 20px 20px; /* Ajoutez cette ligne pour spécifier le border-radius uniquement pour les coins inférieurs */
   z-index: 1000; /* Pour s'assurer que la barre de navigation est au-dessus de tout le reste */
 
-  @media (min-width: 825) {
+  @media (min-width: 900) {
     height: 80px;
   }
 `;
@@ -28,6 +28,8 @@ export const RightContainer = styled.div`
   align-items: center;
   justify-content: flex-end;
   padding-right: 50px;
+  
+  
 `;
 
 export const NavbarInnerContainer = styled.div`
@@ -38,6 +40,8 @@ export const NavbarInnerContainer = styled.div`
 
 export const NavbarLinkContainer = styled.div`
   display: flex;
+
+
 `;
 export const NavbarLink = styled(Link)`
   color: ${Colors.color3};
@@ -61,12 +65,15 @@ export const NavbarLink = styled(Link)`
     transform: scaleX(1);
   }
 
-  @media (max-width: 825px) {
+  @media (max-width: 900px) {
     display: none;
   }
 
-  @media (max-width: 910px) {
+  @media (max-width: 1190px) {
     font-size: 15px;
+  }
+  @media (max-width: 1085px) {
+    font-size: 12px;
   }
 `;
 export const NavbarLinkList = styled(Link)`
@@ -91,12 +98,15 @@ export const NavbarLinkList = styled(Link)`
     transform: scaleX(1);
   }
 
-  @media (max-width: 825px) {
+  @media (max-width: 900px) {
     display: none;
   }
 
-  @media (max-width: 910px) {
+  @media (max-width: 1190px) {
     font-size: 15px;
+  }
+  @media (max-width: 1085px) {
+    font-size: 12px;
   }
 `;
 
@@ -117,7 +127,7 @@ export const LoginLink = styled(Link)`
     background-color: ${Colors.color2};
   }
 
-  @media (max-width: 825px) {
+  @media (max-width: 900px) {
     display: none;
   }
   @media (max-width: 850px) {
@@ -170,7 +180,7 @@ export const OpenLinksButton = styled.button`
   font-size: xx-large;
   cursor: pointer;
 
-  @media (min-width: 826px) {
+  @media (min-width: 901px) {
     display: none;
   }
 `;
@@ -179,7 +189,7 @@ export const NavbarExtendedContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
-  @media (min-width: 826px) {
+  @media (min-width: 901px) {
     display: none;
   }
 `;

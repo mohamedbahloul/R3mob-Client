@@ -13,6 +13,8 @@ import CartePerso from "../components/CartePerso";
 import Thematiques from "../components/Thematiques";
 import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
+import { useContext } from "react";
+import { AuthContext } from "../helpers/AuthContext";
 
 const EventGrid = styled.div`
   display: flex;
@@ -74,14 +76,26 @@ function Chercheur() {
   const [etablissementFilter, setEtablissementFilter] = useState("");
   const [etablissements, setEtablissements] = useState([]);
   const [personnelTypeFilter, setPersonnelTypeFilter] = useState("Tous");
+  const [comiteTypeFilter, setComiteTypeFilter] = useState("Tous");
   //filtres pour les thematiques et sousThematiques
   const [thematiqueFilter, setThematiqueFilter] = useState("");
   const [sousThematiqueFilter, setSousThematiqueFilter] = useState("");
   // pour la liste des Thematiques dans la liste déroulante
   const [allSousThematiques, setAllSousThematiques] = useState([]);
+
   // pour la liste des sous Thematiques dans la liste déroulante
   const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
     useState([]);
+    const [access, setAccess] = useState(false);
+    const { authState } = useContext(AuthContext);
+    // useEffect(() => {
+    //   if (!authState.status) {
+    //     window.location.href = "/login";
+    //   }else{
+    //     setAccess(true);
+    //   }
+    // }, [authState.status]);
+
   useEffect(() => {
     axios.get(`http://localhost:3001/etablissement`).then((res) => {
       setEtablissements(res.data);
@@ -116,7 +130,11 @@ function Chercheur() {
         name.trim().includes(etablissementFilter.trim().toLowerCase())
       ) &&
       (personnelTypeFilter === "Tous" ||
-        perso.Type_personnels.some((type) => type.type === personnelTypeFilter))
+        perso.Type_personnels.some((type) => type.type === personnelTypeFilter)) &&
+        (comiteTypeFilter === "Tous" ||
+      (comiteTypeFilter === "CE" && perso.isComiteExecutif) ||
+      (comiteTypeFilter === "CP" && perso.isComitePilotage))
+      
     );
   }).filter((chercheur) => {
     if (thematiqueFilter === "") {
@@ -189,6 +207,10 @@ function Chercheur() {
     setPersonnelTypeFilter(event.target.value);
     setCurrentPage(1);
   };
+  const handleComiteTypeFilterChange = (event) => {
+    setComiteTypeFilter(event.target.value);
+    setCurrentPage(1);
+  };
   const handleThematiqueFilterChange = (selectedThematique) => {
     setThematiqueFilter(selectedThematique);
     // Filtrer les sous-thématiques en fonction de la thématique sélectionnée
@@ -212,6 +234,7 @@ function Chercheur() {
     setchercheurNameFilter("");
     setEtablissementFilter("");
     setPersonnelTypeFilter("Tous");
+    setComiteTypeFilter("Tous");
     setThematiqueFilter("");
     setSousThematiquesSelectFilter([]);
     setSousThematiqueFilter("");
@@ -229,6 +252,7 @@ function Chercheur() {
   }
 
   return (
+    // access &&
     <div className="body">
       <header>header</header>
       <div className="main">
@@ -295,6 +319,14 @@ function Chercheur() {
             <option value="C">Enseignant Chercheur</option>
             <option value="D">Directions</option>
             <option value="A">Autres Personnels</option>
+          </StyledSelect>
+          <StyledSelect
+            value={comiteTypeFilter}
+            onChange={handleComiteTypeFilterChange}
+          >
+            <option value="Tous">Tous</option>
+            <option value="CE">Comité Exécutif</option>
+            <option value="CP">Comité pilotage</option>
           </StyledSelect>
           <StyledSelect
             value={thematiqueFilter}

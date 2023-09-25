@@ -23,7 +23,7 @@ function CreateForum() {
   let navigate = useNavigate()
   return (
     <div className='createForumPage'>
-      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema} >
+      {/* <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema} >
         <Form className='formContent'>
           <label htmlFor='title'>Title</label>
           <ErrorMessage name='title' component='span' />
@@ -36,7 +36,7 @@ function CreateForum() {
           <Field autocomplete="off"  id='inputCreateForum' name='userId' placeholder='User Id' />
           <button type='submit'>Create Forum</button>
         </Form>
-      </Formik>
+      </Formik> */}
     </div>
   )
 }

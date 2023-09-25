@@ -48,9 +48,14 @@ function ChangePassword() {
   const { authState } = useContext(AuthContext);
 
 
-  useEffect(() => {
-    console.log(authState);
-  }, []);
+  const [access, setAccess] = useState(false);
+  // useEffect(() => {
+  //   if (!authState.status) {
+  //     window.location.href = "/login";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
   const contactFormSchema = Yup.object().shape({
     oldPassword: Yup.string().required("Le mot de passe est requis"),
     password: Yup.string().required("Le mot de passe est requis"),
@@ -68,6 +73,7 @@ function ChangePassword() {
 
 
   return (
+    // access &&
     <div className="body body2" id="body">
       <header>header</header>
       <div className="main">

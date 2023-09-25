@@ -11,6 +11,9 @@ import CartePerso from "../components/CartePerso";
 import Thematiques from "../components/Thematiques";
 import ThematiqueIcon from "../components/ThematiqueIcon";
 import CartePublication from "../components/CartePublication";
+import Colors from "../styles/Colors";
+import { useContext } from "react";
+import { AuthContext } from "../helpers/AuthContext";
 const DetailsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -18,8 +21,9 @@ const DetailsContainer = styled.div`
 const RightSide = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-end;
   width: 50%;
+  margin-right: 5%;
 `;
 const HeaderContainer = styled.div`
   display: flex;
@@ -58,7 +62,7 @@ const ChercheurName = styled.h2`
   font-size: 40px;
   font-weight: bold;
   color: black;
-  margin-top: 10%;
+  margin-top: 3%;
   margin-left: 5%;
 `;
 
@@ -162,11 +166,13 @@ const SimilarEventsTitle = styled.h3`
 const ThematiquesContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
   margin-right: -5%;
   margin-bottom: 5%;
   margin-top: 10%;
+  gap: 10px;
 
 `;
 
@@ -192,6 +198,15 @@ function ChercheurDetails() {
     []
   );
   const [shouldReloadPage, setShouldReloadPage] = useState(false);
+  const [access, setAccess] = useState(false);
+  const { authState } = useContext(AuthContext);
+  // useEffect(() => {
+  //   if (!authState.status) {
+  //     window.location.href = "/login";
+  //   }else{
+  //     setAccess(true);
+  //   }
+  // }, []);
   useEffect(() => {
     axios
       .get(`http://localhost:3001/detailsChercheur/${chercheurId}`)
@@ -272,6 +287,7 @@ function ChercheurDetails() {
     : `url(${defaultImage})`;
 
   return (
+    // access &&
     <div className="body">
       <header>header</header>
       <div className="main" style={{marginTop:"100px"}}>
@@ -280,6 +296,21 @@ function ChercheurDetails() {
           <HeaderContainer>
             <ChercheurImage backgroundImage={backgroundImage} />
             <Infos>
+            {
+                chercheur.isActive===false && 
+                  <Etab style={{
+                    color: Colors.color2,
+                    marginTop: "5%",
+                    marginLeft: "5%",
+                    fontWeight: "bold",
+
+                  }}>
+                      
+                      #Acteur Inactif
+                    </Etab>
+                
+                    
+                  }
               <ChercheurName>{chercheur.username}</ChercheurName>
               <Etab style={{
                 marginLeft: "5%",
@@ -298,6 +329,8 @@ function ChercheurDetails() {
                   );
                 })}
               </ChercheurEtabs>
+
+                
               
               </OtherInfos>
             </Infos>
