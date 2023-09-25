@@ -6,18 +6,12 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { AuthContext } from "../helpers/AuthContext";
 import { useContext } from "react";
+import { Navigate } from "react-router-dom";
 
 function Carte() {
   const [linkCartographie, setLinkCartographie] = useState({});
-  const [access, setAccess] = useState(false);
   const { authState } = useContext(AuthContext);
-  // useEffect(() => {
-  //   if (!authState.status) {
-  //     window.location.href = "/login";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+
   
   useEffect(() => {
     axios.get("http://localhost:3001/infos/cartographie").then((response) => {
@@ -25,7 +19,8 @@ function Carte() {
     });
   }, []);
   return (
-    // access &&
+    authState.status==true ? (
+
     <div className="body">
       <header>header</header>
       <div className="main">
@@ -46,6 +41,9 @@ function Carte() {
         <Footer />
       </footer>
     </div>
+    ) : (
+      <Navigate to="/login" />
+    )
   );
 }
 
