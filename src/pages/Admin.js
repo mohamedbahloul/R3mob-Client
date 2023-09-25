@@ -7,7 +7,7 @@ import UpdatePublicInfos from "../components/UpdatePublicInfos";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
-
+import { Navigate } from "react-router-dom";
 
 const NavBar = styled.div`
   display: flex;
@@ -31,15 +31,8 @@ export const ChooseButton = styled.button`
 
 function Admin() {
   const [selectedComponent, setSelectedComponent] = useState("Acteurs");
-  const [access, setAccess] = useState(false);
   const { authState } = useContext(AuthContext);
-  // useEffect(() => {
-  //   if (!authState.status && !authState.isPilote) {
-  //     window.location.href = "/404";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+
   
 
   const renderSelectedComponent = () => {
@@ -56,7 +49,8 @@ function Admin() {
   };
 
   return (
-    // access &&
+    authState.status==true && authState.role===true? (
+
     <div
       style={{
         marginTop: "100px",
@@ -79,6 +73,7 @@ function Admin() {
       </NavBar>
       {renderSelectedComponent()}
     </div>
+    ):(<Navigate to="/404" replace={true} />)
   );
 }
 

@@ -51,7 +51,7 @@ function Navbar() {
           <NavbarLinkContainer>
             <div className="dropdown">
               <NavbarLinkList to="/apropos">
-                A propos du réseau <span className="dropdownbtn">&#8964;</span>
+              À propos du réseau <span className="dropdownbtn">&#8964;</span>
                 <div className="dropdown-content">
                   <NavbarLink href="#">Contexte</NavbarLink>
                   <NavbarLink href="#">Objectifs</NavbarLink>
@@ -98,14 +98,14 @@ function Navbar() {
                     Annuaires <span className="dropdownbtn">&#8964;</span>
                     <div className="dropdown-content">
                       <NavbarLink to="/chercheur">Acteurs R3MOB</NavbarLink>
-                      <NavbarLink to="laboratoire">
+                      <NavbarLink to="/laboratoire">
                         Laboratoires scientifiques
                       </NavbarLink>
                       <NavbarLink to="/universite">Universités</NavbarLink>
-                      <NavbarLink to="autreEtab">
+                      <NavbarLink to="/autreEtab">
                         Autres Etablissement
                       </NavbarLink>
-                      <NavbarLink to="partenaire">Partenaires</NavbarLink>
+                      <NavbarLink to="/partenaire">Partenaires</NavbarLink>
                     </div>
                   </NavbarLinkList>
                 </div>
@@ -159,7 +159,7 @@ function Navbar() {
       {openLinks && (
         <NavbarExtendedContainer>
           <NavbarLinkExtended to="/apropos">
-            A propos du réseau
+          À propos du réseau
           </NavbarLinkExtended>
           <NavbarLinkExtended to="/projet">
             Projets

@@ -34,6 +34,8 @@ import Partenaire from "./pages/Partenaire";
 import ResetPassword from "./pages/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
 import Upload from "./pages/Upload";
+import PropagateLoader from "react-spinners/PropagateLoader"
+
 function App() {
   const [authState, setAuthState] = useState({
     username: "",
@@ -41,6 +43,7 @@ function App() {
     status: false,
     role: "",
   });
+  const [loading, setLoading] = useState(true); // Ajoutez cet état
   const [openLinks, setOpenLinks] = useState(false);
   useEffect(() => {
     axios
@@ -48,47 +51,42 @@ function App() {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then((res) => {
-        console.log("****************",res.data);
         if (res.data.error) {
           setAuthState({
             username: "",
             id: 0,
             status: false,
-            role  : "",
+            role: "",
           });
-        } else
+        } else {
           setAuthState({
             username: res.data.username,
             id: res.data.id,
             status: true,
             role: res.data.pilote,
           });
+        }
+        setLoading(false); 
       });
   }, []);
+
+  if (loading) {
+    return <PropagateLoader cssOverride={{
+      "display": "flex",
+      "justifyContent": "center", "alignItems": "center", "height": "100vh"
+    }}
+      color="#36d7b7" />
+  }
+
   return (
     <div className="App">
 
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
-          {/* <div className="navbar">
-            <Link to="/createForum">Create Forum</Link>
-            <Link to="/">Home Page</Link>
-            {!authState && (
-              <>
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
-              </>
-            )}
-            {authState && <Link to="/logout">Logout</Link>}
-          </div> */}
           <Navbar authState={authState} />
           <Routes>
             <Route path="/" exact Component={Home} />
-            {/* <Route path="/accueil" exact Component={Accueil} /> */}
-            {/* <Route path="/createForum" exact Component={CreateForum} />
-            <Route path="/forum/:id" exact Component={Forum} /> */}
             <Route path="/login" exact Component={Login} />
-            {/* <Route path="/register" exact Component={Register} /> */}
             <Route path="/carte" exact Component={Carte} />
             <Route path="/agenda" exact Component={Agenda} />
             <Route path="/projet" exact Component={Projet} />

@@ -9,6 +9,7 @@ import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import { FaSearch } from "react-icons/fa";
 import { AuthContext } from "../helpers/AuthContext";
 import { useContext } from "react";
+import { Navigate } from "react-router-dom";
 
 const HorizontalLine = styled.hr`
   background-color: lightgray;
@@ -80,15 +81,8 @@ function Partenaire() {
   const [r3p, setR3p] = useState([]);
   const [tooltipIndex, setTooltipIndex] = useState(null);
   const [searchValue, setSearchValue] = useState("");
-  const [access, setAccess] = useState(false);
   const { authState } = useContext(AuthContext);
-  // useEffect(() => {
-  //   if (!authState.status) {
-  //     window.location.href = "/login";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+
 
   useEffect(() => {
     axios
@@ -107,7 +101,7 @@ function Partenaire() {
   );
 
   return (
-    // access &&
+    authState.status==true ? (
     <div className="body">
       <header>header</header>
       <div className="main">
@@ -207,6 +201,9 @@ function Partenaire() {
         <Footer />
       </footer>
     </div>
+    ):(
+      <Navigate to="/login" />
+    )
   );
 }
 

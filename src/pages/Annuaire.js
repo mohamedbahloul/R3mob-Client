@@ -11,7 +11,8 @@ import "leaflet/dist/leaflet.css";
 import BordeauxMap from "../components/BordeauxMap";
 import axios from "axios";
 import { AuthContext } from "../helpers/AuthContext";
-const PageLink = styled.a`
+import { Link, Navigate } from "react-router-dom";
+const PageLink = styled(Link)`
   text-decoration: none;
   color: inherit;
 `;
@@ -24,23 +25,16 @@ function Annuaire() {
     AutreEtab: 0,
     Partenaire: 0
   });
-  const [access, setAccess] = useState(false);
   const { authState } = useContext(AuthContext);
-  // useEffect(() => {
-  //   if (!authState.status) {
-  //     window.location.href = "/login";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+ 
   useEffect(() => {
     axios.get('http://localhost:3001/annuaire/acteurCount').then((response) => {
       setCounts(response.data);
     });
   }, []);
   return (
-    // access &&
-    <div className="body">
+    authState.status==true ? (
+      <div className="body">
       <header>header</header>
       <div className="main">
         <aside className="left">
@@ -51,35 +45,35 @@ function Annuaire() {
           <h1 className="mainTitle">Annuaires : </h1>
 
           <CardsContainer>
-            <PageLink href="/chercheur">
+            <PageLink to="/chercheur">
               <CarteActeur
                 image="Acteurs/Chercheurs.png"
                 name="Acteurs R3MOB"
                 nombre={counts.Acteur_R3MOB}
               />
             </PageLink>
-            <PageLink href="/laboratoire">
+            <PageLink to="/laboratoire">
               <CarteActeur
                 image="Acteurs/Laboratoire.png"
                 name="Laboratoires scientifiques"
                 nombre={counts.Laboratoire_Scientifique}
               />
             </PageLink>
-            <PageLink href="/universite">
+            <PageLink to="/universite">
               <CarteActeur
                 image="Acteurs/Université.png"
                 name="Universités"
                 nombre={counts.Universite}
               />
             </PageLink>
-            <PageLink href="/autre_etablissement">
+            <PageLink to="/autreEtab">
               <CarteActeur
                 image="Acteurs/Autre_Etablissement.png"
                 name="Autres établissements"
                 nombre={counts.Autre_Etablissement}
               />
             </PageLink>
-            <PageLink href="/partenaire">
+            <PageLink to="/partenaire">
               <CarteActeur
                 image="Acteurs/Partenaire.png"
                 name="Partenaires"
@@ -102,6 +96,9 @@ function Annuaire() {
         <Footer />
       </footer>
     </div>
+    ):(
+      <Navigate to="/login" />
+    )
   );
 }
 

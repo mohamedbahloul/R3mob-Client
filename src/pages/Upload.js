@@ -2,6 +2,7 @@ import React, { useState,useContext,useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { AuthContext } from "../helpers/AuthContext";
+import { Navigate } from "react-router-dom";
 
 
 export const InputSection = styled.div`
@@ -68,15 +69,8 @@ function Upload() {
     calendarevents: null,
     attachments: null,
   });
-  const [access, setAccess] = useState(false);
   const { authState } = useContext(AuthContext);
-  // useEffect(() => {
-  //   if (!authState.status && !authState.isPilote) {
-  //     window.location.href = "/404";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+
 
   const handleUploadAll = async () => {
     if (
@@ -200,7 +194,8 @@ function Upload() {
   };
 
   return (
-    // access &&
+    authState.status==true && authState.role===true? (
+
     <div style={{ marginTop: "100px" }}>
       <InputSection>
         <Label>Télécharger un fichier ZIP (pour les dossiers)</Label>
@@ -258,6 +253,9 @@ function Upload() {
         </ConfirmButton>
       </InputSection>
     </div>
+        ):(
+          <Navigate to="/404" />
+        )
   );
 }
 

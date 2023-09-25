@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from 'styled-components';
+import { Navigate } from "react-router-dom";
 
 import {
   Button,
@@ -25,15 +26,8 @@ function VerifyUrl() {
   const [urls, setUrls] = useState([]);
   const [modifiedLinks, setModifiedLinks] = useState({});
   const [newLinks, setNewLinks] = useState([]);
-  const [access, setAccess] = useState(false);
   const { authState } = useContext(AuthContext);
-  // useEffect(() => {
-  //   if (!authState.status && !authState.isPilote) {
-  //     window.location.href = "/404";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+
 
   const handleLinkChange = (event, url) => {
     const { value } = event.target;
@@ -99,8 +93,8 @@ function VerifyUrl() {
 
 
   return (
-    // access &&
-    <div style={{marginTop: "100px"}}>
+    authState.status==true && authState.role===true? (
+      <div style={{marginTop: "100px"}}>
       <Button onClick={handleVerifyLinks}>Lancer une Vérification</Button>
       <Table>
           <thead>
@@ -133,6 +127,9 @@ function VerifyUrl() {
         </Table>
 
     </div>
+    ) : (
+      <Navigate to="/404" />
+    )
   );
 }
 

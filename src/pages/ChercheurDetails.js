@@ -14,6 +14,7 @@ import CartePublication from "../components/CartePublication";
 import Colors from "../styles/Colors";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
+import { Navigate } from "react-router-dom";
 const DetailsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -198,15 +199,8 @@ function ChercheurDetails() {
     []
   );
   const [shouldReloadPage, setShouldReloadPage] = useState(false);
-  const [access, setAccess] = useState(false);
   const { authState } = useContext(AuthContext);
-  // useEffect(() => {
-  //   if (!authState.status) {
-  //     window.location.href = "/login";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+
   useEffect(() => {
     axios
       .get(`http://localhost:3001/detailsChercheur/${chercheurId}`)
@@ -287,7 +281,8 @@ function ChercheurDetails() {
     : `url(${defaultImage})`;
 
   return (
-    // access &&
+    authState.status==true ? (
+
     <div className="body">
       <header>header</header>
       <div className="main" style={{marginTop:"100px"}}>
@@ -431,6 +426,9 @@ function ChercheurDetails() {
         <Footer />
       </footer>
     </div>
+    ):(
+      <Navigate to="/login" />
+    )
   );
 }
 

@@ -20,21 +20,15 @@ import {
 } from "../styles/UpdateEvent";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const UpdateEvent = () => {
   const [events, setEvents] = useState([]);
   const [brainEvents, setBrainEvents] = useState([]);
   const [customEvents, setCustomEvents] = useState([]);
   const [selectedButton, setSelectedButton] = useState("brain"); // Par défaut, "brain" est sélectionné
-  const [access, setAccess] = useState(false);
   const { authState } = useContext(AuthContext);
-  // useEffect(() => {
-  //   if (!authState.status && !authState.isPilote) {
-  //     window.location.href = "/404";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -257,7 +251,7 @@ const UpdateEvent = () => {
   };
 
   return (
-    // access &&
+    authState.status==true && authState.role===true? (
     <>
       <ChooseButtonsContainer>
         <ChooseButton
@@ -349,6 +343,9 @@ const UpdateEvent = () => {
         )}
       </Container>
     </>
+    ):(
+      <Navigate to="/404" />
+    )
   );
 };
 

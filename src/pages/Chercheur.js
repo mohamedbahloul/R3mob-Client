@@ -15,6 +15,7 @@ import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const EventGrid = styled.div`
   display: flex;
@@ -86,15 +87,8 @@ function Chercheur() {
   // pour la liste des sous Thematiques dans la liste déroulante
   const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
     useState([]);
-    const [access, setAccess] = useState(false);
     const { authState } = useContext(AuthContext);
-    // useEffect(() => {
-    //   if (!authState.status) {
-    //     window.location.href = "/login";
-    //   }else{
-    //     setAccess(true);
-    //   }
-    // }, [authState.status]);
+
 
   useEffect(() => {
     axios.get(`http://localhost:3001/etablissement`).then((res) => {
@@ -252,7 +246,10 @@ function Chercheur() {
   }
 
   return (
-    // access &&
+
+    authState.status==true ? (
+
+    
     <div className="body">
       <header>header</header>
       <div className="main">
@@ -452,6 +449,9 @@ function Chercheur() {
         <Footer />
       </footer>
     </div>
+    ):(
+      <Navigate to="/login" />
+    )
   );
 }
 

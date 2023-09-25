@@ -9,6 +9,7 @@ import { FaMapMarkerAlt, FaCalendarAlt, FaMoneyBill } from "react-icons/fa";
 import Footer from "../components/Footer";
 import EventCard from "../components/EventCard";
 import { AuthContext } from "../helpers/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const DetailsContainer = styled.div`
   display: flex;
@@ -247,7 +248,7 @@ function EventDetails() {
   const fallbackImageUrl = "../events_imgs/event_default.jpg";
 
   return (
-    // access &&
+    authState.status==true ? (
     <div className="body">
       <header>header</header>
       <div className="main" style={{marginTop:"100px"}}>
@@ -339,6 +340,9 @@ function EventDetails() {
         <Footer />
       </footer>
     </div>
+    ):(
+      <Navigate to="/login" />
+    )
   );
 }
 

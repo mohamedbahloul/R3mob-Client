@@ -9,6 +9,7 @@ import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import { FaSearch } from "react-icons/fa";
 import { AuthContext } from "../helpers/AuthContext";
 import { useContext } from "react";
+import { Navigate } from "react-router-dom";
 
 const HorizontalLine = styled.hr`
   background-color: lightgray;
@@ -102,7 +103,7 @@ function Laboratoire() {
 
 
   return (
-    // access &&
+    authState.status==true ? (
     <div className="body">
       <header>header</header>
       <div className="main" >
@@ -181,6 +182,9 @@ function Laboratoire() {
         <Footer />
       </footer>
     </div>
+    ):(
+      <Navigate to="/login" />
+    )
   );
 }
 
