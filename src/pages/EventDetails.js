@@ -187,17 +187,7 @@ function EventDetails() {
   const { eventId } = useParams();
   const [event, setEvent] = useState({});
   const [similarEvents, setSimilarEvents] = useState([]);
-  // const similarEvents = [
-  //   event,event,event
-  // ]
-  const [access, setAccess] = useState(false);
-  // useEffect(() => {
-  //   if (!authState.status) {
-  //     window.location.href = "/login";
-  //   }else{
-  //     setAccess(true);
-  //   }
-  // }, []);
+
   const customEventURL = `http://localhost:3001/detailsEvent/custom/${eventId}`;
   console.log("Custom Event URL:", customEventURL);
   useEffect(() => {
@@ -248,7 +238,7 @@ function EventDetails() {
   const fallbackImageUrl = "../events_imgs/event_default.jpg";
 
   return (
-    authState.status==true ? (
+    // authState.status==true ? (
     <div className="body">
       <header>header</header>
       <div className="main" style={{marginTop:"100px"}}>
@@ -282,7 +272,7 @@ function EventDetails() {
 
                 <div>{eventDetails.price}</div>
               </EventFieldContainer>
-              {(event.isPrivate === 'f' || authState.status) && (
+              {(event.isPrivate === 'f' || authState.status===true) && (
               <EventFieldContainer>
                 <EventLink href={eventDetails.registrationLink}>
                   S'inscrire
@@ -340,9 +330,9 @@ function EventDetails() {
         <Footer />
       </footer>
     </div>
-    ):(
-      <Navigate to="/login" />
-    )
+    // ):(
+    //   <Navigate to="/login" />
+    // )
   );
 }
 

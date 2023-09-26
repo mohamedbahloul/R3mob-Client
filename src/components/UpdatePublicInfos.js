@@ -411,7 +411,7 @@ function UpdatePublicInfos() {
           marginTop: "20px",
         }}
       >
-        Réinitialiser JSON
+        Réinitialiser les valeurs
       </ResetButton>
       </ButtonContainer>
     </TableContainer>

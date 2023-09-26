@@ -242,7 +242,8 @@ function ChercheurDetails() {
     const fetchThematiqueData = async () => {
       const thematicData = [];
       for (const publication of chercheurSousThematiques) {
-        const thematicId = publication.SousThematique.ThematiqueId;
+        const thematicId = publication.SousThematique ? publication.SousThematique.ThematiqueId : null;
+        if(!thematicId) continue;
         const thematic = allThematique.find((thematique) => thematique.id === thematicId);
         if (thematic) {
           const thematiqueIndex = thematicData.findIndex((data) => data.thematique.nom === thematic.nom);
@@ -256,6 +257,23 @@ function ChercheurDetails() {
           }
         }
       }
+
+      //Extraire les Thematiques 
+      for (const publication of chercheurSousThematiques) {
+        const thematicId = publication.ThematiqueId ? publication.ThematiqueId : null;
+        if(!thematicId) continue;
+        const thematic = allThematique.find((thematique) => thematique.id === thematicId);
+        if (thematic) {
+          const thematiqueIndex = thematicData.findIndex((data) => data.thematique.nom === thematic.nom);
+          // If the thematique doesn't exist, add it to the array
+          if (thematiqueIndex === -1) {
+            
+            const them = Thematiques.find((thematique) => thematique.nom === thematic.nom);
+            thematicData.push({ thematique: them, sousThematique: [them.nom] });
+          }
+        }
+      }
+     
       setExtractedThematiques(thematicData);
     };
   

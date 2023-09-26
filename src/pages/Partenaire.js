@@ -73,7 +73,6 @@ const mainStyles = {
   flexDirection: "column", // Pour aligner les éléments verticalement
   alignItems: "flex-start", // Pour centrer horizontalemen
   marginTop: "100px",
-
 };
 
 function Partenaire() {
@@ -82,7 +81,7 @@ function Partenaire() {
   const [tooltipIndex, setTooltipIndex] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const { authState } = useContext(AuthContext);
-
+  const [comiteTypeFilter, setComiteTypeFilter] = useState("Tous");
 
   useEffect(() => {
     axios
@@ -90,18 +89,22 @@ function Partenaire() {
       .then((response) => {
         setPartenaire(response.data);
       });
-      axios
+    axios
       .get("http://localhost:3001/etablissement/r3partenaire")
       .then((response) => {
         setR3p(response.data);
       });
   }, []);
-  const filteredLaboratoires = partenaire.filter((item) =>
+  const filteredPartenaires = partenaire.filter((item) =>
     item.nom.toLowerCase().includes(searchValue.trim().toLowerCase())
   );
+  const filteredPartenairesWithComite = comiteTypeFilter === "Tous"
+  ? filteredPartenaires // Si "Tous" est sélectionné, n'appliquez pas de filtre
+  : filteredPartenaires.filter((item) =>
+      item.isComiteOrientation === (comiteTypeFilter === "C")
+    );
 
-  return (
-    authState.status==true ? (
+  return authState.status == true ? (
     <div className="body">
       <header>header</header>
       <div className="main">
@@ -139,11 +142,23 @@ function Partenaire() {
               />
             </div>
           </InputSection>
+          <StyledSelect
+            value={comiteTypeFilter}
+            onChange={(e) => setComiteTypeFilter(e.target.value)}
+            style={{
+              fontSize:"0.8rem",
+            }}
+          >
+            <option value="Tous">Tous</option>
+            <option style={{
+              fontSize:"0.8rem",
+            }} value="C">Comité d’Orientation Stratégique</option>
+          </StyledSelect>
 
           <ReinitialiserButton>Réinitialiser les filtres</ReinitialiserButton>
         </aside>
         <main style={mainStyles}>
-        {/* <h2>R3 Partenaires</h2>
+          {/* <h2>R3 Partenaires</h2>
           <h4 style={{ fontWeight: "normal", fontSize: "1.3rem" }}>
             Nous collaborons avec 3 R3 partenaires. 
           </h4>
@@ -171,7 +186,7 @@ function Partenaire() {
             :
           </h4>
           <Ul>
-            {filteredLaboratoires.map((item, index) => (
+            {filteredPartenairesWithComite.map((item, index) => (
               <Li
                 key={item.id}
                 onMouseEnter={() => setTooltipIndex(index)}
@@ -189,7 +204,7 @@ function Partenaire() {
             ))}
           </Ul>
           <div className="mobile">
-          <CarteButton />
+            <CarteButton />
           </div>
         </main>
         <aside className="right">
@@ -201,9 +216,8 @@ function Partenaire() {
         <Footer />
       </footer>
     </div>
-    ):(
-      <Navigate to="/login" />
-    )
+  ) : (
+    <Navigate to="/login" />
   );
 }
 

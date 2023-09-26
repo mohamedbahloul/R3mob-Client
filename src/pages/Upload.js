@@ -1,9 +1,8 @@
-import React, { useState,useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
-
 
 export const InputSection = styled.div`
   display: flex;
@@ -70,7 +69,6 @@ function Upload() {
     attachments: null,
   });
   const { authState } = useContext(AuthContext);
-
 
   const handleUploadAll = async () => {
     if (
@@ -156,14 +154,6 @@ function Upload() {
     setSelectedJsonFile(file);
   };
 
-  const ClearDataBase = async () => {
-    try {
-      const response = await axios.post("http://localhost:3001/brain/clear");
-      console.log("Vidage de la base de données réussi", response.data);
-    } catch (error) {
-      console.error("Vidage de la base de données échoué", error);
-    }
-  };
   const VerifyDataBase = async () => {
     try {
       const verifyResponse = await axios.get(
@@ -180,22 +170,69 @@ function Upload() {
     }
   };
 
-  const UpdateDataBase = async () => {
-    try {
-      const response = await axios.post(`http://localhost:3001/brain`);
-      if (response.data.error) {
-        alert(response.data.error);
-      } else {
-        alert("Upload completed successfully!");
+  const ClearDataBase = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post("http://localhost:3001/brain/clear");
+        console.log("Vidage de la base de données réussi", response.data);
+        resolve(response.data); // Renvoie la réponse
+      } catch (error) {
+        console.error("Vidage de la base de données échoué", error);
+        reject(error); // Rejette la promesse en cas d'erreur
       }
+    });
+  };
+  const UpdateDataBase = async () => {
+    // try {
+    //   const response = await axios.post("http://localhost:3001/brain");
+    //   if (response.data.error) {
+    //     alert(response.data.error);
+    //   } else {
+    //     console.log("Mise à jour de la base de données réussie");
+    //   }
+    // } catch (error) {
+    //   console.error("Mise à jour de la base de données échouée", error);
+    //   throw error;
+    // }
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post("http://localhost:3001/brain");
+        console.log("Mise à jour de la base de données réussie");
+        resolve(response.data); 
+      } catch (error) {
+        console.error("Mise à jour de la base de données échouée", error);
+        alert(error);
+        reject(error); // Rejette la promesse en cas d'erreur
+      }
+    });
+  };
+  const handleClearAndUpdate = async () => {
+    try {
+      await ClearDataBase().then(async (res) => {
+        console.log("BD cleared!!!!");
+  
+        // Utilisez setTimeout pour appeler UpdateDataBase après 2 secondes
+        setTimeout(async () => {
+          await UpdateDataBase().then((res) => {
+
+          console.log("BD updated!!!!yahoooooo");
+          alert("Upload completed successfully!");
+          });
+        }, 2000); // 2000 millisecondes équivalent à 2 secondes
+      });
     } catch (error) {
-      console.error("Mise à jour de la base de données échoué", error);
+      console.error("Erreur lors de l'upload", error);
     }
   };
+  
 
-  return (
-    authState.status==true && authState.role===true? (
 
+  
+
+  
+
+  return authState.status == true && authState.role === true ? (
     <div style={{ marginTop: "100px" }}>
       <InputSection>
         <Label>Télécharger un fichier ZIP (pour les dossiers)</Label>
@@ -245,17 +282,16 @@ function Upload() {
           }}
         />
         <ConfirmButton onClick={handleUploadAll}>Upload</ConfirmButton>
-        <ConfirmButton onClick={ClearDataBase}>
+        {/* <ConfirmButton onClick={ClearDataBase}>
           Vider la base de données
-        </ConfirmButton>
-        <ConfirmButton onClick={UpdateDataBase}>
+        </ConfirmButton> */}
+        <ConfirmButton onClick={handleClearAndUpdate}>
           Mettre à jour la base de données
         </ConfirmButton>
       </InputSection>
     </div>
-        ):(
-          <Navigate to="/404" />
-        )
+  ) : (
+    <Navigate to="/404" />
   );
 }
 

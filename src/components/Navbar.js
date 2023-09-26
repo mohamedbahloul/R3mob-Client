@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import UserImage from "../assets/Mohamed-Mosbah-2.jpg.jpg";
+import UserImage from "../assets/icons-utilisateur.png";
 import {
   Logo,
   NavbarLink,
@@ -126,7 +126,7 @@ function Navbar() {
                           </NavbarLink>
                           <NavbarLink to="/admin">Admin</NavbarLink>
                           <NavbarLink to="/verifyUrl">
-                            Vérifier les Url
+                            Vérifier les Urls
                           </NavbarLink>
                         </>
                       )}
