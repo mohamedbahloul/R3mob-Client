@@ -37,7 +37,7 @@ const Thematiques = [
     },
     {
         nom : "Usages",
-        backgroundColor : "#2BCD10",
+        backgroundColor : "#10CD94",
         icon : "Usage.png"
     },
     {

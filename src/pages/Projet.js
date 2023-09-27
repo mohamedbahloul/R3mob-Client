@@ -126,9 +126,10 @@ function Projet() {
       // Check if the publication's thematiques include the selected thematique
       return projet.Thematique_projets.some((thematiqueProjet) => {
         const thematiqueNom =
-          thematiqueProjet.SousThematique?.Thematique?.nom || "";
-        return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
-      });
+        thematiqueProjet.Thematique?.nom || "";
+        const sousThematiqueNom = thematiqueProjet.SousThematique?.nom || "";
+      return sousThematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase() || thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
+    });
     })
     .filter((projet) => {
       if (sousThematiqueFilter === "") {
@@ -430,6 +431,8 @@ function Projet() {
           </ReinitialiserButton>
           </ExtendedFiltres>
           <h1 className="mainTitle">Projets</h1>
+          {currentProjets.length != 0 ? (
+
           <EventGrid>
             {currentProjets.map((value, key) => {
               return (
@@ -446,6 +449,9 @@ function Projet() {
               );
             })}
           </EventGrid>
+          ) : (
+            <p>Aucun projet ne correspond aux filtres sélectionnés.</p>
+          )}
 
           <div>
             {/* Display first page */}

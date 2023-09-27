@@ -46,6 +46,7 @@ const CreateEventPopup = ({ onSave, onClose }) => {
   const [allSousThematiques, setAllSousThematiques] = useState([]);
   const [allThematiques, setAllThematiques] = useState([]);
   const [selectedThematique, setSelectedThematique] = useState("");
+  const [selectedThematiques, setSelectedThematiques] = useState([]);
   const [selectedSousThematiques, setSelectedSousThematiques] = useState([]);
   const [sousThematiquesFiltrees, setSousThematiquesFiltrees] = useState([]);
   const fileInputRef = useRef(null);
@@ -54,6 +55,11 @@ const CreateEventPopup = ({ onSave, onClose }) => {
     axios.get(`http://localhost:3001/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
       //setSousThematiquesFiltrees(res.data); // Initialisez avec toutes les sous-thématiques
+    });
+  }, []);
+  useEffect(() => {
+    axios.get(`http://localhost:3001/thematique`).then((res) => {
+      setAllThematiques(res.data);
     });
   }, []);
   const handleImageUpload = async (e) => {
@@ -90,6 +96,11 @@ const CreateEventPopup = ({ onSave, onClose }) => {
     formData.append("url", url);
     formData.append("description", description);
     formData.append("selectedThematique", selectedThematique);
+    
+    const selectedThematiquesIds = selectedThematiques
+      .map((Thematique) => Thematique.id)
+      .join(",");
+      formData.append("selectedThematiques", selectedThematiquesIds);
 
     // Nettoyez les IDs en transformant en une seule chaîne de caractères, séparée par des virgules
     const selectedSousThematiqueIds = selectedSousThematiques
@@ -100,6 +111,7 @@ const CreateEventPopup = ({ onSave, onClose }) => {
 
     formData.append("selectedImage", selectedImage);
     formData.append("userId", authState.id);
+    console.log("+++++++++++++++++++++", authState.id);
 
     try {
       await axios.post("http://localhost:3001/createPublication", formData, {
@@ -129,6 +141,7 @@ const CreateEventPopup = ({ onSave, onClose }) => {
   const imageExists = checkImageExists("events_imgs/" + id + ".jpg");
   function handleThematiqueSelectedChange(thematique) {
     setSelectedThematique(thematique);
+    
 
     // Si une thématique est sélectionnée, filtrez les sous-thématiques, sinon affichez toutes les sous-thématiques
     if (thematique) {
@@ -141,34 +154,63 @@ const CreateEventPopup = ({ onSave, onClose }) => {
     } else {
       setSousThematiquesFiltrees(allSousThematiques);
     }
+
+    const Thematique = allThematiques.find(
+      (thematiqueItem) => thematiqueItem.nom === thematique
+    );
+    console.log("**************",thematique)
+    console.log("**************",allThematiques)
+    if (Thematique) {
+      const isAlreadySelected = selectedThematiques.some(
+        (selected) => selected.id === Thematique.id
+      );
+    
+      if (!isAlreadySelected) {
+        setSelectedThematiques([
+          ...selectedThematiques,
+          { id: Thematique.id, nom: Thematique.nom },
+        ]);
+      }
+      console.log("selectedThematiques", selectedThematiques);
+    }
+    else{
+      console.log("Thematique non trouvée");
+    }
+    
   }
 
-  function handleSousThematiqueSelectedChange(sousThematiqueId) {
-    // Vérifiez si la sous-thématique est déjà sélectionnée en vérifiant si son ID existe déjà dans la liste
-    const isAlreadySelected = selectedSousThematiques.some(
+  const handleSousThematiqueSelectedChange = (sousThematiqueId) => {
+    const sousThematique = sousThematiquesFiltrees.find(
       (sousThematique) => sousThematique.id === sousThematiqueId
     );
-
-    if (!isAlreadySelected) {
-      // Si elle n'est pas déjà sélectionnée, ajoutez son ID à la liste
-      const sousThematiqueNom = sousThematiquesFiltrees.find(
-        (sousThematique) => sousThematique.id === sousThematiqueId
-      ).nom;
-
-      setSelectedSousThematiques([
-        ...selectedSousThematiques,
-        { id: sousThematiqueId, nom: sousThematiqueNom },
-      ]);
-
-      console.log(selectedSousThematiques);
+    if (sousThematique) {
+      // Vérifiez si la sous-thématique est déjà sélectionnée
+      const isAlreadySelected = selectedSousThematiques.some(
+        (selected) => selected.id === sousThematiqueId
+      );
+  
+      if (!isAlreadySelected) {
+        // Ajoutez la sous-thématique à la liste sélectionnée
+        setSelectedSousThematiques([
+          ...selectedSousThematiques,
+          { id: sousThematiqueId, nom: sousThematique.nom },
+        ]);
+      }
     }
-  }
+  };
   /*supprimer une sous thematique*/
   function removeSelectedSousThematique(sousThematique) {
     const updatedSelectedSousThematiques = selectedSousThematiques.filter(
       (selected) => selected.id !== sousThematique
     );
     setSelectedSousThematiques(updatedSelectedSousThematiques);
+  }
+  /*supprimer une thematique*/
+  function removeSelectedThematique(Thematique) {
+    const updatedSelectedThematiques = selectedThematiques.filter(
+      (selected) => selected.id !== Thematique
+    );
+    setSelectedThematiques(updatedSelectedThematiques);
   }
 
   const handleFileInputClick = () => {
@@ -217,11 +259,30 @@ const CreateEventPopup = ({ onSave, onClose }) => {
           ))}
         </StyledSelect>
         <SelectedThematiqueContainer>
-          {selectedSousThematiques.map((sousThematique, index) => (
+        <Label style={{
+            color: "black",
+          }}>Thématique sélectionnée:</Label>
+          {selectedThematiques.map((Thematique) => (
             <SelectedThematique
-              onRemove={removeSelectedSousThematique}
+              subThematiquesName={Thematique.nom}
+              subThematiquesId={Thematique.id}
+              onRemove={removeSelectedThematique}
+              key={Thematique.id}
+            >
+              {Thematique.nom}
+            </SelectedThematique>
+          ))}
+        </SelectedThematiqueContainer>
+        <SelectedThematiqueContainer>
+
+          <Label style={{
+            color: "black",
+          }}>Sous-thématiques sélectionnées:</Label>
+          {selectedSousThematiques.map((sousThematique) => (
+            <SelectedThematique
               subThematiquesName={sousThematique.nom}
               subThematiquesId={sousThematique.id}
+              onRemove={removeSelectedSousThematique}
               key={sousThematique.id}
             >
               {sousThematique.nom}

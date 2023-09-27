@@ -51,6 +51,7 @@ const CartePublication = ({
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [editedPublication, setEditedPublication] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [reloadPage, setReloadPage] = useState(false);
 
   const formattedUrl =
     url && (url.startsWith("http://") || url.startsWith("https://"))
@@ -67,6 +68,7 @@ const CartePublication = ({
     setIsEditPopupOpen(false);
     setEditedPublication(null);
     reload();
+    setReloadPage(!reloadPage);
   };
 
   const handleDeleteEvent = async (id) => {
@@ -121,7 +123,7 @@ const CartePublication = ({
       .catch((error) => {
         console.error(error);
       });
-  }, [id, imageUrl]);
+  }, [id, imageUrl,reloadPage]);
 
   useEffect(() => {
     axios.get(`http://localhost:3001/thematique`).then((res) => {
@@ -138,8 +140,8 @@ const CartePublication = ({
     const fetchThematiqueData = async () => {
       const thematicData = [];
       for (const publication of publicationSousThematiques) {
-        const thematicId = publication.SousThematique.ThematiqueId;
-        const thematic = allThematique.find(
+        let thematicId = publication.SousThematique? publication.SousThematique.ThematiqueId : null;
+        let thematic = allThematique.find(
           (thematique) => thematique.id === thematicId
         );
         if (thematic) {
@@ -161,6 +163,18 @@ const CartePublication = ({
               thematique: them,
               sousThematique: [publication.SousThematique.nom],
             });
+          }
+        }
+
+         thematicId = publication.ThematiqueId ? publication.ThematiqueId : null;
+        if(!thematicId) continue;
+         thematic = allThematique.find((thematique) => thematique.id === thematicId);
+        if (thematic) {
+          const thematiqueIndex = thematicData.findIndex((data) => data.thematique.nom === thematic.nom);
+          // If the thematique doesn't exist, add it to the array
+          if (thematiqueIndex === -1) {
+            const them = Thematiques.find((thematique) => thematique.nom === thematic.nom);
+            thematicData.push({ thematique: them, sousThematique: [them.nom] });
           }
         }
       }

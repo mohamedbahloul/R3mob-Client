@@ -56,7 +56,8 @@ const CarteProjet = ({
     const fetchThematiqueData = async () => {
       const thematicData = [];
       for (const publication of publicationSousThematiques) {
-        const thematicId = publication.SousThematique.ThematiqueId;
+        const thematicId = publication.SousThematiqueId!==null ? publication.SousThematique.ThematiqueId : null;
+        console.log ("*6****************thematicId",thematicId);
         const thematic = allThematique.find(
           (thematique) => thematique.id === thematicId
         );
@@ -79,6 +80,22 @@ const CarteProjet = ({
               thematique: them,
               sousThematique: [publication.SousThematique.nom],
             });
+          }
+        }
+      }
+
+      //Extraire les Thematiques 
+      for (const publication of publicationSousThematiques) {
+        const thematicId = publication.ThematiqueId ? publication.ThematiqueId : null;
+        if(!thematicId) continue;
+        const thematic = allThematique.find((thematique) => thematique.id === thematicId);
+        if (thematic) {
+          const thematiqueIndex = thematicData.findIndex((data) => data.thematique.nom === thematic.nom);
+          // If the thematique doesn't exist, add it to the array
+          if (thematiqueIndex === -1) {
+            
+            const them = Thematiques.find((thematique) => thematique.nom === thematic.nom);
+            thematicData.push({ thematique: them, sousThematique: [them.nom] });
           }
         }
       }
@@ -198,6 +215,7 @@ const ThematiquesContainer = styled.div`
   @media (max-width: 1329px) {
     margin-bottom: 1px;
   }
+  gap: 5px;
 
 `;
 const PageLink = styled(Link)`

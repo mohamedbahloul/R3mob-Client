@@ -139,9 +139,10 @@ function Chercheur() {
     if (chercheur.Thematique_chercheurs) {
       return chercheur.Thematique_chercheurs.some(
         (thematiqueChercheur) => {
+
           const thematiqueNom =
             thematiqueChercheur.SousThematique?.Thematique?.nom || "";
-          return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
+          return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase() || thematiqueChercheur.Thematique?.nom.toLowerCase() === thematiqueFilter.toLowerCase();
       }
       );
     }
@@ -369,7 +370,9 @@ function Chercheur() {
         </aside>
         <main>
           <h1 className="mainTitle">Acteurs R3MOB</h1>
+          {currentPageContent.length != 0 ? (
           <EventGrid>
+          
             {currentPageContent.map((value, key) => {
               console.log(value);
               const etablissementNames = value.Chercheur_etabs.map(
@@ -395,6 +398,9 @@ function Chercheur() {
               );
             })}
           </EventGrid>
+          ) : (
+            <p>Aucun acteur R3MOB ne correspond aux filtres sélectionnés.</p>
+          )}
 
           <div>
             {/* Display first page */}

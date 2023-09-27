@@ -50,6 +50,8 @@ const EditPubPopup = ({ pubId,title,pubUrl,onSave, onClose }) => {
   const [selectedSousThematiques, setSelectedSousThematiques] = useState([]);
   const [sousThematiquesFiltrees, setSousThematiquesFiltrees] = useState([]);
   const fileInputRef = useRef(null);
+  const [selectedThematiques, setSelectedThematiques] = useState([]);
+
 
   useEffect(() => {
     axios.get(`http://localhost:3001/sousThematique`).then((res) => {
@@ -59,6 +61,11 @@ const EditPubPopup = ({ pubId,title,pubUrl,onSave, onClose }) => {
     setNom(title);
     setUrl(pubUrl);
 
+  }, []);
+  useEffect(() => {
+    axios.get(`http://localhost:3001/thematique`).then((res) => {
+      setAllThematiques(res.data);
+    });
   }, []);
   const handleImageUpload = async (e) => {
     setSelectedImage(e.target.files[0]);
@@ -94,6 +101,10 @@ const EditPubPopup = ({ pubId,title,pubUrl,onSave, onClose }) => {
     formData.append("url", url);
     formData.append("description", description);
     formData.append("selectedThematique", selectedThematique);
+    const selectedThematiquesIds = selectedThematiques
+    .map((Thematique) => Thematique.id)
+    .join(",");
+    formData.append("selectedThematiques", selectedThematiquesIds);
 
     // Nettoyez les IDs en transformant en une seule chaîne de caractères, séparée par des virgules
     const selectedSousThematiqueIds = selectedSousThematiques
@@ -145,26 +156,46 @@ const EditPubPopup = ({ pubId,title,pubUrl,onSave, onClose }) => {
     } else {
       setSousThematiquesFiltrees(allSousThematiques);
     }
+    const Thematique = allThematiques.find(
+      (thematiqueItem) => thematiqueItem.nom === thematique
+    );
+    console.log("**************",thematique)
+    console.log("**************",allThematiques)
+    if (Thematique) {
+      const isAlreadySelected = selectedThematiques.some(
+        (selected) => selected.id === Thematique.id
+      );
+    
+      if (!isAlreadySelected) {
+        setSelectedThematiques([
+          ...selectedThematiques,
+          { id: Thematique.id, nom: Thematique.nom },
+        ]);
+      }
+      console.log("selectedThematiques", selectedThematiques);
+    }
+    else{
+      console.log("Thematique non trouvée");
+    }
   }
 
   function handleSousThematiqueSelectedChange(sousThematiqueId) {
-    // Vérifiez si la sous-thématique est déjà sélectionnée en vérifiant si son ID existe déjà dans la liste
-    const isAlreadySelected = selectedSousThematiques.some(
+    const sousThematique = sousThematiquesFiltrees.find(
       (sousThematique) => sousThematique.id === sousThematiqueId
     );
-
-    if (!isAlreadySelected) {
-      // Si elle n'est pas déjà sélectionnée, ajoutez son ID à la liste
-      const sousThematiqueNom = sousThematiquesFiltrees.find(
-        (sousThematique) => sousThematique.id === sousThematiqueId
-      ).nom;
-
-      setSelectedSousThematiques([
-        ...selectedSousThematiques,
-        { id: sousThematiqueId, nom: sousThematiqueNom },
-      ]);
-
-      console.log(selectedSousThematiques);
+    if (sousThematique) {
+      // Vérifiez si la sous-thématique est déjà sélectionnée
+      const isAlreadySelected = selectedSousThematiques.some(
+        (selected) => selected.id === sousThematiqueId
+      );
+  
+      if (!isAlreadySelected) {
+        // Ajoutez la sous-thématique à la liste sélectionnée
+        setSelectedSousThematiques([
+          ...selectedSousThematiques,
+          { id: sousThematiqueId, nom: sousThematique.nom },
+        ]);
+      }
     }
   }
   /*supprimer une sous thematique*/
@@ -173,6 +204,13 @@ const EditPubPopup = ({ pubId,title,pubUrl,onSave, onClose }) => {
       (selected) => selected.id !== sousThematique
     );
     setSelectedSousThematiques(updatedSelectedSousThematiques);
+  }
+   /*supprimer une thematique*/
+   function removeSelectedThematique(Thematique) {
+    const updatedSelectedThematiques = selectedThematiques.filter(
+      (selected) => selected.id !== Thematique
+    );
+    setSelectedThematiques(updatedSelectedThematiques);
   }
 
   const handleFileInputClick = () => {
@@ -223,11 +261,30 @@ const EditPubPopup = ({ pubId,title,pubUrl,onSave, onClose }) => {
           ))}
         </StyledSelect>
         <SelectedThematiqueContainer>
-          {selectedSousThematiques.map((sousThematique, index) => (
+        <Label style={{
+            color: "black",
+          }}>Thématique sélectionnée:</Label>
+          {selectedThematiques.map((Thematique) => (
             <SelectedThematique
-              onRemove={removeSelectedSousThematique}
+              subThematiquesName={Thematique.nom}
+              subThematiquesId={Thematique.id}
+              onRemove={removeSelectedThematique}
+              key={Thematique.id}
+            >
+              {Thematique.nom}
+            </SelectedThematique>
+          ))}
+        </SelectedThematiqueContainer>
+        <SelectedThematiqueContainer>
+
+          <Label style={{
+            color: "black",
+          }}>Sous-thématiques sélectionnées:</Label>
+          {selectedSousThematiques.map((sousThematique) => (
+            <SelectedThematique
               subThematiquesName={sousThematique.nom}
               subThematiquesId={sousThematique.id}
+              onRemove={removeSelectedSousThematique}
               key={sousThematique.id}
             >
               {sousThematique.nom}

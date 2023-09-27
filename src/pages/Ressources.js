@@ -222,9 +222,10 @@ function Ressources() {
       // Check if the publication's thematiques include the selected thematique
       return publication.Thematique_publications.some(
         (thematiquePublication) => {
-          const thematiqueNom =
+          const sousThematiqueNom =
             thematiquePublication.SousThematique?.Thematique?.nom || "";
-          return thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
+            const thematiqueNom = thematiquePublication.Thematique?.nom || "";
+          return sousThematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase() || thematiqueNom.toLowerCase() === thematiqueFilter.toLowerCase();
         }
       );
     })
