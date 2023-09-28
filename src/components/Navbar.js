@@ -132,8 +132,8 @@ function Navbar() {
                       )}
                       {/* <NavbarLink to="/updateBd">Update Data Base</NavbarLink>
                       <NavbarLink to="/clearBd">Clear Data Base</NavbarLink> */}
-                      <NavbarLink to="/changePassword">
-                        Changer mot de passe
+                      <NavbarLink to="/profile">
+                        {authState.username}
                       </NavbarLink>
 
                       <NavbarLink to="/" onClick={logout}>

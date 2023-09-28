@@ -182,6 +182,20 @@ function Upload() {
       }
     });
   };
+  const BackUpDataBase = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/brain/backups"
+        );
+        console.log("Backup de la base de données réussi", response.data);
+        resolve(response.data); // Renvoie la réponse
+      } catch (error) {
+        console.error("Backup de la base de données échoué", error);
+        reject(error); // Rejette la promesse en cas d'erreur
+      }
+    });
+  };
   const UpdateDataBase = async () => {
     // try {
     //   const response = await axios.post("http://localhost:3001/brain");
@@ -199,7 +213,7 @@ function Upload() {
       try {
         const response = await axios.post("http://localhost:3001/brain");
         console.log("Mise à jour de la base de données réussie");
-        resolve(response.data); 
+        resolve(response.data);
       } catch (error) {
         console.error("Mise à jour de la base de données échouée", error);
         alert(error);
@@ -209,28 +223,26 @@ function Upload() {
   };
   const handleClearAndUpdate = async () => {
     try {
-      await ClearDataBase().then(async (res) => {
-        console.log("BD cleared!!!!");
-  
-        // Utilisez setTimeout pour appeler UpdateDataBase après 2 secondes
-        setTimeout(async () => {
-          await UpdateDataBase().then((res) => {
+      await BackUpDataBase().then((res) => {
+        console.log("BD backed up!!!!");
 
-          console.log("BD updated!!!!yahoooooo");
-          alert("Upload completed successfully!");
-          });
-        }, 2000); // 2000 millisecondes équivalent à 2 secondes
+        setTimeout(async () => {
+          await ClearDataBase().then(async (res) => {
+            console.log("BD cleared!!!!");
+
+            // Utilisez setTimeout pour appeler UpdateDataBase après 2 secondes
+            setTimeout(async () => {
+              await UpdateDataBase().then((res) => {
+                alert("Upload completed successfully!");
+              });
+            }, 10000); // 4000 millisecondes équivalent à 4 secondes
+          }, 2000); // 2000 millisecondes équivalent à 2 secondes
+        });
       });
     } catch (error) {
       console.error("Erreur lors de l'upload", error);
     }
   };
-  
-
-
-  
-
-  
 
   return authState.status == true && authState.role === true ? (
     <div style={{ marginTop: "100px" }}>

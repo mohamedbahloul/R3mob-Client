@@ -35,6 +35,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
 import Upload from "./pages/Upload";
 import PropagateLoader from "react-spinners/PropagateLoader"
+import Profile from "./pages/Profile";
 
 function App() {
   const [authState, setAuthState] = useState({
@@ -110,6 +111,8 @@ function App() {
             <Route path="/reset-password/:token" exact Component={ResetPassword} />
             <Route path="/changePassword" exact Component={ChangePassword} />
             <Route path="/uploadBase" exact Component={Upload} />
+            <Route path="/profile" exact Component={Profile} />
+
             
             
             <Route path="/404" exact Component={Page404} />
