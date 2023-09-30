@@ -24,7 +24,7 @@ const CarteStage = ({ id, title,disponible, link, fallbackUrl, imageUrl }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/publication/thematiques/${id}`)
+      .get(`http://back.r3mob.fr/publication/thematiques/${id}`)
       .then((res) => {
         if (res.data.error) {
           console.log(res.data.error);
@@ -34,7 +34,7 @@ const CarteStage = ({ id, title,disponible, link, fallbackUrl, imageUrl }) => {
       });
 
       axios
-      .get(`http://localhost:3001/publication/chercheur/${id}`)
+      .get(`http://back.r3mob.fr/publication/chercheur/${id}`)
       .then((res) => {
         if (res.data.error) {
           console.log(res.data.error);
@@ -45,7 +45,7 @@ const CarteStage = ({ id, title,disponible, link, fallbackUrl, imageUrl }) => {
   }, [id]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/thematique`).then((res) => {
+    axios.get(`http://back.r3mob.fr/thematique`).then((res) => {
       if (res.data.error) {
         console.log(res.data.error);
       } else {

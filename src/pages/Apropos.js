@@ -189,18 +189,18 @@ function Apropos() {
   const [etablissements, setEtablissements] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/perso/pilote`).then((res) => {
+    axios.get(`http://back.r3mob.fr/perso/pilote`).then((res) => {
       setPilotes(res.data);
       console.log(res.data);
     });
-    axios.get(`http://localhost:3001/etablissement`).then((res) => {
+    axios.get(`http://back.r3mob.fr/etablissement`).then((res) => {
       setEtablissements(res.data);
       console.log(res.data);
     });
   }, []);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/infos/apropos`).then((res) => {
+    axios.get(`http://back.r3mob.fr/infos/apropos`).then((res) => {
       setInfos(res.data);
     });
   }, []);
@@ -285,7 +285,7 @@ function Apropos() {
           initialValues={{ nom: "", email: "", message: "",sujet:"" }}
           validationSchema={contactFormSchema}
           onSubmit={(values, { resetForm }) => {
-            axios.post("http://localhost:3001/sendMail/contact", {
+            axios.post("http://back.r3mob.fr/sendMail/contact", {
               nom: values.nom.trim(),
               email: values.email.trim(),
               sujet: values.sujet.trim(),

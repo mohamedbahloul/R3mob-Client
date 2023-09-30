@@ -164,7 +164,7 @@ function Agenda() {
   const [eventLocationFilter, setEventLocationFilter] = useState("Tous"); // "Tous" pour afficher tous les types d'événements par défaut
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/event/combined`).then((res) => {
+    axios.get(`http://back.r3mob.fr/event/combined`).then((res) => {
       setEvents(res.data);
     });
   }, []);

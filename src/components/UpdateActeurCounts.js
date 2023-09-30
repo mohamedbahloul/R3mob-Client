@@ -36,13 +36,13 @@ function UpdateActeurCounts() {
   });
 
   useEffect(() => {
-    axios.get('http://localhost:3001/annuaire/acteurCount').then((response) => {
+    axios.get('http://back.r3mob.fr/annuaire/acteurCount').then((response) => {
       setCounts(response.data);
     });
   }, []);
 
   const handleUpdateSingleCount = (field) => {
-    axios.put(`http://localhost:3001/annuaire/acteurCount/${field}`, {
+    axios.put(`http://back.r3mob.fr/annuaire/acteurCount/${field}`, {
       count: newCounts[field]
     }).then((response) => {
       // Mettre à jour l'état avec la nouvelle valeur
@@ -51,7 +51,7 @@ function UpdateActeurCounts() {
   };
 
   const handleUpdateAllCounts = () => {
-    axios.put('http://localhost:3001/annuaire/acteurCount', newCounts).then((response) => {
+    axios.put('http://back.r3mob.fr/annuaire/acteurCount', newCounts).then((response) => {
       // Mettre à jour l'état avec les nouvelles valeurs
       setCounts(response.data);
     });

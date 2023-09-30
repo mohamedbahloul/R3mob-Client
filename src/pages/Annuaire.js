@@ -30,7 +30,7 @@ function Annuaire() {
   const { authState } = useContext(AuthContext);
  
   useEffect(() => {
-    axios.get('http://localhost:3001/annuaire/acteurCount').then((response) => {
+    axios.get('http://back.r3mob.fr/annuaire/acteurCount').then((response) => {
       setCounts(response.data);
     });
   }, []);

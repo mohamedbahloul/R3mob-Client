@@ -50,10 +50,10 @@ function StageEtEmploi() {
   const [emploiFilter, setEmploiFilter] = useState("");
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/stages`).then((res) => {
+    axios.get(`http://back.r3mob.fr/stages`).then((res) => {
       setStages(res.data);
     });
-    axios.get(`http://localhost:3001/emplois`).then((res) => {
+    axios.get(`http://back.r3mob.fr/emplois`).then((res) => {
       setEmplois(res.data);
     });
   }, []);

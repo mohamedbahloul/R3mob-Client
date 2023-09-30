@@ -87,12 +87,12 @@ function Partenaire() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/etablissement/partenaire")
+      .get("http://back.r3mob.fr/etablissement/partenaire")
       .then((response) => {
         setPartenaire(response.data);
       });
     axios
-      .get("http://localhost:3001/etablissement/r3partenaire")
+      .get("http://back.r3mob.fr/etablissement/r3partenaire")
       .then((response) => {
         setR3p(response.data);
       });

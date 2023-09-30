@@ -172,18 +172,18 @@ function Home() {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/perso/pilote`).then((res) => {
+    axios.get(`http://back.r3mob.fr/perso/pilote`).then((res) => {
       setPilotes(res.data);
       console.log(res.data);
     });
-    axios.get(`http://localhost:3001/etablissement`).then((res) => {
+    axios.get(`http://back.r3mob.fr/etablissement`).then((res) => {
       setEtablissements(res.data);
       console.log(res.data);
     });
-    axios.get(`http://localhost:3001/event/3recent`).then((res) => {
+    axios.get(`http://back.r3mob.fr/event/3recent`).then((res) => {
       setEvents(res.data);
     });
-    axios.get(`http://localhost:3001/publication/3recent`).then((res) => {
+    axios.get(`http://back.r3mob.fr/publication/3recent`).then((res) => {
       setPublications(res.data);
     });
   }, []);

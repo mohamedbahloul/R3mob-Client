@@ -73,7 +73,7 @@ const CartePublication = ({
 
   const handleDeleteEvent = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/createPublication/${id}`);
+      await axios.delete(`http://back.r3mob.fr/createPublication/${id}`);
       reload();
       // Gérez la réponse ici
     } catch (error) {
@@ -91,7 +91,7 @@ const CartePublication = ({
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/publication/thematiques/${id}`)
+      .get(`http://back.r3mob.fr/publication/thematiques/${id}`)
       .then((res) => {
         if (res.data.error) {
           console.log(res.data.error);
@@ -101,7 +101,7 @@ const CartePublication = ({
       });
 
     axios
-      .get(`http://localhost:3001/publication/chercheur/${id}`)
+      .get(`http://back.r3mob.fr/publication/chercheur/${id}`)
       .then((res) => {
         if (res.data.error) {
           console.log(res.data.error);
@@ -111,7 +111,7 @@ const CartePublication = ({
       });
 
     axios
-      .get(`http://localhost:3001/publication/image/${imageUrl}`)
+      .get(`http://back.r3mob.fr/publication/image/${imageUrl}`)
       .then((res) => {
         if (res.data && res.data !== null) {
           // Vérifiez que res.data n'est pas nul
@@ -126,7 +126,7 @@ const CartePublication = ({
   }, [id, imageUrl,reloadPage]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/thematique`).then((res) => {
+    axios.get(`http://back.r3mob.fr/thematique`).then((res) => {
       if (res.data.error) {
         console.log(res.data.error);
       } else {
@@ -189,7 +189,7 @@ const CartePublication = ({
   const handleConfirmDelete = async () => {
     try {
       // Appeler la fonction de suppression réelle ici
-      await axios.delete(`http://localhost:3001/createPublication/${id}`);
+      await axios.delete(`http://back.r3mob.fr/createPublication/${id}`);
       reload();
       // Masquer la popup de confirmation
       setShowDeleteConfirmation(false);

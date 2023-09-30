@@ -24,7 +24,7 @@ function UpdateActeurCounts() {
 
 
   useEffect(() => {
-    axios.get('http://localhost:3001/publication').then((response) => {
+    axios.get('http://back.r3mob.fr/publication').then((response) => {
         setPublications(response.data);
     });
   }, []);

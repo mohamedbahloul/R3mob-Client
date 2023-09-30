@@ -36,7 +36,7 @@ const Footer = () => {
   const [links, setLinks] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:3001/infos/reseauxSociaux").then((response) => {
+    axios.get("http://back.r3mob.fr/infos/reseauxSociaux").then((response) => {
       setLinks(response.data);
     });
   }, []);

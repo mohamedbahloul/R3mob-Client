@@ -11,7 +11,7 @@ function Register() {
         password: ''
           }
       const onSubmit = (data) => {
-        axios.post('http://localhost:3001/auth', data).then(() => {
+        axios.post('http://back.r3mob.fr/auth', data).then(() => {
           navigate('/auth/login')
         })
       } 

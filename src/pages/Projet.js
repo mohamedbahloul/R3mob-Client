@@ -91,13 +91,13 @@ function Projet() {
   }, [currentHash]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/projet`).then((res) => {
+    axios.get(`http://back.r3mob.fr/projet`).then((res) => {
       setProjets(res.data);
     });
-    axios.get(`http://localhost:3001/sousThematique`).then((res) => {
+    axios.get(`http://back.r3mob.fr/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
     });
-    axios.get(`http://localhost:3001/enjeux`).then((res) => {
+    axios.get(`http://back.r3mob.fr/enjeux`).then((res) => {
       setAllEnjeux(res.data);
     }
     );
@@ -238,7 +238,7 @@ function Projet() {
 
   /******************* Partie AAP  */
   useEffect(() => {
-    axios.get(`http://localhost:3001/aap`).then((res) => {
+    axios.get(`http://back.r3mob.fr/aap`).then((res) => {
       setAap(res.data);
     });
   }, []);

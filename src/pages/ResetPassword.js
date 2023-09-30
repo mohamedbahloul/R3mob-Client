@@ -67,7 +67,7 @@ function ResetPassword() {
   useEffect(() => {
     console.log(token);
     axios
-      .get(`http://localhost:3001/auth/reset-token-verification/${token}`)
+      .get(`http://back.r3mob.fr/auth/reset-token-verification/${token}`)
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
@@ -109,7 +109,7 @@ function ResetPassword() {
               validationSchema={contactFormSchema}
               onSubmit={(values, { resetForm }) => {
                 axios
-                  .post("http://localhost:3001/auth/change-password", {
+                  .post("http://back.r3mob.fr/auth/change-password", {
                     // password: password,
                     password:values.password,
                     token: token,

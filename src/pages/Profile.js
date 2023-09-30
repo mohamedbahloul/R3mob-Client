@@ -229,7 +229,7 @@ function Profile() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/detailsChercheur/${chercheurId}`)
+      .get(`http://back.r3mob.fr/detailsChercheur/${chercheurId}`)
       .then((res) => {
         if (res.data !== null) {
           setChercheur(res.data);
@@ -240,14 +240,14 @@ function Profile() {
       });
 
     axios
-      .get(`http://localhost:3001/etablissement/chercheur/${chercheurId}`)
+      .get(`http://back.r3mob.fr/etablissement/chercheur/${chercheurId}`)
       .then((res) => {
         if (res.data !== null) {
           setEtablissement(res.data);
         }
       });
     axios
-      .get(`http://localhost:3001/publication/personnel/${chercheurId}`)
+      .get(`http://back.r3mob.fr/publication/personnel/${chercheurId}`)
       .then((res) => {
         if (res.data !== null) {
           setPublications(res.data);
@@ -255,7 +255,7 @@ function Profile() {
       });
   }, [chercheurId, shouldReloadPage]);
   useEffect(() => {
-    axios.get(`http://localhost:3001/thematique`).then((res) => {
+    axios.get(`http://back.r3mob.fr/thematique`).then((res) => {
       if (res.data.error) {
         console.log(res.data.error);
       } else {
@@ -479,7 +479,7 @@ function Profile() {
             
             setShowChangerPhotoPopup(false);
             try {
-              const response = await axios.put(`http://localhost:3001/perso/changeImage/${chercheurId}`, formData, {
+              const response = await axios.put(`http://back.r3mob.fr/perso/changeImage/${chercheurId}`, formData, {
                 headers: {
                   "Content-Type": "multipart/form-data",
                 },

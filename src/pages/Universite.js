@@ -86,7 +86,7 @@ function Universite() {
 
 
   useEffect(() => {
-    axios.get("http://localhost:3001/etablissement/universite").then((response) => {
+    axios.get("http://back.r3mob.fr/etablissement/universite").then((response) => {
       setUniversite(response.data);
     });
   }, []);

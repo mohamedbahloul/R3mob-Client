@@ -3,7 +3,7 @@ import axios from "axios";
 
 function ClearBd() {
   // useEffect(() => {
-  //   axios.post(`http://localhost:3001/brain/clear`).then((res) => {
+  //   axios.post(`http://back.r3mob.fr/brain/clear`).then((res) => {
   //     console.log("BD cleared!!!!");
   //   });
   // }, []);

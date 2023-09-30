@@ -39,13 +39,13 @@ const [videoToEdit, setVideoToEdit] = useState({
     url: "",
 });
   useEffect(() => {
-    axios.get("http://localhost:3001/videos").then((response) => {
+    axios.get("http://back.r3mob.fr/videos").then((response) => {
         setVideos(response.data);
     });
   }, []);
 
 function handleDeleteVideo(id) {
-    axios.delete(`http://localhost:3001/videos/${id}`).then((response) => {
+    axios.delete(`http://back.r3mob.fr/videos/${id}`).then((response) => {
         setVideos(
             videos.filter((video) => {
                 return video.id !== id;
@@ -58,7 +58,7 @@ function handleEditVideo(video){
     setShowEditVideoPopup(true);
 }
 function handleSavevideoChanges(video){
-    axios.put(`http://localhost:3001/videos/${video.id}`, {
+    axios.put(`http://back.r3mob.fr/videos/${video.id}`, {
         title: video.title,
         url: video.url,
     }).then((response) => {
@@ -74,7 +74,7 @@ function handleClosevideoPopup(){
     setShowEditVideoPopup(false);
 }
 function handleCreateVideo(video){
-    axios.post(`http://localhost:3001/videos`, {
+    axios.post(`http://back.r3mob.fr/videos`, {
         title: video.title,
         url: video.url,
     }).then((response) => {

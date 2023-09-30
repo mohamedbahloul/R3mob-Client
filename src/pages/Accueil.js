@@ -7,7 +7,7 @@ function Accueil() {
   const [forum, setForum] = useState([]);
   let history = useNavigate()
   useEffect(() => {
-    axios.get("http://localhost:3001/forum/").then((res) => {
+    axios.get("http://back.r3mob.fr/forum/").then((res) => {
       setForum(res.data);
     });
   }, []);

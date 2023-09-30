@@ -197,19 +197,19 @@ function Ressources() {
     }
   }, [currentHash]);
   useEffect(() => {
-    axios.get(`http://localhost:3001/sousThematique`).then((res) => {
+    axios.get(`http://back.r3mob.fr/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
     });
   }, []);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/publication`).then((res) => {
+    axios.get(`http://back.r3mob.fr/publication`).then((res) => {
       setPublications(res.data);
     });
 
   }, [shouldReloadPage]);
 useEffect(() => {
-  axios.get(`http://localhost:3001/videos`).then((res) => {
+  axios.get(`http://back.r3mob.fr/videos`).then((res) => {
     setVideos(res.data);
 
     console.log("**********aaaaaaaaaaaa*******",videos);

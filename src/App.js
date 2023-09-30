@@ -48,7 +48,7 @@ function App() {
   const [openLinks, setOpenLinks] = useState(false);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/auth/verify", {
+      .get("http://back.r3mob.fr/auth/verify", {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then((res) => {

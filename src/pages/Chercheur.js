@@ -93,18 +93,18 @@ function Chercheur() {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/etablissement`).then((res) => {
+    axios.get(`http://back.r3mob.fr/etablissement`).then((res) => {
       setEtablissements(res.data);
       console.log(res.data);
     });
-    axios.get(`http://localhost:3001/sousThematique`).then((res) => {
+    axios.get(`http://back.r3mob.fr/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
       console.log(res.data);
     });
   }, []);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/perso`).then((res) => {
+    axios.get(`http://back.r3mob.fr/perso`).then((res) => {
       setPersos(res.data);
       console.log(res.data);
     });
