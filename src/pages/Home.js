@@ -10,6 +10,8 @@ import EventCard from "../components/EventCard";
 import CartePublication from "../components/CartePublication";
 import Colors from "../styles/Colors";
 import ParticlesBg from "particles-bg";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 
 
@@ -197,7 +199,16 @@ function Home() {
   }, []);
 
   return (
+    
     <div className="body">
+            <HeaderContent style={{
+              marginTop: "50px",
+            }}>
+        <HeaderLinkStyle style={{
+              marginLeft: "50px",
+            }}>{"> "}Accueil</HeaderLinkStyle>
+
+      </HeaderContent>
             {/* <ParticlesBg  type="cobweb" bg={true} num={150} /> */}
             <div>
             <CardContainer

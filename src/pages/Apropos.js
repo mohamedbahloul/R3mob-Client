@@ -12,6 +12,8 @@ import ParticlesBg from "particles-bg";
 import "../styles/Apropos.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 
 export const Label = styled.label`
@@ -214,7 +216,12 @@ function Apropos() {
 
   return (
     <div className="body body2" id="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle>{"> "} À propos du réseau</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main">
         <aside className="left"></aside>
         <main>

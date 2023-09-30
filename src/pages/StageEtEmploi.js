@@ -7,6 +7,8 @@ import CarteButton from "../components/CarteButton";
 import CarteStage from "../components/CarteStage";
 import { InputSection, Input, StyledSelect } from "../styles/Agenda";
 import { FaSearch } from "react-icons/fa";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 const StageGrid = styled.div`
   display: flex;
@@ -122,7 +124,12 @@ const filteredEmplois = emplois.filter((emploi) =>
 
   return (
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "} Stage & emploi</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main">
         <aside className="left">
           <p

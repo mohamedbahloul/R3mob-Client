@@ -10,6 +10,8 @@ import Footer from "../components/Footer";
 import EventCard from "../components/EventCard";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 const DetailsContainer = styled.div`
   display: flex;
@@ -240,7 +242,14 @@ function EventDetails() {
   return (
     // authState.status==true ? (
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle href="\agenda" >{"> "} Agenda</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "}{event.nom}</HeaderLinkStyle>
+
+      </HeaderContent>
+      </header>
       <div className="main" style={{marginTop:"100px"}}>
         <aside className="left">left</aside>
         <main>

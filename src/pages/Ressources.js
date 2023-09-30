@@ -13,6 +13,8 @@ import Colors from "../styles/Colors";
 import CreatePubPopup from "../components/CreatePubPopup";
 import Footer from "../components/Footer";
 import { AuthContext } from "../helpers/AuthContext";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 export const InputSection = styled.div`
   display: flex;
@@ -146,6 +148,15 @@ const CreateButtonContainer = styled.div`
   margin-bottom: 10px;
   margin-top: 20px;
 `;
+const VideosContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px;
+  @media (max-width: 990px) {
+    margin-bottom: 50px;
+  }
+`;
 
 function Ressources() {
   const [publications, setPublications] = useState([]);
@@ -164,6 +175,8 @@ function Ressources() {
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [shouldReloadPage, setShouldReloadPage] = useState(false);
   const { authState } = useContext(AuthContext);
+
+  const [videos , setVideos] = useState([]);
 
 
 
@@ -195,7 +208,13 @@ function Ressources() {
     });
 
   }, [shouldReloadPage]);
+useEffect(() => {
+  axios.get(`http://localhost:3001/videos`).then((res) => {
+    setVideos(res.data);
 
+    console.log("**********aaaaaaaaaaaa*******",videos);
+  });
+}, [videos]);
   const filteredPublications = publications
     .filter((publication) => {
       const publicationTitleMatches = publication.nom.trim()
@@ -327,7 +346,12 @@ function Ressources() {
 
   return (
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "} Ressources</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main">
         <aside className="left">
           <p
@@ -566,14 +590,18 @@ function Ressources() {
           <h1 id="videos" className="mainTitle">
             Vidéos
           </h1>
-          <VideoContainer>
-            <iframe
-              src={`https://www.youtube.com/embed/${videoId}`}
-              frameBorder="0"
-              allowFullScreen
-              title="YouTube Video"
-            ></iframe>
-          </VideoContainer>
+
+          <VideosContainer>
+            {
+              videos.map((video) => (
+                <VideoContainer>
+                <h4>{video.title}</h4>
+                <iframe width="1850" height="799" src={video.url} title={video.title} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>                
+                </VideoContainer>
+              ))
+            }
+          {/* <iframe width="1850" height="799" src="https://www.youtube.com/embed/R-YPZiCC-b0" title="ACCUEIL DE TERIA, nouveau mécène de la chaire MTI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
+          </VideosContainer>
           <div className="mobile">
           <CarteButton />
           </div>

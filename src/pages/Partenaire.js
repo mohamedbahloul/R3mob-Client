@@ -10,6 +10,8 @@ import { FaSearch } from "react-icons/fa";
 import { AuthContext } from "../helpers/AuthContext";
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 const HorizontalLine = styled.hr`
   background-color: lightgray;
@@ -106,7 +108,13 @@ function Partenaire() {
 
   return authState.status == true ? (
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle href="\annuaires" >{"> "} Annuaire</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "} Partenaires</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main">
         <aside className="left">
           <p

@@ -12,6 +12,8 @@ import { FaSearch, FaCalendarAlt } from "react-icons/fa";
 
 import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
+import Colors from "../styles/Colors";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
 
 const EventGrid = styled.div`
   display: flex;
@@ -130,6 +132,11 @@ const ExtendedInput = styled(Input)`
 const pageNumberBtn = styled.button`
   
 `;
+
+
+
+
+
 
 function Agenda() {
   const [sortType, setSortType] = useState("ascending"); // Par défaut, tri croissant
@@ -262,7 +269,14 @@ function Agenda() {
   }
   return (
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+     {/* < HeaderStyle> {"> " } </HeaderStyle> */}
+     <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle>{"> "} Agenda</HeaderLinkStyle>
+      </HeaderContent>
+        
+      </header>
       <div className="main">
         <aside className="left">
           <p

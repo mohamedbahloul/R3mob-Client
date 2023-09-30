@@ -45,22 +45,12 @@ const ChangerPhotoPopup = ({ chercheurId,onSave, onClose }) => {
 
 
   const handleSaveChanges = async () => {
-    console.log("handleSaveChanges");
     const formData = new FormData();
     formData.append("selectedImage", selectedImage);
     formData.append("userId", authState.id);
-
-    try {
-      await axios.put(`http://localhost:3001/perso/changeImage/${chercheurId}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      onSave(); // Fermez la popup
-    } catch (error) {
-      console.error(error);
-      // Gérez les erreurs ici
-    }
+    onSave(formData)
+    
+    
   };
 
 

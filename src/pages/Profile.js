@@ -16,15 +16,18 @@ import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
 import ChangerPhotoPopup from "../components/ChangerPhotoPopup";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
 `;
 
 const Button = styled.button`
   width: fit-content;
-  min-width: 200px;
+  min-width: 230px;
   height: fit-content;
   margin: 10px;
   border: none;
@@ -185,6 +188,7 @@ const ChercheurImage = styled.div`
   background-position: center;
   border-radius: 5%;
 `;
+
 const SimilarEventsTitle = styled.h3`
   margin-top: 100px;
 `;
@@ -344,7 +348,12 @@ function Profile() {
 
   return authState.status == true ? (
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "} Profile - {chercheur.username}</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main" style={{ marginTop: "100px" }}>
         <aside className="left">left</aside>
         <main>
@@ -383,14 +392,6 @@ function Profile() {
                     );
                   })}
                 </ChercheurEtabs>
-                <Button
-                  onClick={() => {
-                    console.log("clicked");
-                    window.location.replace("/changePassword");
-                  }}
-                >
-                  Changer votre mot de passe
-                </Button>
               </OtherInfos>
             </Infos>
             <RightSide>
@@ -422,6 +423,13 @@ function Profile() {
             >
               Changer photo de profile
             </Button>
+            <Button
+        onClick={() => {
+          window.location.replace("/changePassword");
+        }}
+      >
+        Changer votre mot de passe
+      </Button>
           </ButtonContainer>
           <DetailsContainer></DetailsContainer>
           <SimilarEventsTitle>
@@ -467,14 +475,33 @@ function Profile() {
       {showChangerPhotoPopup && (
         <ChangerPhotoPopup
           onClose={() => setShowChangerPhotoPopup(false)}
-          onSave={() => {
+          onSave={async (formData) => {
+            
             setShowChangerPhotoPopup(false);
+            try {
+              const response = await axios.put(`http://localhost:3001/perso/changeImage/${chercheurId}`, formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
+              if(response.data.error){
+                alert(response.data.error);
+              }
+              else
+              {
+                console.log(response.data);
+              }
+            } catch (error) {
+              console.error(error);
+              // Gérez les erreurs ici
+            }
             reload();
           }}
           chercheurId={chercheurId}
           reload={reload}
         />
       )}
+      
     </div>
   ) : (
     <Navigate to="/login" />

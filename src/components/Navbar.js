@@ -193,8 +193,8 @@ function Navbar() {
               </NavbarLinkExtended>
               </>
               )}
-              <NavbarLinkExtended to="/changePassword">
-                Changer mot de passe
+              <NavbarLinkExtended to="/profile">
+              {authState.username}
               </NavbarLinkExtended>
 
               <LoginLinkExtended to="/" onClick={logout}>

@@ -10,6 +10,8 @@ import Thematiques from "../components/Thematiques";
 import { FaSearch } from "react-icons/fa";
 import { InputSection, FilterTitle, Input, StyledSelect } from "../styles/Projet";
 import Footer from "../components/Footer";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 const EventGrid = styled.div`
   display: flex;
@@ -243,7 +245,12 @@ function Projet() {
 
   return (
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "} Projets</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main">
         <aside className="left">
           <FilterTitle

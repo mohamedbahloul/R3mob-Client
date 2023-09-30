@@ -4,10 +4,12 @@ import Colors from "../styles/Colors";
 import UpdateActeurCounts from "../components/UpdateActeurCounts";
 import PublicationsUrls from '../components/PublicationsUrls'
 import UpdatePublicInfos from "../components/UpdatePublicInfos";
+import UpdateVideosUrls from "../components/UpdateVideosUrls";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
+
 
 const NavBar = styled.div`
   display: flex;
@@ -43,6 +45,8 @@ function Admin() {
         return <UpdatePublicInfos />
       case "PubUrls":
        return <PublicationsUrls />
+      case "Videos":
+        return <UpdateVideosUrls />;
       default:
        return <UpdateActeurCounts />
     }
@@ -69,6 +73,9 @@ function Admin() {
         </ChooseButton>
         <ChooseButton onClick={() => setSelectedComponent("PubUrls")} active={selectedComponent === "PubUrls"}>
           Liens des publications
+        </ChooseButton>
+        <ChooseButton onClick={() => setSelectedComponent("Videos")} active={selectedComponent === "Videos"}>
+          Vidéos R3MOB
         </ChooseButton>
       </NavBar>
       {renderSelectedComponent()}

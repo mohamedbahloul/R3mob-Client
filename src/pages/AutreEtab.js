@@ -10,6 +10,8 @@ import { FaSearch } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 const HorizontalLine = styled.hr`
   background-color: lightgray;
@@ -95,7 +97,13 @@ function AutreEtab() {
     authState.status==true ? (
 
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle href="\annuaires" >{"> "} Annuaire</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "} Autre Etablissement</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main">
         <aside className="left">
           <p

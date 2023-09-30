@@ -15,6 +15,8 @@ import Colors from "../styles/Colors";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 const DetailsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -302,7 +304,14 @@ function ChercheurDetails() {
     authState.status==true ? (
 
     <div className="body">
-      <header>header</header>
+      <header>      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle href="\annuaires" >{"> "} Annuaire</HeaderLinkStyle>
+        <HeaderLinkStyle href="\chercheur">{"> "} Acteurs R3MOB</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "}{chercheur.username}</HeaderLinkStyle>
+
+      </HeaderContent>
+      </header>
       <div className="main" style={{marginTop:"100px"}}>
         <aside className="left">left</aside>
         <main>

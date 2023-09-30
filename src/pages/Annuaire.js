@@ -12,6 +12,8 @@ import BordeauxMap from "../components/BordeauxMap";
 import axios from "axios";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, Navigate } from "react-router-dom";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 const PageLink = styled(Link)`
   text-decoration: none;
   color: inherit;
@@ -35,7 +37,12 @@ function Annuaire() {
   return (
     authState.status==true ? (
       <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle>{"> "} Annuaire</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main">
         <aside className="left">
           <ScrollButton />

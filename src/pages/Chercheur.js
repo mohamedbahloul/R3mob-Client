@@ -16,6 +16,8 @@ import Footer from "../components/Footer";
 import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
+import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+
 
 const EventGrid = styled.div`
   display: flex;
@@ -115,14 +117,17 @@ function Chercheur() {
       );
       return etablissement ? etablissement.nom.toLowerCase() : "";
     });
-
+  
+    // Ajoutez une condition pour inclure les chercheurs sans établissement
+    const hasNoEtablissement = etablissementNames.length === 0;
+  
     return (
       perso.username
         .toLowerCase()
         .includes(chercheurNameFilter.trim().toLowerCase()) &&
-      etablissementNames.some((name) =>
+      (hasNoEtablissement || etablissementNames.some((name) =>
         name.trim().includes(etablissementFilter.trim().toLowerCase())
-      ) &&
+      )) &&
       (personnelTypeFilter === "Tous" ||
         perso.Type_personnels.some((type) => type.type === personnelTypeFilter)) &&
         (comiteTypeFilter === "Tous" ||
@@ -252,7 +257,13 @@ function Chercheur() {
 
     
     <div className="body">
-      <header>header</header>
+      <header>
+      <HeaderContent>
+        <HeaderLinkStyle href="\">{"> "}Accueil</HeaderLinkStyle>
+        <HeaderLinkStyle href="\annuaires" >{"> "} Annuaire</HeaderLinkStyle>
+        <HeaderLinkStyle >{"> "} Acteurs R3MOB</HeaderLinkStyle>
+      </HeaderContent>
+      </header>
       <div className="main">
         <aside className="left">
           <p
