@@ -14,6 +14,7 @@ import { InputSection, Label, Input, StyledSelect } from "../styles/Agenda";
 import Footer from "../components/Footer";
 import Colors from "../styles/Colors";
 import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+import { PropagateLoader } from "react-spinners";
 
 const EventGrid = styled.div`
   display: flex;
@@ -162,6 +163,7 @@ function Agenda() {
   const [eventNameFilter, setEventNameFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [eventLocationFilter, setEventLocationFilter] = useState("Tous"); // "Tous" pour afficher tous les types d'événements par défaut
+  var [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios.get(`https://back.r3mob.fr/event/combined`).then((res) => {
@@ -206,6 +208,7 @@ function Agenda() {
     })
     .sort((a, b) => {
       // Tri des événements en fonction du type de tri
+      loading = false;
       if (sortType === "ascending") {
         return new Date(a.startDateTime) - new Date(b.startDateTime);
       } else {
@@ -499,7 +502,14 @@ function Agenda() {
             
           </ExtendedFiltres>
         <h1 className="mainTitle">Évènements</h1>
-  {currentEvents.length === 0 ? (
+        {loading === true ? (
+  <PropagateLoader cssOverride={{
+    "display": "flex",
+    "justifyContent": "center", "alignItems": "center", "height": "100vh"
+  }}
+    color="#36d7b7" />
+) : (
+  currentEvents.length === 0 ? (
     <p>Aucun événement à afficher pour les filtres sélectionnés.</p>
   ) : (
     <EventGrid>
@@ -524,7 +534,8 @@ function Agenda() {
         );
       })}
     </EventGrid>
-  )}
+  )
+)}
 
           <div>
           {/* Display first page */}

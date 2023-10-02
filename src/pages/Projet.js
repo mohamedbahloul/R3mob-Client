@@ -11,6 +11,8 @@ import { FaSearch } from "react-icons/fa";
 import { InputSection, FilterTitle, Input, StyledSelect } from "../styles/Projet";
 import Footer from "../components/Footer";
 import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+import PropagateLoader from "react-spinners/PropagateLoader"
+
 
 
 const EventGrid = styled.div`
@@ -71,6 +73,7 @@ function Projet() {
   const [enjeuxFilter, setEnjeuxFilter] = useState("");
   /*Déclaration AAP */
   const [aap, setAap] = useState([]);
+  var [loading, setLoading] = useState(true);
 
   const currentHash = window.location.hash;
   useEffect(() => {
@@ -100,6 +103,7 @@ function Projet() {
       setAllEnjeux(res.data);
     }
     );
+    
   }, []);
   const filteredProjets = projets
     .filter((projet) => {
@@ -152,6 +156,7 @@ function Projet() {
       // Filtrage par état
       return projet.etat === etatFilter;
     }).filter((projet) => {
+      loading = false;
       if (enjeuxFilter === "") {
         return true; // Pas de filtre, afficher tous les projets
       }
@@ -437,7 +442,14 @@ function Projet() {
           </ReinitialiserButton>
           </ExtendedFiltres>
           <h1 className="mainTitle">Projets</h1>
-          {currentProjets.length != 0 ? (
+          {loading === true ? (
+  <PropagateLoader cssOverride={{
+    "display": "flex",
+    "justifyContent": "center", "alignItems": "center", "height": "100vh"
+  }}
+    color="#36d7b7" />
+) : (
+          currentProjets.length != 0 ? (
 
           <EventGrid>
             {currentProjets.map((value, key) => {
@@ -457,6 +469,7 @@ function Projet() {
           </EventGrid>
           ) : (
             <p>Aucun projet ne correspond aux filtres sélectionnés.</p>
+          )
           )}
 
           <div>
