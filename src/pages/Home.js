@@ -102,7 +102,7 @@ const TextContainer = styled.div`
   top: 40%;
   left: 30%;
   transform: translate(-50%, -50%);
-  width: 50%;
+  width: 70%;
   height: 30%;
   background-color: white;
   z-index: 1;
@@ -114,6 +114,7 @@ const TextContainer = styled.div`
   align-items: left;
   text-align: left;
   opacity: 0.8;
+  margin-left:10%;
   /* overflow: hidden; Empêche le débordement du contenu */
 `;
 
@@ -121,11 +122,17 @@ const Title = styled.h2`
   color: red;
   font-size: 1.2rem;
   margin-top: 0;
+  @media (max-width: 990px) {
+    font-size: 0.9rem;
+  }
 `;
 const Paragraph = styled.p`
   color: #333;
   font-size: 0.8rem;
   margin-bottom: 0; /* Ajustez la marge selon vos besoins */
+@media (max-width: 990px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const StyledSpan = styled.span`

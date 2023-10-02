@@ -33,9 +33,8 @@ const HorizontalLine = styled.hr`
 const EventCardContainer = styled.div`
   @media (min-width: 2189px) {
     height: auto;
-    width: auto;;
-  }
-  width: 45%;
+    width: auto;
+    }
 `;
 const ReinitialiserButton = styled.button`
   margin-top: 30px;

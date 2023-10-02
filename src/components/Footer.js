@@ -23,13 +23,19 @@ const SocialIcons = styled.div`
     &:hover {
       color: #007bff;
     }
+    @media (max-width: 768px) {
+    font-size: 20px;
+  }
   }
 `;
 
 const CopyrightText = styled.p`
   margin: 0;
-  font-size: 90%;
+  font-size: 1.3rem;
   color: #888;
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Footer = () => {
