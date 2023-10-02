@@ -4,11 +4,13 @@ import '../styles/Colors.css';
 import { FaMapMarkerAlt,FaCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Colors from '../styles/Colors';
+import axios from 'axios';
 
 
     
 const EventCard = ({ id, date, title, description,locationType, eventType, location, registrationLink,imageUrl,fallbackImageUrl }) => {
   const [playAnimation, setPlayAnimation] = useState(false);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     // Set playAnimation to true when the component mounts (initial animation)
@@ -19,12 +21,25 @@ const EventCard = ({ id, date, title, description,locationType, eventType, locat
       setPlayAnimation(false);
     };
   }, []);
-  const imageUrlWithTimestamp = `${fallbackImageUrl}?t=${new Date().getTime()}`;
+  useEffect(() => {
+    axios.get(`https://back.r3mob.fr/event/image/${id}`).then((res) => {
+      console.log(res.data);
+      if (res.data && res.data !== null) {
+        // Vérifiez que res.data n'est pas nul
+        setImage(`data:image/png;base64,${res.data}`);
+        console.log(image);
+      } else {
+        setImage(null);
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  });
   
-
+  const backgroundImage = image ? `${image}` : `${fallbackImageUrl}`;
   return (
     <PageLink to={`/event/${id}`}> 
-    <CardContainer imageUrl={imageUrl} fallbackUrl={imageUrlWithTimestamp} playAnimation={playAnimation}>
+    <CardContainer imageUrl={backgroundImage}  playAnimation={playAnimation}>
       <CardContent>
         <EventTitle>{title}</EventTitle>
         <EventDescription>{description}</EventDescription>

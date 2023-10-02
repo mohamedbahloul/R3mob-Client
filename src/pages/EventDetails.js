@@ -189,6 +189,7 @@ function EventDetails() {
   const { eventId } = useParams();
   const [event, setEvent] = useState({});
   const [similarEvents, setSimilarEvents] = useState([]);
+  const [image, setImage] = useState(null);
 
   const customEventURL = `https://back.r3mob.fr/detailsEvent/custom/${eventId}`;
   console.log("Custom Event URL:", customEventURL);
@@ -232,12 +233,26 @@ function EventDetails() {
       day: "numeric",
     }
   );
+  useEffect(() => {
+    axios.get(`https://back.r3mob.fr/event/image/${eventId}`).then((res) => {
+      console.log(res.data);
+      if (res.data && res.data !== null) {
+        // Vérifiez que res.data n'est pas nul
+        setImage(`data:image/png;base64,${res.data}`);
+        console.log(image);
+      } else {
+        setImage(null);
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  });
 
   // Remplacer les balises <br/> par des sauts de ligne
   const eventDesc = event.description || "";
   var formattedDescription = eventDesc.replace(/\\t/g, "<pre/>");
-  const imageUrl = `../events_imgs/${eventId}.jpg`;
-  const fallbackImageUrl = "../events_imgs/event_default.jpg";
+  const fallbackImageUrl="events_imgs/event_default.jpg";
+  const backgroundImage = image ? `${image}` : `${fallbackImageUrl}`;
 
   return (
     // authState.status==true ? (
@@ -296,7 +311,7 @@ function EventDetails() {
               </ContactSection>
             </LeftSide>
             <RightSide>
-               <EventImage src={fallbackImageUrl} alt="Image de l'événement" /> 
+               <EventImage src={backgroundImage} alt="Image de l'événement" /> 
               {formattedDescription.split("<br/>").map((paragraph, index) => (
                 <EventDescription key={index}>
                   

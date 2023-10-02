@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import Popup from 'reactjs-popup';
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -27,6 +27,7 @@ import {
   FileInputContainer,
 } from "../styles/EditEventPopup";
 
+
 const EditEventPopup = ({ event, onSave, onClose }) => {
   const [nom, setNom] = useState(event.nom);
   const [startDateTime, setStartDateTime] = useState(new Date(event.startDateTime));
@@ -34,6 +35,8 @@ const EditEventPopup = ({ event, onSave, onClose }) => {
   const [id, setId] = useState(event.id);
   const [description, setDescription] = useState(event.description);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [image, setImage] = useState(null);
+
 
   const handleImageUpload = async (e) => {
     setSelectedImage(e.target.files[0]);
@@ -66,17 +69,34 @@ const EditEventPopup = ({ event, onSave, onClose }) => {
   };
 
 
-  const [imageUrl, setImageUrl] = useState("events_imgs/event_default.jpg");
-  function checkImageExists(imageUrl) {
-    const img = new Image();
-    img.onload = () => {
-      setImageUrl(imageUrl);
-    };
-    img.onerror = () => {};
+  // const [imageUrl, setImageUrl] = useState("events_imgs/event_default.jpg");
+  // function checkImageExists(imageUrl) {
+  //   const img = new Image();
+  //   img.onload = () => {
+  //     setImageUrl(imageUrl);
+  //   };
+  //   img.onerror = () => {};
 
-    img.src = imageUrl; // Set the source to the image URL
-  }
-  const imageExists = checkImageExists("events_imgs/" + id + ".jpg");
+  //   img.src = imageUrl; // Set the source to the image URL
+  // }
+  // const imageExists = checkImageExists("events_imgs/" + id + ".jpg");
+
+  useEffect(() => {
+    axios.get(`https://back.r3mob.fr/event/image/${id}`).then((res) => {
+      console.log(res.data);
+      if (res.data && res.data !== null) {
+        // Vérifiez que res.data n'est pas nul
+        setImage(`data:image/png;base64,${res.data}`);
+        console.log(image);
+      } else {
+        setImage(null);
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  });
+  const fallbackImageUrl="events_imgs/event_default.jpg";
+  const backgroundImage = image ? `${image}` : `${fallbackImageUrl}`;
 
   return (
     <PopupContainer>
@@ -119,7 +139,7 @@ const EditEventPopup = ({ event, onSave, onClose }) => {
           />
         </InputSection>
         <ImageSection>
-          <ImageField src={imageUrl} alt="Event Image" />
+          <ImageField src={backgroundImage} alt="Event Image" />
           <UploadArea>
             <FileInputContainer>
               <FileInputLabel>
