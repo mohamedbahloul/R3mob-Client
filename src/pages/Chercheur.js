@@ -17,6 +17,7 @@ import { useContext } from "react";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
 import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 
 const EventGrid = styled.div`
@@ -85,6 +86,8 @@ function Chercheur() {
   const [sousThematiqueFilter, setSousThematiqueFilter] = useState("");
   // pour la liste des Thematiques dans la liste déroulante
   const [allSousThematiques, setAllSousThematiques] = useState([]);
+
+  var [loading, setLoading] = useState(true);
 
   // pour la liste des sous Thematiques dans la liste déroulante
   const [sousThematiquesSelectFilter, setSousThematiquesSelectFilter] =
@@ -168,6 +171,7 @@ function Chercheur() {
   });
 
   const sortedPersos = filteredPersos.sort((a, b) => {
+    loading = false;
     if (sortType === "ascending") {
       return a.username.localeCompare(b.username);
     } else {
@@ -381,7 +385,14 @@ function Chercheur() {
         </aside>
         <main>
           <h1 className="mainTitle">Acteurs R3MOB</h1>
-          {currentPageContent.length != 0 ? (
+          {loading === true ? (
+  <PropagateLoader cssOverride={{
+    "display": "flex",
+    "justifyContent": "center", "alignItems": "center", "height": "100vh"
+  }}
+    color="#36d7b7" />
+) : (
+          currentPageContent.length != 0 ? (
           <EventGrid>
           
             {currentPageContent.map((value, key) => {
@@ -411,6 +422,7 @@ function Chercheur() {
           </EventGrid>
           ) : (
             <p>Aucun acteur R3MOB ne correspond aux filtres sélectionnés.</p>
+          )
           )}
 
           <div>

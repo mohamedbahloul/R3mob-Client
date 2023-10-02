@@ -36,11 +36,22 @@ const NameUnderCard= styled.p`
     }
 `;
 
-const CartePerso = ({ id, name, email, phone, address, imageData }) => {
+const CartePerso = ({ id, name, email, phone, address }) => {
     const [isHovered, setIsHovered] = useState(false);
-  
-    const backgroundImage = imageData
-      ? `url(data:image/png;base64,${imageData})`
+    const [chercheur, setChercheur] = useState([]);
+    useEffect(() => {
+        axios
+            .get(`https://back.r3mob.fr/detailsChercheur/image/${id}`)
+            .then((res) => {
+                if (res.data !== null) {
+                    setChercheur(res.data);
+                } else {
+                    window.location.replace('/404');
+                }
+            });
+    }, [id]);
+    const backgroundImage = chercheur.imageData
+    ? `url(data:image/png;base64,${chercheur.imageData})`
       : `url(${defaultImage})`;
   
     return (
