@@ -33,10 +33,10 @@ const UpdateEvent = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const res1 = await axios.get(`http://back.r3mob.fr/event/all`);
+        const res1 = await axios.get(`https://back.r3mob.fr/event/all`);
         setBrainEvents(res1.data);
 
-        const res2 = await axios.get(`http://back.r3mob.fr/event/custom`);
+        const res2 = await axios.get(`https://back.r3mob.fr/event/custom`);
         setCustomEvents(res2.data);
 
         if (selectedButton === "brain") {
@@ -59,7 +59,7 @@ const UpdateEvent = () => {
 
   const handleDeleteEvent = async (eventId) => {
     axios
-      .delete(`http://back.r3mob.fr/event/custom/${eventId}`)
+      .delete(`https://back.r3mob.fr/event/custom/${eventId}`)
       .then((res) => {
         console.log(res.data);
         fetchEvents();
@@ -85,7 +85,7 @@ const UpdateEvent = () => {
   const handleSaveEventChanges = async (updatedEvent) => {
     if (selectedButton === "brain") {
       axios
-        .put(`http://back.r3mob.fr/event/${updatedEvent.id}`, updatedEvent)
+        .put(`https://back.r3mob.fr/event/${updatedEvent.id}`, updatedEvent)
         .then(async (res) => {
           console.log(res.data);
           try {
@@ -93,7 +93,7 @@ const UpdateEvent = () => {
             formData.append("imageName", `${updatedEvent.id}.jpg`); // Add the image_name to the FormData
             formData.append("image", updatedEvent.selectedImage);
             const response = await axios.post(
-              "http://back.r3mob.fr/uploadImage",
+              "https://back.r3mob.fr/uploadImage",
               formData
             );
             console.log(response);
@@ -115,7 +115,7 @@ const UpdateEvent = () => {
     } else {
       axios
         .put(
-          `http://back.r3mob.fr/event/custom/${updatedEvent.id}`,
+          `https://back.r3mob.fr/event/custom/${updatedEvent.id}`,
           updatedEvent
         )
         .then(async (res) => {
@@ -125,7 +125,7 @@ const UpdateEvent = () => {
             formData.append("imageName", `${updatedEvent.id}.jpg`); // Add the image_name to the FormData
             formData.append("image", updatedEvent.selectedImage);
             const response = await axios.post(
-              "http://back.r3mob.fr/uploadImage",
+              "https://back.r3mob.fr/uploadImage",
               formData
             );
             console.log(response);
@@ -158,7 +158,7 @@ const UpdateEvent = () => {
       };
       
       const res = await axios.put(
-        `http://back.r3mob.fr/event/changePrivacy/brain/${eventId}`,
+        `https://back.r3mob.fr/event/changePrivacy/brain/${eventId}`,
         updatedEvent
       );
 
@@ -178,7 +178,7 @@ const UpdateEvent = () => {
       };
       
       const res = await axios.put(
-        `http://back.r3mob.fr/event/changePrivacy/custom/${eventId}`,
+        `https://back.r3mob.fr/event/changePrivacy/custom/${eventId}`,
         updatedEvent
       );
 
@@ -191,11 +191,11 @@ const UpdateEvent = () => {
   };
   const handleCreateCustomEvent = async (createdEvent) => {
     axios
-      .post(`http://back.r3mob.fr/event/custom`, createdEvent)
+      .post(`https://back.r3mob.fr/event/custom`, createdEvent)
       .then(async (res) => {
         let id = null;
         axios
-          .get(`http://back.r3mob.fr/event/lastCustom`)
+          .get(`https://back.r3mob.fr/event/lastCustom`)
 
           .then(async (res) => {
             id = res.data;
@@ -207,7 +207,7 @@ const UpdateEvent = () => {
               formData.append("imageName", `${id}.jpg`); // Add the image_name to the FormData
               formData.append("image", createdEvent.selectedImage);
               const response = await axios.post(
-                "http://back.r3mob.fr/uploadImage",
+                "https://back.r3mob.fr/uploadImage",
                 formData
               );
               if (response.status === 200) {
@@ -229,9 +229,9 @@ const UpdateEvent = () => {
     setShowCreatePopup(false);
   };
   const fetchEvents = async () => {
-    const res = await axios.get(`http://back.r3mob.fr/event/all`);
+    const res = await axios.get(`https://back.r3mob.fr/event/all`);
     setBrainEvents(res.data);
-    const res2 = await axios.get(`http://back.r3mob.fr/event/custom`);
+    const res2 = await axios.get(`https://back.r3mob.fr/event/custom`);
     setCustomEvents(res2.data);
     if (selectedButton === "brain") setEvents(res.data);
     else setEvents(res2.data);

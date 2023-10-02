@@ -52,13 +52,13 @@ const CreateEventPopup = ({ onSave, onClose }) => {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/sousThematique`).then((res) => {
+    axios.get(`https://back.r3mob.fr/sousThematique`).then((res) => {
       setAllSousThematiques(res.data);
       //setSousThematiquesFiltrees(res.data); // Initialisez avec toutes les sous-thématiques
     });
   }, []);
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/thematique`).then((res) => {
+    axios.get(`https://back.r3mob.fr/thematique`).then((res) => {
       setAllThematiques(res.data);
     });
   }, []);
@@ -114,7 +114,7 @@ const CreateEventPopup = ({ onSave, onClose }) => {
     console.log("+++++++++++++++++++++", authState.id);
 
     try {
-      await axios.post("http://back.r3mob.fr/createPublication", formData, {
+      await axios.post("https://back.r3mob.fr/createPublication", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

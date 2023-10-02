@@ -49,7 +49,8 @@ function Navbar() {
         </LeftContainer>
         <RightContainer>
           <NavbarLinkContainer>
-            <div className="dropdown">
+          <NavbarLink to="/apropos"> À propos du réseau</NavbarLink>
+            {/* <div className="dropdown">
               <NavbarLinkList to="/apropos">
               À propos du réseau <span className="dropdownbtn">&#8964;</span>
                 <div className="dropdown-content">
@@ -60,7 +61,7 @@ function Navbar() {
                   <NavbarLink href="#">Contact</NavbarLink>
                 </div>
               </NavbarLinkList>
-            </div>
+            </div> */}
             <div className="dropdown">
               <NavbarLinkList to="/projet">
                 Projets <span className="dropdownbtn">&#8964;</span>

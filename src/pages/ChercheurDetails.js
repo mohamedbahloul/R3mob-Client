@@ -205,7 +205,7 @@ function ChercheurDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://back.r3mob.fr/detailsChercheur/${chercheurId}`)
+      .get(`https://back.r3mob.fr/detailsChercheur/${chercheurId}`)
       .then((res) => {
         if (res.data !== null) {
           setChercheur(res.data);
@@ -216,13 +216,13 @@ function ChercheurDetails() {
       });
 
     axios
-      .get(`http://back.r3mob.fr/etablissement/chercheur/${chercheurId}`)
+      .get(`https://back.r3mob.fr/etablissement/chercheur/${chercheurId}`)
       .then((res) => {
         if (res.data !== null) {
           setEtablissement(res.data);
         }
       });
-    axios.get(`http://back.r3mob.fr/publication/personnel/${chercheurId}`).then((res) => {
+    axios.get(`https://back.r3mob.fr/publication/personnel/${chercheurId}`).then((res) => {
       if (res.data !== null) {
         setPublications(res.data);
       }
@@ -230,7 +230,7 @@ function ChercheurDetails() {
     );
   }, [chercheurId,shouldReloadPage]);
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/thematique`).then((res) => {
+    axios.get(`https://back.r3mob.fr/thematique`).then((res) => {
       if (res.data.error) {
         console.log(res.data.error);
       } else {

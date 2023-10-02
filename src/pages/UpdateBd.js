@@ -4,7 +4,7 @@ import axios from "axios";
 function UpdateBd() {
   // useEffect(() => {
   //   console.log("UpdateBd component mounted"); // Ajouter ce log pour suivre le montage du composant
-  //   axios.post(`http://back.r3mob.fr/brain`).then((res) => {
+  //   axios.post(`https://back.r3mob.fr/brain`).then((res) => {
   //     console.log("BD Updated!!!!");
   //   });
   // }, []);

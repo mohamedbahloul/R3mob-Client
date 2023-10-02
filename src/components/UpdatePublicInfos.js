@@ -81,7 +81,7 @@ function UpdatePublicInfos() {
 
   useEffect(() => {
     axios
-      .get("http://back.r3mob.fr/infos/all")
+      .get("https://back.r3mob.fr/infos/all")
       .then((response) => {
         setJsonData(response.data);
         setOriginalJsonData(response.data);
@@ -114,7 +114,7 @@ function UpdatePublicInfos() {
   const updateJsonFile = () => {
     console.log("Mise à jour du fichier JSON...");
     axios
-      .put("http://back.r3mob.fr/infos", jsonData) 
+      .put("https://back.r3mob.fr/infos", jsonData) 
       .then((response) => {
         console.log("Fichier JSON mis à jour avec succès.");
       })

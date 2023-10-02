@@ -85,7 +85,7 @@ function AutreEtab() {
 
 
   useEffect(() => {
-    axios.get("http://back.r3mob.fr/etablissement/autre").then((response) => {
+    axios.get("https://back.r3mob.fr/etablissement/autre").then((response) => {
       setAutreEtab(response.data);
     });
   }, []);

@@ -32,7 +32,7 @@ const CarteProjet = ({
   }, []);
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/projet/thematiques/${id}`).then((res) => {
+    axios.get(`https://back.r3mob.fr/projet/thematiques/${id}`).then((res) => {
       if (res.data.error) {
         console.log(res.data.error);
       } else {
@@ -42,7 +42,7 @@ const CarteProjet = ({
   }, [id]);
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/thematique`).then((res) => {
+    axios.get(`https://back.r3mob.fr/thematique`).then((res) => {
       if (res.data.error) {
         console.log(res.data.error);
       } else {

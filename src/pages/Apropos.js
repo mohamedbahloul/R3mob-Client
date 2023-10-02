@@ -13,6 +13,8 @@ import "../styles/Apropos.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
+import LogoImg from "../assets/logo.jpg";
+
 
 
 
@@ -181,6 +183,25 @@ const StyledErrorMessage = styled(ErrorMessage)`
   font-size: 0.8rem;
   margin-top: 5px;
 `;
+const LogosContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  justify-content: center;
+  /* align-items: center; */
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  gap: 20%;
+`;
+const Logos = styled.img`
+  width: 20%;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
 
 
 function Apropos() {
@@ -189,18 +210,18 @@ function Apropos() {
   const [etablissements, setEtablissements] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/perso/pilote`).then((res) => {
+    axios.get(`https://back.r3mob.fr/perso/pilote`).then((res) => {
       setPilotes(res.data);
       console.log(res.data);
     });
-    axios.get(`http://back.r3mob.fr/etablissement`).then((res) => {
+    axios.get(`https://back.r3mob.fr/etablissement`).then((res) => {
       setEtablissements(res.data);
       console.log(res.data);
     });
   }, []);
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/infos/apropos`).then((res) => {
+    axios.get(`https://back.r3mob.fr/infos/apropos`).then((res) => {
       setInfos(res.data);
     });
   }, []);
@@ -225,6 +246,10 @@ function Apropos() {
       <div className="main">
         <aside className="left"></aside>
         <main>
+          <LogosContainer>
+            <Logos src="logo.png" alt="Logo" className="logo" />
+            <Logos src="Logo_Nouvelle-Aquitaine.png" alt="Nouvelle aquitaine" className="na" />
+          </LogosContainer>
           <InfosContainer>
             <SecondaryTitle>Qui sommes-nous ? </SecondaryTitle>
             <DescriptionReseau>{infos.descriptionReseau}</DescriptionReseau>
@@ -285,7 +310,7 @@ function Apropos() {
           initialValues={{ nom: "", email: "", message: "",sujet:"" }}
           validationSchema={contactFormSchema}
           onSubmit={(values, { resetForm }) => {
-            axios.post("http://back.r3mob.fr/sendMail/contact", {
+            axios.post("https://back.r3mob.fr/sendMail/contact", {
               nom: values.nom.trim(),
               email: values.email.trim(),
               sujet: values.sujet.trim(),

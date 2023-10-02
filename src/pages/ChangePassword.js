@@ -88,7 +88,7 @@ function ChangePassword() {
               validationSchema={contactFormSchema}
               onSubmit={(values, { resetForm, setSubmitting }) => {
                 axios
-                  .post("http://back.r3mob.fr/auth/change-password-profile", {
+                  .post("https://back.r3mob.fr/auth/change-password-profile", {
                     userId: authState.id,
                     oldPassword: values.oldPassword,
                     password: values.password,

@@ -31,7 +31,7 @@ const
 ResetPasswordPopup = ({ onSave, onClose }) => {
   const [email, setEmail] = useState(null);
   const handleSaveChanges = () => {
-    axios.post("http://back.r3mob.fr/auth/reset-password", {
+    axios.post("https://back.r3mob.fr/auth/reset-password", {
       email: email,
     }).then((response) => {
       if (response.data.error) {

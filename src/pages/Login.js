@@ -145,8 +145,8 @@ function Login() {
 
   useEffect(() => {
     if (id) {
-      console.log(`http://back.r3mob.fr/perso/email/${id}`);
-      axios.get(`http://back.r3mob.fr/perso/email/${id}`).then((response) => {
+      console.log(`https://back.r3mob.fr/perso/email/${id}`);
+      axios.get(`https://back.r3mob.fr/perso/email/${id}`).then((response) => {
         if (response.data.error) {
           alert(response.data.error);
         } else {
@@ -162,7 +162,7 @@ function Login() {
   };
   const handleSignupClick = () => {
     axios
-      .post("http://back.r3mob.fr/auth/register", { email: signupUsername.trim() })
+      .post("https://back.r3mob.fr/auth/register", { email: signupUsername.trim() })
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
@@ -174,7 +174,7 @@ function Login() {
 
   const login = () => {
     const data = { email: username.trim(), password: password };
-    axios.post("http://back.r3mob.fr/auth/login", data).then((response) => {
+    axios.post("https://back.r3mob.fr/auth/login", data).then((response) => {
       if (response.data.error) {
         alert(response.data.error);
       } else {

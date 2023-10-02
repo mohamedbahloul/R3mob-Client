@@ -11,7 +11,7 @@ function CreateForum() {
     userId: ''
   }
   const onSubmit = (data) => {
-    axios.post('http://back.r3mob.fr/forum', data).then(() => {
+    axios.post('https://back.r3mob.fr/forum', data).then(() => {
       navigate('/')
     })
   }

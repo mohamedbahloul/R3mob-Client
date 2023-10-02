@@ -12,9 +12,6 @@ import Colors from "../styles/Colors";
 import ParticlesBg from "particles-bg";
 import { HeaderContent, HeaderLinkStyle } from "../styles/Header.style";
 
-
-
-
 const SecondaryTitle = styled.h2`
   color: ${Colors.color2};
   font-size: 2rem;
@@ -94,7 +91,6 @@ const CardContainer = styled.div`
   animation: ${(props) =>
     props.playAnimation ? "rotate 0.5s ease, zoom 0.5s ease" : "none"};
   position: relative;
-
 `;
 
 const TextContainer = styled.div`
@@ -172,18 +168,18 @@ function Home() {
   };
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/perso/pilote`).then((res) => {
+    axios.get(`https://back.r3mob.fr/perso/pilote`).then((res) => {
       setPilotes(res.data);
       console.log(res.data);
     });
-    axios.get(`http://back.r3mob.fr/etablissement`).then((res) => {
+    axios.get(`https://back.r3mob.fr/etablissement`).then((res) => {
       setEtablissements(res.data);
       console.log(res.data);
     });
-    axios.get(`http://back.r3mob.fr/event/3recent`).then((res) => {
+    axios.get(`https://back.r3mob.fr/event/3recent`).then((res) => {
       setEvents(res.data);
     });
-    axios.get(`http://back.r3mob.fr/publication/3recent`).then((res) => {
+    axios.get(`https://back.r3mob.fr/publication/3recent`).then((res) => {
       setPublications(res.data);
     });
   }, []);
@@ -199,46 +195,50 @@ function Home() {
   }, []);
 
   return (
-    
     <div className="body">
-            <HeaderContent style={{
-              marginTop: "50px",
-            }}>
-        <HeaderLinkStyle style={{
-              marginLeft: "50px",
-            }}>{"> "}Accueil</HeaderLinkStyle>
-
+      <HeaderContent
+        style={{
+          marginTop: "50px",
+        }}
+      >
+        <HeaderLinkStyle
+          style={{
+            marginLeft: "50px",
+          }}
+        >
+          {"> "}Accueil
+        </HeaderLinkStyle>
       </HeaderContent>
-            {/* <ParticlesBg  type="cobweb" bg={true} num={150} /> */}
-            <div>
-            <CardContainer
-              imageUrl={images[currentImage - 1].src}
-              alt={`Image ${currentImage}`}
-            >
-              <TextContainer>
-                <Title>{images[currentImage - 1].title}</Title>
-                <Paragraph>
-                  {images[currentImage - 1].span && (
-                    <StyledSpan>{images[currentImage - 1].span}</StyledSpan>
-                  )}
-                  {images[currentImage - 1].text}
-                  {images[currentImage - 1].elem1 &&
-                    images[currentImage - 1].elem2 && (
-                      <ul>
-                        <li>{images[currentImage - 1].elem1}</li>
-                        <li>{images[currentImage - 1].elem2}</li>
-                      </ul>
-                    )}
-                </Paragraph>
-              </TextContainer>
-            </CardContainer>
-          </div>
+      {/* <ParticlesBg  type="cobweb" bg={true} num={150} /> */}
+      <div>
+        <CardContainer
+          imageUrl={images[currentImage - 1].src}
+          alt={`Image ${currentImage}`}
+        >
+          <TextContainer>
+            <Title>{images[currentImage - 1].title}</Title>
+            <Paragraph>
+              {images[currentImage - 1].span && (
+                <StyledSpan>{images[currentImage - 1].span}</StyledSpan>
+              )}
+              {images[currentImage - 1].text}
+              {images[currentImage - 1].elem1 &&
+                images[currentImage - 1].elem2 && (
+                  <ul>
+                    <li>{images[currentImage - 1].elem1}</li>
+                    <li>{images[currentImage - 1].elem2}</li>
+                  </ul>
+                )}
+            </Paragraph>
+          </TextContainer>
+        </CardContainer>
+      </div>
       <header>header</header>
       <div className="main">
         <aside className="left"></aside>
         <main>
-          
-
+          {pilotes.length > 0 && (
+            <>
           <SecondaryTitle>L'équipe du réseau : </SecondaryTitle>
           <PersoGrid>
             {pilotes.map((value, key) => {
@@ -265,30 +265,38 @@ function Home() {
               );
             })}
           </PersoGrid>
-          <SecondaryTitle>Les événements récents : </SecondaryTitle>
-          <EventGrid>
-            {events.map((value, key) => {
-              return (
-                <EventCardContainer key={key}>
-                  <EventCard
-                    id={value.id}
-                    date={formatDate(value.startDateTime)}
-                    title={value.nom}
-                    locationType={value.locationType}
-                    eventType={value.eventType}
-                    location={
-                      value.locationType === "Visio"
-                        ? "En ligne"
-                        : value.location
-                    }
-                    registrationLink={value.lienInscription}
-                    imageUrl={`events_imgs/${value.id}.jpg`}
-                    fallbackImageUrl={"events_imgs/event_default.jpg"}
-                  />
-                </EventCardContainer>
-              );
-            })}
-          </EventGrid>
+          </>
+          )}
+          {events.length > 0 && (
+            <>
+              <SecondaryTitle>Les événements récents : </SecondaryTitle>
+              <EventGrid>
+                {events.map((value, key) => {
+                  return (
+                    <EventCardContainer key={key}>
+                      <EventCard
+                        id={value.id}
+                        date={formatDate(value.startDateTime)}
+                        title={value.nom}
+                        locationType={value.locationType}
+                        eventType={value.eventType}
+                        location={
+                          value.locationType === "Visio"
+                            ? "En ligne"
+                            : value.location
+                        }
+                        registrationLink={value.lienInscription}
+                        imageUrl={`events_imgs/${value.id}.jpg`}
+                        fallbackImageUrl={"events_imgs/event_default.jpg"}
+                      />
+                    </EventCardContainer>
+                  );
+                })}
+              </EventGrid>
+            </>
+          )}
+          {publications.length > 0 && (
+            <>
           <SecondaryTitle>Les publications récentes</SecondaryTitle>
           <PublicationGrid>
             {publications.map((value, key) => {
@@ -305,11 +313,11 @@ function Home() {
               );
             })}
           </PublicationGrid>
+          </>
+          )}
           <div className="mobile">
-          <CarteButton />
+            <CarteButton />
           </div>
-          
-
         </main>
         <aside className="right">
           <ScrollButton />

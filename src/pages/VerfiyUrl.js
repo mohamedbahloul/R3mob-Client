@@ -35,14 +35,14 @@ function VerifyUrl() {
   };
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/urls`).then((res) => {
+    axios.get(`https://back.r3mob.fr/urls`).then((res) => {
         setUrls(res.data);
     });
     }, []);
 
   const handleVerifyLinks = async () => {
     try {
-      const response = await axios.get(`http://back.r3mob.fr/urls/verify`);
+      const response = await axios.get(`https://back.r3mob.fr/urls/verify`);
       setUrls(response.data.etabs);
       response.data.etabs.forEach((etab) => {
         handleStoreUrls(etab);
@@ -61,7 +61,7 @@ function VerifyUrl() {
         type: "etablissement", 
         url: etab.url, 
       };
-      const response = await axios.post(`http://back.r3mob.fr/urls`, newUrl);
+      const response = await axios.post(`https://back.r3mob.fr/urls`, newUrl);
       console.log("New URL created:", response.data);
     } catch (error) {
       console.error("Error creating new URL:", error);
@@ -71,7 +71,7 @@ function VerifyUrl() {
   const handleModifyClick = (url) => {
     const newLinkText = modifiedLinks[url.id] || url.url;
     axios
-      .put(`http://back.r3mob.fr/etablissement/updateUrl/${url.id}`, {
+      .put(`https://back.r3mob.fr/etablissement/updateUrl/${url.id}`, {
         newUrl: newLinkText,
       })
       .then(() => {

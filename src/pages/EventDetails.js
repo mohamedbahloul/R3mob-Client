@@ -190,10 +190,10 @@ function EventDetails() {
   const [event, setEvent] = useState({});
   const [similarEvents, setSimilarEvents] = useState([]);
 
-  const customEventURL = `http://back.r3mob.fr/detailsEvent/custom/${eventId}`;
+  const customEventURL = `https://back.r3mob.fr/detailsEvent/custom/${eventId}`;
   console.log("Custom Event URL:", customEventURL);
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/detailsEvent/brain/${eventId}`).then((res) => {
+    axios.get(`https://back.r3mob.fr/detailsEvent/brain/${eventId}`).then((res) => {
       if (res.data !== null) {
         setEvent(res.data);
       } else {
@@ -209,7 +209,7 @@ function EventDetails() {
   }, [eventId]);
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/similarEvents/${eventId}`).then((res) => {
+    axios.get(`https://back.r3mob.fr/similarEvents/${eventId}`).then((res) => {
         setSimilarEvents(res.data.similarEvents);
     });
   }, [eventId]);

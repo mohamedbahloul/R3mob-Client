@@ -9,7 +9,7 @@ function Forum() {
   const addMessage = (data) => {
     axios
       .post(
-        "http://back.r3mob.fr/message",
+        "https://back.r3mob.fr/message",
         {
           messageBody: newMessage,
           ForumId: id,
@@ -35,11 +35,11 @@ function Forum() {
   };
 
   useEffect(() => {
-    axios.get(`http://back.r3mob.fr/forum/byId/${id}`).then((res) => {
+    axios.get(`https://back.r3mob.fr/forum/byId/${id}`).then((res) => {
       console.log(res.data);
       setForumObject(res.data);
     });
-    axios.get(`http://back.r3mob.fr/message/${id}`).then((res) => {
+    axios.get(`https://back.r3mob.fr/message/${id}`).then((res) => {
       console.log(res.data);
       setListOfMessages(res.data);
     });

@@ -99,7 +99,7 @@ function Upload() {
 
     try {
       const response = await axios.post(
-        "http://back.r3mob.fr/uploadBase/folders",
+        "https://back.r3mob.fr/uploadBase/folders",
         formData,
         {
           headers: {
@@ -129,7 +129,7 @@ function Upload() {
 
       try {
         const response = await axios.post(
-          "http://back.r3mob.fr/uploadBase/json",
+          "https://back.r3mob.fr/uploadBase/json",
           formData,
           {
             headers: {
@@ -157,7 +157,7 @@ function Upload() {
   const VerifyDataBase = async () => {
     try {
       const verifyResponse = await axios.get(
-        "http://back.r3mob.fr/uploadBase/verifyFiles"
+        "https://back.r3mob.fr/uploadBase/verifyFiles"
       );
 
       if (verifyResponse.data.error) {
@@ -173,7 +173,7 @@ function Upload() {
   const ClearDataBase = async () => {
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await axios.post("http://back.r3mob.fr/brain/clear");
+        const response = await axios.post("https://back.r3mob.fr/brain/clear");
         console.log("Vidage de la base de données réussi", response.data);
         resolve(response.data); // Renvoie la réponse
       } catch (error) {
@@ -186,7 +186,7 @@ function Upload() {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await axios.post(
-          "http://back.r3mob.fr/brain/backups"
+          "https://back.r3mob.fr/brain/backups"
         );
         console.log("Backup de la base de données réussi", response.data);
         resolve(response.data); // Renvoie la réponse
@@ -198,7 +198,7 @@ function Upload() {
   };
   const UpdateDataBase = async () => {
     // try {
-    //   const response = await axios.post("http://back.r3mob.fr/brain");
+    //   const response = await axios.post("https://back.r3mob.fr/brain");
     //   if (response.data.error) {
     //     alert(response.data.error);
     //   } else {
@@ -211,7 +211,7 @@ function Upload() {
 
     return new Promise(async (resolve, reject) => {
       try {
-        const response = await axios.post("http://back.r3mob.fr/brain");
+        const response = await axios.post("https://back.r3mob.fr/brain");
         console.log("Mise à jour de la base de données réussie");
         resolve(response.data);
       } catch (error) {

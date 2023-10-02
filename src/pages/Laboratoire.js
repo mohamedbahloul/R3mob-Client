@@ -95,7 +95,7 @@ function Laboratoire() {
 
 
   useEffect(() => {
-    axios.get("http://back.r3mob.fr/etablissement/labo").then((response) => {
+    axios.get("https://back.r3mob.fr/etablissement/labo").then((response) => {
       setLaboratoire(response.data);
     });
   }, []);
