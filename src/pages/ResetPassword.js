@@ -210,7 +210,7 @@ function ResetPassword() {
               )}
             </Formik>
           </div>
-          {redirectUser && <Navigate to="/login" />}
+          {redirectUser && <Navigate to="/" />}
 
           <div className="mobile">
             <CarteButton />

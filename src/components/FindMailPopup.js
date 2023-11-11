@@ -79,7 +79,12 @@ const FindMailPopup = ({  onClose }) => {
         </InputSection>
         <Ul>
           {suggestions.map((suggestion) => (
-            <Li key={suggestion.username}>{suggestion.email}</Li>
+            <Li key={suggestion.username}>
+		                {suggestion.email.replace(/^(.{2})(.*)(@.*)$/, (match, p1, p2, p3) => {
+                const stars = '*'.repeat(p2.length);
+                return `${p1}${stars}${p3}`;
+              })}
+		  </Li>
           ))}
         </Ul>
         <ButtonContainer>

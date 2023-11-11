@@ -292,10 +292,13 @@ function Apropos() {
               Pour plus d'information, vous pouvez contacter :
             </p>
             <p style={{ fontSize: "1.2rem", marginLeft: "6%" }}>
-              Mohamed Mosbah - Animateur R3MOB : <a href="Mailto:mohamed.mosbah@u-bordeaux.fr">mohamed.mosbah@u-bordeaux.fr</a>
+              Mohamed Mosbah - Pilote : <a href="Mailto:mohamed.mosbah@u-bordeaux.fr">mohamed.mosbah@u-bordeaux.fr</a>
+            </p>
+	<p style={{ fontSize: "1.2rem", marginLeft: "6%" }}>
+              Yacine GHAMRI-Doudane - Copilote : <a href="Mailto:yacine.ghamri@univ-lr.fr">yacine.ghamri@univ-lr.fr</a>
             </p>
             <p style={{ fontSize: "1.2rem", marginLeft: "6%" }}>
-              Cedric Ferrero - Animateur R3MOB : <a href="Mailto:cedrik.ferrero@bordeaux-inp.fr">cedrik.ferrero@bordeaux-inp.fr</a>
+              Cedric Ferrero - Coordinateur : <a href="Mailto:cedrik.ferrero@bordeaux-inp.fr">cedrik.ferrero@bordeaux-inp.fr</a>
             </p>
             <p
               style={{

@@ -194,7 +194,7 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prevImage) => (prevImage === 1 ? 2 : 1));
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearInterval(interval);

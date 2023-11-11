@@ -103,7 +103,7 @@ function Projet() {
       setAllEnjeux(res.data);
     }
     );
-    
+    setLoading(false);
   }, []);
   const filteredProjets = projets
     .filter((projet) => {
@@ -156,7 +156,7 @@ function Projet() {
       // Filtrage par état
       return projet.etat === etatFilter;
     }).filter((projet) => {
-      loading = false;
+     
       if (enjeuxFilter === "") {
         return true; // Pas de filtre, afficher tous les projets
       }

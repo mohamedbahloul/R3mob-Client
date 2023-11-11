@@ -109,6 +109,7 @@ function Chercheur() {
   useEffect(() => {
     axios.get(`https://back.r3mob.fr/perso`).then((res) => {
       setPersos(res.data);
+	    setLoading(false);
       console.log(res.data);
     });
   }, []);
@@ -157,6 +158,7 @@ function Chercheur() {
 
     return false; // If Thematique_chercheurs is not present, exclude this chercheur
 }).filter((chercheur) => {
+
     if (sousThematiqueFilter === "") {
       return true; // Pas de filtre, afficher tous les projets
     }
@@ -171,7 +173,7 @@ function Chercheur() {
   });
 
   const sortedPersos = filteredPersos.sort((a, b) => {
-    loading = false;
+    
     if (sortType === "ascending") {
       return a.username.localeCompare(b.username);
     } else {

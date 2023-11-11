@@ -168,6 +168,7 @@ function Agenda() {
   useEffect(() => {
     axios.get(`https://back.r3mob.fr/event/combined`).then((res) => {
       setEvents(res.data);
+	    setLoading(false);
     });
   }, []);
 
@@ -193,6 +194,7 @@ function Agenda() {
       return eventNameMatches && dateMatches && eventLocationMatches;
     })
     .filter((event) => {
+	  
       // Apply the event status filter
       if (eventStatusFilter === "Passés") {
         return new Date(event.startDateTime) < currentDate;
@@ -208,7 +210,7 @@ function Agenda() {
     })
     .sort((a, b) => {
       // Tri des événements en fonction du type de tri
-      loading = false;
+     
       if (sortType === "ascending") {
         return new Date(a.startDateTime) - new Date(b.startDateTime);
       } else {
