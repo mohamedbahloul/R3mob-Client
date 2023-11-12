@@ -87,7 +87,6 @@ const UpdateEvent = () => {
       axios
         .put(`https://back.r3mob.fr/event/${updatedEvent.id}`, updatedEvent)
         .then(async (res) => {
-          console.log(res.data);
           try {
             const formData = new FormData();
             formData.append("imageName", `${updatedEvent.id}.jpg`); // Add the image_name to the FormData
@@ -96,7 +95,6 @@ const UpdateEvent = () => {
               "https://back.r3mob.fr/uploadImage",
               formData
             );
-            console.log(response);
             if (response.status === 200) {
               // Image uploaded successfully
               const imageUrl = response.data.imageUrl;
@@ -119,7 +117,6 @@ const UpdateEvent = () => {
           updatedEvent
         )
         .then(async (res) => {
-          console.log(res.data);
           try {
             const formData = new FormData();
             formData.append("imageName", `${updatedEvent.id}.jpg`); // Add the image_name to the FormData
@@ -128,7 +125,6 @@ const UpdateEvent = () => {
               "https://back.r3mob.fr/uploadImage",
               formData
             );
-            console.log(response);
             if (response.status === 200) {
               // Image uploaded successfully
               const imageUrl = response.data.imageUrl;
@@ -199,7 +195,6 @@ const UpdateEvent = () => {
 
           .then(async (res) => {
             id = res.data;
-            console.log(id);
             if (id != null) id = id + 1;
             else id = 1;
             if (createdEvent.selectedImage != null) {
@@ -220,7 +215,6 @@ const UpdateEvent = () => {
             }
           });
 
-        //console.log(res.data);
         fetchEvents();
       })
       .catch((err) => {

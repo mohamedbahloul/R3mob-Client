@@ -48,7 +48,6 @@ const EditVideoPopup = ({ video, onSave, onClose }) => {
       title: title,
       url:url,
     };
-    console.log("------------",createdVideo);
     onSave(createdVideo);
   };
 

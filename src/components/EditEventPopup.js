@@ -87,7 +87,6 @@ const EditEventPopup = ({ event, onSave, onClose }) => {
       if (res.data && res.data !== null) {
         // Vérifiez que res.data n'est pas nul
         setImage(`data:image/png;base64,${res.data}`);
-        console.log(image);
       } else {
         setImage(null);
       }

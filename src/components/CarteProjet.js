@@ -57,7 +57,6 @@ const CarteProjet = ({
       const thematicData = [];
       for (const publication of publicationSousThematiques) {
         const thematicId = publication.SousThematiqueId!==null ? publication.SousThematique.ThematiqueId : null;
-        console.log ("*6****************thematicId",thematicId);
         const thematic = allThematique.find(
           (thematique) => thematique.id === thematicId
         );

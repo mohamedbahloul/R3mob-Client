@@ -337,7 +337,6 @@ function Agenda() {
                     color: "gray",
                     cursor: "pointer",
                   }}
-                  onClick={() => console.log("Calendar clicked")}
                 />
               )}
               {dateFilter !== "" && (
@@ -447,7 +446,6 @@ function Agenda() {
                     color: "gray",
                     cursor: "pointer",
                   }}
-                  onClick={() => console.log("Calendar clicked")}
                 />
               )}
               {dateFilter !== "" && (

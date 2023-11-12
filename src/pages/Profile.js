@@ -489,7 +489,6 @@ function Profile() {
               }
               else
               {
-                console.log(response.data);
               }
             } catch (error) {
               console.error(error);

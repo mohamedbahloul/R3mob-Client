@@ -40,7 +40,6 @@ const ChangerPhotoPopup = ({ chercheurId,onSave, onClose }) => {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files[0];
     setSelectedImage(droppedFile);
-    console.log(droppedFile);
   };
 
 

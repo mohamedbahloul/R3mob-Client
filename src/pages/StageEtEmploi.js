@@ -208,7 +208,6 @@ const filteredEmplois = emplois.filter((emploi) =>
           {currentStages.length != 0 ? (
             <StageGrid>
               {currentStages.map((value, key) => {
-                console.log(value);
                 return (
                   <StageCardContainer key={key}>
                     <CarteStage

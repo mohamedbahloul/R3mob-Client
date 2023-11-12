@@ -211,10 +211,8 @@ function Ressources() {
 useEffect(() => {
   axios.get(`https://back.r3mob.fr/videos`).then((res) => {
     setVideos(res.data);
-
-    console.log("**********aaaaaaaaaaaa*******",videos);
   });
-}, [videos]);
+}, []);
   const filteredPublications = publications
     .filter((publication) => {
       const publicationTitleMatches = publication.nom.trim()
@@ -539,7 +537,6 @@ useEffect(() => {
                       reload={reload}
                       idChercheur={value.chercheurs[0]}
                     />
-                    {/* {console.log(value)} */}
                   </PublicationCardContainer>
                 );
               })}

@@ -36,11 +36,9 @@ function Forum() {
 
   useEffect(() => {
     axios.get(`https://back.r3mob.fr/forum/byId/${id}`).then((res) => {
-      console.log(res.data);
       setForumObject(res.data);
     });
     axios.get(`https://back.r3mob.fr/message/${id}`).then((res) => {
-      console.log(res.data);
       setListOfMessages(res.data);
     });
   }, [id]);

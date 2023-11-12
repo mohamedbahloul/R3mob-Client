@@ -64,7 +64,6 @@ const CartePublication = ({
   };
 
   const handleCloseEditPopup = () => {
-    console.log("close");
     setIsEditPopupOpen(false);
     setEditedPublication(null);
     reload();
@@ -205,7 +204,6 @@ const CartePublication = ({
 
   return (
     <>
-      {console.log(authState.username, idChercheur)}
       {authState.status && authState.username === idChercheur && (
         <ButtonContainer>
           <ButtonEdit onClick={() => handleEditEvent(id)}>

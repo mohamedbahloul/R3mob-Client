@@ -177,11 +177,9 @@ function Home() {
   useEffect(() => {
     axios.get(`https://back.r3mob.fr/perso/pilote`).then((res) => {
       setPilotes(res.data);
-      console.log(res.data);
     });
     axios.get(`https://back.r3mob.fr/etablissement`).then((res) => {
       setEtablissements(res.data);
-      console.log(res.data);
     });
     axios.get(`https://back.r3mob.fr/event/3recent`).then((res) => {
       setEvents(res.data);

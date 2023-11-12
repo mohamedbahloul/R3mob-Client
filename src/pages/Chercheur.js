@@ -398,7 +398,6 @@ function Chercheur() {
           <EventGrid>
           
             {currentPageContent.map((value, key) => {
-              console.log(value);
               const etablissementNames = value.Chercheur_etabs.map(
                 (chercheurEtab) => {
                   const etablissement = etablissements.find(

@@ -27,7 +27,6 @@ function Navbar() {
   const [access, setAccess] = useState(false);
   // Fonction de gestion d'événement pour les liens étendus
   const handleNavbarLinkClick = () => {
-    console.log("handleNavbarLinkClick");
     setOpenLinks(false);
   };
   useEffect(() => {
@@ -116,7 +115,6 @@ function Navbar() {
                   <span className="dropdownbtn-profile">&#8964;</span>
                   <div className="dropdown-content-profile">
                     <div className="dropdown-content-profile">
-                      {console.log("------------------", authState)}
                       {authState.role === true && (
                         <>
                           <NavbarLink to="/uploadBase">

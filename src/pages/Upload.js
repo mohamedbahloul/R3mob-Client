@@ -3,7 +3,8 @@ import axios from "axios";
 import styled from "styled-components";
 import { AuthContext } from "../helpers/AuthContext";
 import { Navigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
+import PropagateLoader from "react-spinners/PropagateLoader";
 export const InputSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,6 +70,7 @@ function Upload() {
     attachments: null,
   });
   const { authState } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const handleUploadAll = async () => {
     if (
@@ -79,13 +81,27 @@ function Upload() {
       !selectedJsonFile.attachments
     ) {
       // Show an alert to the user if any JSON file is missing
-      alert("Please select all JSON files before uploading.");
+      Swal.fire({
+        title: "Error!",
+        text: "Please select all JSON files before uploading.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      //alert("Please select all JSON files before uploading.");
       return;
     }
-
+    setLoading(true);
     await handleZipFileUpload();
     await handleJsonFileUpload();
     await VerifyDataBase();
+    setLoading(false);
+
+    Swal.fire({
+      title: "Success!",
+      text: "The files are Uploaded successfully!",
+      icon: "success",
+      confirmButtonText: "Cool",
+    });
   };
 
   const handleZipFileUpload = async () => {
@@ -105,6 +121,7 @@ function Upload() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+          withCredentials: true,
         }
       );
       console.log("Upload de fichier ZIP (dossiers) réussi", response.data);
@@ -166,22 +183,39 @@ function Upload() {
         console.log("BD Verified!!!!");
       }
     } catch (error) {
-      console.error("Vérification de la base de données échouée", error);
+      Swal.fire({
+        title: "Error!",
+        text: "Vérification de la base de données échouée" + error,
+        icon: "error",
+        confirmButtonText: "ok",
+      });
     }
   };
 
   const ClearDataBase = async () => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const response = await axios.post("https://back.r3mob.fr/brain/clear");
-        console.log("Vidage de la base de données réussi", response.data);
-        resolve(response.data); // Renvoie la réponse
-      } catch (error) {
-        console.error("Vidage de la base de données échoué", error);
-        reject(error); // Rejette la promesse en cas d'erreur
+    try {
+      const response = await axios.post("https://back.r3mob.fr/brain/clear");
+      console.log("Vidage de la base de données réussi", response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error(
+          "Vidage de la base de données échoué",
+          error.response.data
+        );
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("Pas de réponse du serveur", error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Erreur lors de la requête", error.message);
       }
-    });
+      throw error; // Rethrow the error after logging
+    }
   };
+
   const BackUpDataBase = async () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -191,58 +225,75 @@ function Upload() {
         console.log("Backup de la base de données réussi", response.data);
         resolve(response.data); // Renvoie la réponse
       } catch (error) {
-        console.error("Backup de la base de données échoué", error);
+        Swal.fire({
+          title: "Error!",
+          text: "Backup de la base de données échoué" + error,
+          icon: "error",
+          confirmButtonText: "ok",
+        });
         reject(error); // Rejette la promesse en cas d'erreur
       }
     });
   };
   const UpdateDataBase = async () => {
-    // try {
-    //   const response = await axios.post("https://back.r3mob.fr/brain");
-    //   if (response.data.error) {
-    //     alert(response.data.error);
-    //   } else {
-    //     console.log("Mise à jour de la base de données réussie");
-    //   }
-    // } catch (error) {
-    //   console.error("Mise à jour de la base de données échouée", error);
-    //   throw error;
-    // }
-
-    return new Promise(async (resolve, reject) => {
-      try {
-        const response = await axios.post("https://back.r3mob.fr/brain");
-        console.log("Mise à jour de la base de données réussie");
-        resolve(response.data);
-      } catch (error) {
-        console.error("Mise à jour de la base de données échouée", error);
-        alert(error);
-        reject(error); // Rejette la promesse en cas d'erreur
-      }
-    });
-  };
-  const handleClearAndUpdate = async () => {
     try {
-      await BackUpDataBase().then((res) => {
-        console.log("BD backed up!!!!");
-
-        setTimeout(async () => {
-          await ClearDataBase().then(async (res) => {
-            console.log("BD cleared!!!!");
-
-            // Utilisez setTimeout pour appeler UpdateDataBase après 2 secondes
-            setTimeout(async () => {
-              await UpdateDataBase().then((res) => {
-                alert("Upload completed successfully!");
-              });
-            }, 10000); // 4000 millisecondes équivalent à 4 secondes
-          }, 2000); // 2000 millisecondes équivalent à 2 secondes
-        });
-      });
+      const response = await axios.post("https://back.r3mob.fr/brain");
+      console.log("Mise à jour de la base de données réussie");
+      //resolve(response.data);
     } catch (error) {
-      console.error("Erreur lors de l'upload", error);
+      console.error("Mise à jour de la base de données échouée", error);
+      //alert(error);
+      Swal.fire({
+        title: "Error!",
+        text: "Mise à jour de la base de données échouée" + error,
+        icon: "error",
+        confirmButtonText: "ok",
+      });
+      //reject(error); // Rejette la promesse en cas d'erreur
     }
   };
+  const handleClearAndUpdate = async () => {
+    setLoading(true);
+    try {
+      await BackUpDataBase();
+      console.log("BD backed up!!!!");
+
+      // Use Promise.all to wait for both ClearDataBase and UpdateDataBase
+      await ClearDataBase();
+      console.log("BD cleared!!!!");
+
+
+      // Use setTimeout to call UpdateDataBase after 2 seconds
+      setTimeout(async () => {
+        await UpdateDataBase();
+
+        setLoading(false);
+        Swal.fire({
+          title: "Success!",
+          text: "The database is updated successfully!",
+          icon: "success",
+          confirmButtonText: "Cool",
+        });
+      }, 2000);
+    } catch (error) {
+      console.error("Erreur lors de l'upload", error);
+      setLoading(false);
+      Swal.fire({
+        title: "Error!",
+        text: "Erreur lors de l upload",
+        icon: "error",
+        confirmButtonText: "ok",
+      });
+    }
+  };
+
+  if (loading) {
+    return <PropagateLoader cssOverride={{
+      "display": "flex",
+      "justifyContent": "center", "alignItems": "center", "height": "100vh"
+    }}
+      color="#36d7b7" />
+  }
 
   return authState.status == true && authState.role === true ? (
     <div style={{ marginTop: "100px" }}>

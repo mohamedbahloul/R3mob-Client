@@ -65,7 +65,6 @@ function ResetPassword() {
   });
 
   useEffect(() => {
-    console.log(token);
     axios
       .get(`https://back.r3mob.fr/auth/reset-token-verification/${token}`)
       .then((response) => {
@@ -73,7 +72,6 @@ function ResetPassword() {
           alert(response.data.error);
             setRedirectUser(true);
         } else {
-          console.log(response.data);
         }
       });
   }, [token]);

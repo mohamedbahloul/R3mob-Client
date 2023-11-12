@@ -62,7 +62,6 @@ function VerifyUrl() {
         url: etab.url, 
       };
       const response = await axios.post(`https://back.r3mob.fr/urls`, newUrl);
-      console.log("New URL created:", response.data);
     } catch (error) {
       console.error("Error creating new URL:", error);
     }

@@ -192,7 +192,6 @@ function EventDetails() {
   const [image, setImage] = useState(null);
 
   const customEventURL = `https://back.r3mob.fr/detailsEvent/custom/${eventId}`;
-  console.log("Custom Event URL:", customEventURL);
   useEffect(() => {
     axios.get(`https://back.r3mob.fr/detailsEvent/brain/${eventId}`).then((res) => {
       if (res.data !== null) {
@@ -239,7 +238,6 @@ function EventDetails() {
       if (res.data && res.data !== null) {
         // Vérifiez que res.data n'est pas nul
         setImage(`data:image/png;base64,${res.data}`);
-        console.log(image);
       } else {
         setImage(null);
       }

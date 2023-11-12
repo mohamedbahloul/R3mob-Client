@@ -71,7 +71,6 @@ const CreateEventPopup = ({ onSave, onClose }) => {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files[0];
     setSelectedImage(droppedFile);
-    console.log(droppedFile);
   };
 
   const handleResetChanges = () => {
@@ -85,7 +84,6 @@ const CreateEventPopup = ({ onSave, onClose }) => {
   };
 
   const handleSaveChanges = async () => {
-    console.log("handleSaveChanges");
     setIsSaveClicked(true); // Marquez le bouton "Confirmer" comme cliqué
     if (!nom || nom === "") {
       //console.error("Le nom de la publication est obligatoire.");
@@ -111,7 +109,6 @@ const CreateEventPopup = ({ onSave, onClose }) => {
 
     formData.append("selectedImage", selectedImage);
     formData.append("userId", authState.id);
-    console.log("+++++++++++++++++++++", authState.id);
 
     try {
       await axios.post("https://back.r3mob.fr/createPublication", formData, {
@@ -158,8 +155,6 @@ const CreateEventPopup = ({ onSave, onClose }) => {
     const Thematique = allThematiques.find(
       (thematiqueItem) => thematiqueItem.nom === thematique
     );
-    console.log("**************",thematique)
-    console.log("**************",allThematiques)
     if (Thematique) {
       const isAlreadySelected = selectedThematiques.some(
         (selected) => selected.id === Thematique.id
@@ -171,7 +166,6 @@ const CreateEventPopup = ({ onSave, onClose }) => {
           { id: Thematique.id, nom: Thematique.nom },
         ]);
       }
-      console.log("selectedThematiques", selectedThematiques);
     }
     else{
       console.log("Thematique non trouvée");

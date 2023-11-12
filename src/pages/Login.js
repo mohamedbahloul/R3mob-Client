@@ -145,7 +145,6 @@ function Login() {
   
   useEffect(() => {
     if (id) {
-      console.log(`https://back.r3mob.fr/perso/email/${id}`);
       axios.get(`https://back.r3mob.fr/perso/email/${id}`).then((response) => {
         if (response.data.error) {
           alert(response.data.error);
@@ -184,7 +183,6 @@ function Login() {
           id: response.data.id,
           status: true,
         });
-        console.log(response.data.username);
         Navigate("/");
       }
     });
